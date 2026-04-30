@@ -1,0 +1,144 @@
+@startuml
+' ======= Configuración Estética =======
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 100
+skinparam backgroundColor #FFFFF1
+skinparam roundcorner 20
+skinparam ArrowFontSize 18
+
+
+' ======= Paquete: Gestión Académica (Izquierda) =======
+package "Área Académica" #E3F2FD {
+    class Carrera {
+        - idCarrera : int
+        - nombre : String
+        - duracion : int
+        - tituloOtorgado : String
+        - planDeEstudio : int
+    }
+
+    enum modalidadCarrera {
+        PRESENCIAL
+        VIRTUAL
+    }
+
+    class Materia {
+        - idMateria : int
+        - nombre : String
+        - cargaHoraria : int
+        - cuatrimestre : int
+        - anioCursando : int
+    }
+
+    class Comision {
+        - idComision : int
+        - nroComision : int
+        - aula : String
+    }
+
+    class Examen {
+        - idExamen : int
+        - fecha : LocalDate
+    }
+
+    enum TipoExamen {
+        PARCIAL
+        FINAL
+    }
+
+    class Nota {
+        - valor : double
+        - fechaRegistro : LocalDate
+    }
+}
+
+' ======= Paquete: Gestión de Personas (Centro) =======
+package "Usuarios y Perfiles" #F5F5F9 {
+    abstract class Persona {
+        - nombre : String
+        - apellido : String
+        - dni : String
+        - direccion : String
+        - telefono : String
+        - fechaNacimiento : LocalDate
+        - email : String
+    }
+
+    class Administrador {
+        - idAdministrador : int
+    }
+
+    class Alumno {
+        - idAlumno : int
+        - legajo : int
+        - anioIngreso : int
+        - analiticoParcial : boolean
+        - esRegular : boolean
+        - planEstudio : int
+        - promedio : double
+    }
+
+    class Profesor {
+        - idProfesor : int
+        - horasSemanales : int
+    }
+
+    enum EstadoProfesor {
+        ACTIVO
+        INACTIVO
+        LICENCIA
+    }
+}
+
+' ======= Paquete: Gestión Administrativa (Derecha) =======
+package "Área Administrativa" #E8F5E9 {
+    class Cuota {
+        - idCuota : int
+        - valorCuota : double
+        - fechaPago : LocalDate
+        - fechaVencimiento : LocalDate
+    }
+
+    enum EstadoCuota {
+        PAGADA
+        PENDIENTE
+        VENCIDA
+    }
+
+    enum ConceptoCuota {
+        CUOTA
+        MATRICULA
+    }
+}
+
+' ======= Relaciones de Herencia =======
+Persona <|-- Administrador
+Persona <|-- Alumno
+Persona <|-- Profesor
+
+' ======= Relaciones con Colores Temáticos =======
+
+' FLUJO ACADÉMICO (Azul)
+Alumno " <b><size:20>*</size></b> " -left- " <b><size:20>*</size></b> " Carrera #Blue : cursa >
+Carrera "1" *-[#Blue]- "*" Materia : contiene >
+Materia "1" *-[#Blue]- "*" Comision : se divide en >
+Profesor "1..*" -left- "*" Comision #Blue : dicta >
+Materia "*" -[#Blue]right- "*" Materia : correlativa de >
+
+' FLUJO EVALUACIÓN (Rojo)
+Alumno "1" *-[#Crimson]- "*" Nota : posee >
+Nota "*" -down- "1" Examen #Crimson : de un >
+Materia "1" -down- "*" Examen #Crimson : genera >
+
+' FLUJO ADMINISTRATIVO (Verde)
+Alumno "1" *-[#DarkGreen]right- " <b><size:20>*</size></b> " Cuota : paga >
+
+' CONEXIONES DE ENUMS (Líneas grises para no distraer del flujo principal)
+Profesor -- EstadoProfesor #Grey
+Carrera -- modalidadCarrera #Grey
+Examen -- TipoExamen #Grey
+Cuota -- EstadoCuota #Grey
+Cuota -- ConceptoCuota #Grey
+
+@enduml
