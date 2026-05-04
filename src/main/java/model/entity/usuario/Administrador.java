@@ -1,4 +1,4 @@
-package model.entity.Usuario;
+package model.entity.usuario;
 
 public class Administrador {
 }
