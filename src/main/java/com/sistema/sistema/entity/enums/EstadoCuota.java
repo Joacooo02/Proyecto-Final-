@@ -1,4 +1,4 @@
-package model.entity.enums;
+package com.sistema.sistema.entity.enums;
 
 public enum EstadoCuota {
     PAGADA,

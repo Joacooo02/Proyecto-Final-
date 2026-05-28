@@ -1,4 +1,4 @@
-package model.entity.usuario;
+package com.sistema.sistema.entity.usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,4 +1,4 @@
-package model.entity.areaAcademica;
+package com.sistema.sistema.entity.areaAcademica;
 
 import jakarta.persistence.*;
 import lombok.*;

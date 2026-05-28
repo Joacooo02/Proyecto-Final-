@@ -1,11 +1,12 @@
-package model.entity.areaAcademica;
+package com.sistema.sistema.entity.areaAcademica;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "Carrera")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

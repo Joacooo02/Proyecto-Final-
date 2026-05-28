@@ -1,20 +1,21 @@
-package model.entity.areaAcademica;
+package com.sistema.sistema.entity.areaAcademica;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Comision")
+@Table(name = "Examen")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Nota {
+public class Examen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idNota;
-    private double valor;
-    private LocalDateTime fechaRegistro;
+    private long idExamen;
+    private LocalDateTime fecha;
+
 }
