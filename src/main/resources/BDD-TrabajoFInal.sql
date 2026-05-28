@@ -94,6 +94,7 @@ CREATE TABLE Nota (
 	idNota INT AUTO_INCREMENT PRIMARY KEY,
     idExamen INT,
     idAlumno int,
+    nota int,
     fechaRegistro DATE,
 	FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE,
 	FOREIGN KEY (idAlumno) REFERENCES Alumno(idAlumno) ON DELETE CASCADE
@@ -104,6 +105,7 @@ CREATE TABLE Comision(
     idMateria INT,
     idProfesor INT,
     nroComision INT,
+    cantAlumnos INT,
     aula VARCHAR (50),
 	FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE,
 	FOREIGN KEY (idProfesor) REFERENCES Profesor(idProfesor) ON DELETE CASCADE
