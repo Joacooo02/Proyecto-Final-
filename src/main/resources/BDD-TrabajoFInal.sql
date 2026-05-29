@@ -1,22 +1,23 @@
-CREATE DATABASE TrabajoFinal;
+DROP DATABASE IF EXISTS TrabajoFinal;
+CREATE DATABASE IF NOT EXISTS TrabajoFinal;
 USE TrabajoFinal;
 
 -- USUARIO Y PERFILES
 
 CREATE TABLE Persona (
-	idPersona INT AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR (50),
-	apellido VARCHAR (50),
-	dni VARCHAR (50),
+	idPersona INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR (50) NOT NULL,
+	apellido VARCHAR (50)NOT NULL,
+	dni VARCHAR (50) NOT NULL UNIQUE,
 	telefono VARCHAR (50),
 	fechaNacimiento DATE,
-    email VARCHAR (50)
+    email VARCHAR (100)
 );
 
 CREATE TABLE Alumno (
-	idAlumno INT AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT,
-    legajo INT,
+	idAlumno INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    idPersona INT UNSIGNED NOT NULL,
+    legajo INT NOT NULL UNIQUE,
     anioIngreso YEAR,
     analiticoParcial BOOLEAN,
     esRegular BOOLEAN,
@@ -26,14 +27,14 @@ CREATE TABLE Alumno (
 );
 
 CREATE TABLE Administrador(
-	idAdministrador INT AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT,
+	idAdministrador INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idPersona INT UNSIGNED NOT NULL,
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona) ON DELETE CASCADE
 );
 
 CREATE TABLE Profesor(
-	idProfesor INT AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT,
+	idProfesor INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idPersona INT UNSIGNED NOT NULL,
     horasSemanales INT,
     estadoProfesor ENUM('ACTIVO', 'INACTIVO', 'LICENCIA') NOT NULL DEFAULT 'ACTIVO',
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona) ON DELETE CASCADE
@@ -42,8 +43,8 @@ CREATE TABLE Profesor(
 -- AREA ADMINISTRATIVA
 
 CREATE TABLE Cuota(
-	idCuota INT AUTO_INCREMENT PRIMARY KEY,
-    idAlumno INT,
+	idCuota INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno INT UNSIGNED NOT NULL,
 	valorCuota INT,
     fechaPago DATE,
     fechaVencimiento DATE,
@@ -53,28 +54,28 @@ CREATE TABLE Cuota(
 );
 
 CREATE TABLE Alumno_Cursa_Carrera (
-	idAlumno INT,
-    idCarrera INT,
+	idAlumno INT UNSIGNED NOT NULL,
+    idCarrera INT UNSIGNED NOT NULL,
     fecha_inscripcion DATE,
     PRIMARY KEY (idAlumno, idCarrera),
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idAlumno),
     FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera)
 );
 
--- AREA ACADEMICA 
+-- AREA ACADEMICA
 
 CREATE TABLE Carrera(
-	idCarrera INT AUTO_INCREMENT PRIMARY KEY,
+	idCarrera INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR (50),
     duracion INT,
     tituloOtorgado VARCHAR (50),
 	modalidadCarrera ENUM ('Presencial', 'Virtual') NOT NULL DEFAULT 'Presencial',
-    planDeEstudio year    
+    planDeEstudio year
 );
 
 CREATE TABLE Materia(
-	idMateria INT AUTO_INCREMENT PRIMARY KEY,
-	idCarrera INT,
+	idMateria INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+	idCarrera INT UNSIGNED NOT NULL,
     nombre VARCHAR(50),
     cargaHoraria INT,
     cuatrimestre INT,
@@ -83,25 +84,25 @@ CREATE TABLE Materia(
 );
 
 CREATE TABLE Examen(
-	idExamen INT AUTO_INCREMENT PRIMARY KEY,
-    idMateria INT,
+	idExamen INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idMateria INT UNSIGNED NOT NULL,
     fecha DATE,
     tiporExamen ENUM ('Parcial', 'Final') NOT NULL DEFAULT 'Parcial',
 	FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
 );
 
 CREATE TABLE Nota (
-	idNota INT AUTO_INCREMENT PRIMARY KEY,
-    idExamen INT,
-    idAlumno int,
-    nota int,
+	idNota INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idExamen INT UNSIGNED NOT NULL,
+    idAlumno INT UNSIGNED NOT NULL,
+    nota INT,
     fechaRegistro DATE,
 	FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE,
 	FOREIGN KEY (idAlumno) REFERENCES Alumno(idAlumno) ON DELETE CASCADE
 );
 
 CREATE TABLE Comision(
-	idComision INT AUTO_INCREMENT PRIMARY KEY, 
+	idComision INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
     idMateria INT,
     idProfesor INT,
     nroComision INT,
