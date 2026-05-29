@@ -1,4 +1,4 @@
-package com.sistema.sistema.entity.enums;
+package com.sistema.sistema.entities.enums;
 
 public enum ModalidadCarrera {
     PRESENCIAL,

@@ -18,7 +18,7 @@ CREATE TABLE Alumno (
 	idAlumno INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     idPersona INT UNSIGNED NOT NULL,
     legajo INT NOT NULL UNIQUE,
-    anioIngreso YEAR,
+    anioIngreso INTEGER,
     analiticoParcial BOOLEAN,
     esRegular BOOLEAN,
     planEstudio INT,
@@ -70,7 +70,7 @@ CREATE TABLE Carrera(
     duracion INT,
     tituloOtorgado VARCHAR (50),
 	modalidadCarrera ENUM ('Presencial', 'Virtual') NOT NULL DEFAULT 'Presencial',
-    planDeEstudio year
+    planDeEstudio INTEGER
 );
 
 CREATE TABLE Materia(
@@ -79,7 +79,7 @@ CREATE TABLE Materia(
     nombre VARCHAR(50),
     cargaHoraria INT,
     cuatrimestre INT,
-    anioCursado YEAR,
+    anioCursado INTEGER,
 	FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera) ON DELETE CASCADE
 );
 
