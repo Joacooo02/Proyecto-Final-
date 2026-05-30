@@ -15,7 +15,7 @@ public class Carrera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCarrera;
+    private Long idCarrera;
 
     @Column(length = 50)
     private String nombre;

@@ -15,7 +15,7 @@ public class Comision {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idComision;
+    private Long idComision;
 
     @ManyToOne
     @JoinColumn(name = "idMateria")

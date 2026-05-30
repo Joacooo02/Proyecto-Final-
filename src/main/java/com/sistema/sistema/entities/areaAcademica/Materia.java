@@ -13,7 +13,7 @@ public class Materia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idMateria;
+    private Long idMateria;
 
     @ManyToOne
     @JoinColumn(name = "idCarrera", nullable = false)

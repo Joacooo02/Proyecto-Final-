@@ -11,6 +11,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class AlumnoCursaCarreraId implements Serializable {
-    private Integer idAlumno;
-    private Integer idCarrera;
+    private Long idAlumno;
+    private Long idCarrera;
 }

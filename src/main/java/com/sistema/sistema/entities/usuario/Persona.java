@@ -2,18 +2,22 @@ package com.sistema.sistema.entities.usuario;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "Persona")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-public class Persona {
+@NoArgsConstructor
+@SuperBuilder
+public abstract class Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPersona;
+    private Long idPersona;
 
     @Column(nullable = false,length = 50)
     private String nombre;

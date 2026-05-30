@@ -2,23 +2,16 @@ package com.sistema.sistema.entities.usuario;
 import com.sistema.sistema.entities.enums.EstadoProfesor;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "Profesor")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Profesor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idProfesor;
-
-    @OneToOne
-    @JoinColumn(name = "idPersona", nullable = false)
-    private Persona persona;
+@SuperBuilder
+public class Profesor extends Persona{
 
     private Integer horasSemanales;
 

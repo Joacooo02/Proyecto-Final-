@@ -2,6 +2,8 @@ package com.sistema.sistema.repositories;
 
 import com.sistema.sistema.entities.areaAcademica.Nota;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface NotaRepository extends JpaRepository<Nota,Integer> {
+@Repository
+public interface NotaRepository extends JpaRepository<Nota,Long> {
 }

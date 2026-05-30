@@ -18,7 +18,7 @@ public class Cuota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCuota;
+    private Long idCuota;
 
     @ManyToOne
     @JoinColumn(name = "idAlumno", nullable = false)

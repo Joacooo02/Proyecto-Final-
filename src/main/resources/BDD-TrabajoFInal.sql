@@ -5,19 +5,18 @@ USE TrabajoFinal;
 -- USUARIO Y PERFILES
 
 CREATE TABLE Persona (
-	idPersona INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR (50) NOT NULL,
-	apellido VARCHAR (50)NOT NULL,
-	dni VARCHAR (50) NOT NULL UNIQUE,
-	telefono VARCHAR (50),
-	fechaNacimiento DATE,
-    email VARCHAR (100)
+    idPersona BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    dni VARCHAR(50) NOT NULL UNIQUE,
+    telefono VARCHAR(50),
+    fechaNacimiento DATE,
+    email VARCHAR(100)
 );
 
 CREATE TABLE Alumno (
-	idAlumno INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT UNSIGNED NOT NULL,
-    legajo INT NOT NULL UNIQUE,
+    idPersona BIGINT UNSIGNED PRIMARY KEY,
+    legajo BIGINT NOT NULL UNIQUE,
     anioIngreso INTEGER,
     analiticoParcial BOOLEAN,
     esRegular BOOLEAN,
@@ -26,15 +25,13 @@ CREATE TABLE Alumno (
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona) ON DELETE CASCADE
 );
 
-CREATE TABLE Administrador(
-	idAdministrador INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT UNSIGNED NOT NULL,
+CREATE TABLE Administrador (
+    idPersona BIGINT UNSIGNED PRIMARY KEY,
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona) ON DELETE CASCADE
 );
 
-CREATE TABLE Profesor(
-	idProfesor INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-    idPersona INT UNSIGNED NOT NULL,
+CREATE TABLE Profesor (
+    idPersona BIGINT UNSIGNED PRIMARY KEY,
     horasSemanales INT,
     estadoProfesor ENUM('ACTIVO', 'INACTIVO', 'LICENCIA') NOT NULL DEFAULT 'ACTIVO',
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona) ON DELETE CASCADE
@@ -43,8 +40,8 @@ CREATE TABLE Profesor(
 -- AREA ADMINISTRATIVA
 
 CREATE TABLE Cuota(
-	idCuota INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-    idAlumno INT UNSIGNED NOT NULL,
+	idCuota BIGINT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno BIGINT UNSIGNED NOT NULL,
 	valorCuota INT,
     fechaPago DATE,
     fechaVencimiento DATE,
@@ -54,8 +51,8 @@ CREATE TABLE Cuota(
 );
 
 CREATE TABLE Alumno_Cursa_Carrera (
-	idAlumno INT UNSIGNED NOT NULL,
-    idCarrera INT UNSIGNED NOT NULL,
+	idAlumno BIGINT UNSIGNED NOT NULL,
+    idCarrera BIGINT UNSIGNED NOT NULL,
     fecha_inscripcion DATE,
     PRIMARY KEY (idAlumno, idCarrera),
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idAlumno),
@@ -65,7 +62,7 @@ CREATE TABLE Alumno_Cursa_Carrera (
 -- AREA ACADEMICA
 
 CREATE TABLE Carrera(
-	idCarrera INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+	idCarrera BIGINT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR (50),
     duracion INT,
     tituloOtorgado VARCHAR (50),
@@ -74,8 +71,8 @@ CREATE TABLE Carrera(
 );
 
 CREATE TABLE Materia(
-	idMateria INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-	idCarrera INT UNSIGNED NOT NULL,
+	idMateria BIGINT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+	idCarrera BIGINT UNSIGNED NOT NULL,
     nombre VARCHAR(50),
     cargaHoraria INT,
     cuatrimestre INT,
@@ -84,17 +81,17 @@ CREATE TABLE Materia(
 );
 
 CREATE TABLE Examen(
-	idExamen INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-    idMateria INT UNSIGNED NOT NULL,
+	idExamen BIGINT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idMateria BIGINT UNSIGNED NOT NULL,
     fecha DATE,
     tiporExamen ENUM ('Parcial', 'Final') NOT NULL DEFAULT 'Parcial',
 	FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
 );
 
 CREATE TABLE Nota (
-	idNota INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-    idExamen INT UNSIGNED NOT NULL,
-    idAlumno INT UNSIGNED NOT NULL,
+	idNota BIGINT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idExamen BIGINT UNSIGNED NOT NULL,
+    idAlumno BIGINT UNSIGNED NOT NULL,
     nota INT,
     fechaRegistro DATE,
 	FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE,
@@ -102,9 +99,9 @@ CREATE TABLE Nota (
 );
 
 CREATE TABLE Comision(
-	idComision INT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
-    idMateria INT,
-    idProfesor INT,
+	idComision BIGINT UNSIGNED NULL AUTO_INCREMENT PRIMARY KEY,
+    idMateria BIGINT,
+    idProfesor BIGINT,
     nroComision INT,
     cantAlumnos INT,
     aula VARCHAR (50),
