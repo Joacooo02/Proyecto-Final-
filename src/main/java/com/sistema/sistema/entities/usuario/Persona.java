@@ -1,5 +1,6 @@
 package com.sistema.sistema.entities.usuario;
 
+import com.sistema.sistema.entities.enums.RolUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -35,4 +36,7 @@ public abstract class Persona {
 
     @Column(length = 100)
     private String email;
+
+    @Column(nullable = false)
+    private RolUsuario rolUsuario;
 }
