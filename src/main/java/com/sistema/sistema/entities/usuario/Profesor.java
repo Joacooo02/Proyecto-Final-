@@ -6,7 +6,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "Profesor")
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor

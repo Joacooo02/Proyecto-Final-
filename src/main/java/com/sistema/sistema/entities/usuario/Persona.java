@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "Persona")
 @Inheritance(strategy = InheritanceType.JOINED)
+//@PrimaryKeyJoinColumn(name = "idPersona")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,6 +38,7 @@ public abstract class Persona {
     @Column(length = 100)
     private String email;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RolUsuario rolUsuario;
 }
