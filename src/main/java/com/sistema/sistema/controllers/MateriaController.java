@@ -38,4 +38,10 @@ public class MateriaController {
     public Materia modificarMateria(@PathVariable Long id, @RequestBody Materia materiaModificada) {
         return materiaService.modificarMateria(id, materiaModificada);
     }
+
+    @GetMapping("/plan-academico/{idAlumno}")
+    public List<Materia> verPlanAcademicoAlumno(@PathVariable Long idAlumno)
+    {
+        return materiaService.verPlanAcademicoAlumno(idAlumno);
+    }
 }
