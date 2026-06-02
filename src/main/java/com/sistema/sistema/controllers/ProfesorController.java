@@ -1,5 +1,6 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.entities.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.services.ProfesorService;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,15 @@ public class ProfesorController {
     }
 
     @GetMapping
-    public List<Profesor> listarProfesores() {
-        return profesorService.listarProfesores();
+    public List<Profesor> listarProfesores(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellido,
+            @RequestParam(required = false) String dni,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) EstadoProfesor estado) {
+
+
+        return profesorService.listarProfesores(nombre, apellido, dni, email, estado);
     }
 
     @PutMapping("/{id}")

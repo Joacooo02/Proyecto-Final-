@@ -30,8 +30,8 @@ public class MateriaController {
     }
 
     @GetMapping
-    public List<Materia> listarMaterias() {
-        return materiaService.listarMaterias();
+    public List<Materia> listarMaterias(@RequestParam(required = false) String nombre) {
+        return materiaService.listarMaterias(nombre);
     }
 
     @PutMapping("/{id}")

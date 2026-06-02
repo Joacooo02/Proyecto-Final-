@@ -3,9 +3,11 @@ package com.sistema.sistema.services;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.AlumnoRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,8 +30,27 @@ public class AlumnoService {
         alumnoRepository.deleteById(id);
     }
 
-    public List<Alumno> listarAlumnos(){
-        return alumnoRepository.findAll();
+    public List<Alumno> listarAlumnos(String nombre, String apellido, String dni, String email, Long legajo) {
+        return alumnoRepository.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (nombre != null && !nombre.isBlank()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nombre")), "%" + nombre.toLowerCase() + "%"));
+            }
+            if (apellido != null && !apellido.isBlank()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("apellido")), "%" + apellido.toLowerCase() + "%"));
+            }
+            if (dni != null && !dni.isBlank()) {
+                predicates.add(criteriaBuilder.equal(root.get("dni"), dni));
+            }
+            if (email != null && !email.isBlank()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), "%" + email.toLowerCase() + "%"));
+            }
+            if (legajo != null) {
+                predicates.add(criteriaBuilder.equal(root.get("legajo"), legajo));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
     }
 
     public Alumno modificarAlumno(Long id, Alumno alumnoModificado) {

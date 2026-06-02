@@ -31,7 +31,10 @@ public class MateriaService {
         materiaRepository.deleteById(id);
     }
 
-    public List<Materia> listarMaterias() {
+    public List<Materia> listarMaterias(String nombre) {
+        if (nombre != null && !nombre.isBlank()) {
+            return materiaRepository.findByNombreContainingIgnoreCase(nombre);
+        }
         return materiaRepository.findAll();
     }
 

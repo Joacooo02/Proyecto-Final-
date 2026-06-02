@@ -30,8 +30,14 @@ public class AlumnoController {
     }
 
     @GetMapping
-    public List<Alumno> listarAlumnos(){
-        return alumnoService.listarAlumnos();
+    public List<Alumno> listarAlumnos(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellido,
+            @RequestParam(required = false) String dni,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Long legajo) {
+
+        return alumnoService.listarAlumnos(nombre, apellido, dni, email, legajo);
     }
 
     @PutMapping

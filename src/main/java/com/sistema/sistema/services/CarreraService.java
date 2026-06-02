@@ -28,7 +28,10 @@ public class CarreraService {
         carreraRepository.deleteById(id);
     }
 
-    public List<Carrera> listarCarreras() {
+    public List<Carrera> listarCarreras(String nombre) {
+        if (nombre != null && !nombre.isBlank()) {
+            return carreraRepository.findByNombreContainingIgnoreCase(nombre);
+        }
         return carreraRepository.findAll();
     }
 

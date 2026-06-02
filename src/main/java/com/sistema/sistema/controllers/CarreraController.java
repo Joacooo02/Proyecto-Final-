@@ -30,8 +30,8 @@ public class CarreraController {
     }
 
     @GetMapping
-    public List<Carrera> listarCarreras() {
-        return carreraService.listarCarreras();
+    public List<Carrera> listarCarreras(@RequestParam(required = false) String nombre) {
+        return carreraService.listarCarreras(nombre);
     }
 
     @PutMapping("/{id}")

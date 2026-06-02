@@ -30,8 +30,8 @@ public class ComisionController {
     }
 
     @GetMapping
-    public List<Comision> listarComisiones() {
-        return comisionService.listarComisiones();
+    public List<Comision> listarComisiones(@RequestParam(required = false) Integer nroComision) {
+        return comisionService.listarComisiones(nroComision);
     }
 
     @PutMapping("/{id}")

@@ -28,7 +28,10 @@ public class ComisionService {
         comisionRepository.deleteById(id);
     }
 
-    public List<Comision> listarComisiones() {
+    public List<Comision> listarComisiones(Integer nroComision) {
+        if (nroComision != null) {
+            return comisionRepository.findByNroComision(nroComision);
+        }
         return comisionRepository.findAll();
     }
 
