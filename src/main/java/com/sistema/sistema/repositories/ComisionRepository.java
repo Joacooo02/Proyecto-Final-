@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ComisionRepository extends JpaRepository<Comision,Long> {
     List<Comision> findByNroComision(Integer nroComision);
+    List<Comision> findByProfesorId(Long profesorId);
 }

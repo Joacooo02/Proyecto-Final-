@@ -1,21 +1,30 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.entities.areaAcademica.Comision;
+import com.sistema.sistema.entities.dto.ComisionDTO;
 import com.sistema.sistema.entities.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.repositories.ComisionRepository;
 import com.sistema.sistema.repositories.ProfesorRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProfesorService {
 
+    @Autowired
     private final ProfesorRepository profesorRepository;
+
+    @Autowired
+    private final ComisionRepository comisionRepository;
 
     public Profesor buscarProfesorPorId(Long id) {
         return profesorRepository.findById(id)
@@ -68,6 +77,15 @@ public class ProfesorService {
         profesorExistente.setEstadoProfesor(profesorModificado.getEstadoProfesor());
 
         return profesorRepository.save(profesorExistente);
+    }
+
+    public List<ComisionDTO> obtenerComisionesProfesor(Long profesorId) {
+        List<Comision> comisiones = comisionRepository.findByProfesorId(profesorId);
+
+        return comisiones.stream()
+                .map(comision -> new ComisionDTO(
+                ))
+                .collect(Collectors.toList());
     }
 }
 

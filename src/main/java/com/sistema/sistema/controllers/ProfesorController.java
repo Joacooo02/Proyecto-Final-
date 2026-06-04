@@ -1,9 +1,11 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.entities.dto.ComisionDTO;
 import com.sistema.sistema.entities.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.services.ProfesorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,5 +47,11 @@ public class ProfesorController {
     @PutMapping("/{id}")
     public Profesor modificarProfesor(@PathVariable Long id, @RequestBody Profesor profesorModificado) {
         return profesorService.modificarProfesor(id, profesorModificado);
+    }
+
+    @GetMapping("/{Id}/comisiones")
+    public ResponseEntity<List<ComisionDTO>> listarComisiones(@PathVariable Long profesorId) {
+        List<ComisionDTO> comisiones = profesorService.obtenerComisionesProfesor(profesorId);
+        return ResponseEntity.ok(comisiones);
     }
 }
