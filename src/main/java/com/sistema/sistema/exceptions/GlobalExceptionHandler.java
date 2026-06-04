@@ -23,6 +23,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(EncuestaYaRespondidaException.class)
+    public ResponseEntity<ErrorResponse> manejarEncuestaYaRespondida(EncuestaYaRespondidaException ex) {
+
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Encuesta ya respondida",
+                ex.getMessage()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> manejarErroresGlobales(Exception ex) {
 
