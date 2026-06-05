@@ -3,6 +3,7 @@ package com.sistema.sistema.services;
 import com.sistema.sistema.Exceptions.ExamenInexistente;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
+import com.sistema.sistema.entities.enums.TipoExamen;
 import com.sistema.sistema.exceptions.MateriaInexistente;
 import com.sistema.sistema.repositories.ExamenRepository;
 import com.sistema.sistema.repositories.MateriaRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.print.DocFlavor;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -37,5 +39,21 @@ public class ExamenService {
     {
         return examenRepository.findById(idExamen).orElseThrow(() -> new ExamenInexistente("Examen no encontrado"));
     }
+
+    public List<Examen> filtrarExamenPorTipo(TipoExamen tipoExamen)
+    {
+        return examenRepository.findByTipoExamen(tipoExamen);
+    }
+
+    public List<Examen> filtrarExamenPorMateria(String nombreMateria)
+    {
+        return examenRepository.findByMateriaNombre(nombreMateria);
+    }
+
+    public List<Examen> filtrarExamenPorFecha(LocalDate fechaExamen)
+    {
+        return examenRepository.findByFecha(fechaExamen);
+    }
+
 
 }
