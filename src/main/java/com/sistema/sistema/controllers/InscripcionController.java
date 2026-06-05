@@ -1,10 +1,10 @@
 package com.sistema.sistema.controllers;
 
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFinal;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import com.sistema.sistema.services.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +16,8 @@ public class InscripcionController {
 
     @Autowired
     private InscripcionService service;
+
+
 
     @PostMapping("/materia/{idAlumno}/{idMateria}")
     public AlumnoInscripcionMateria inscripcionMateria(@PathVariable Long idAlumno, @PathVariable Long idMateria)
@@ -29,4 +31,9 @@ public class InscripcionController {
         return service.inscribirComision(idAlumno, idComision);
     }
 
+    @PostMapping("/examenFinal/{idAlumno}/{idExamen}")
+    public AlumnoInscripcionExamenFinal inscribirExamen(@PathVariable Long idAlumno, @PathVariable Long idExamen)
+    {
+        return service.inscribirExamen(idAlumno, idExamen);
+    }
 }

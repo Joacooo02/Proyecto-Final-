@@ -1,12 +1,16 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Comision;
+import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFinal;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
+import com.sistema.sistema.entities.enums.TipoExamen;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +32,12 @@ public class InscripcionService {
 
     @Autowired
     private AlumnoInscripcionComisionRepository comisionRepo;
+
+    @Autowired
+    private InscripcionExamenFinalRepository alumnoExamenRepo;
+
+    @Autowired
+    private ExamenRepository examenRepository;
 
     public AlumnoInscripcionMateria inscribirMateria(Long idAlumno, Long idMateria) {
 
@@ -61,4 +71,27 @@ public class InscripcionService {
 
         return comisionRepo.save(inscripcion);
     }
+
+    public AlumnoInscripcionExamenFinal inscribirExamen(Long idAlumno, Long idExamen) {
+
+        Alumno alumno = alumnoRepository.findById(idAlumno)
+                .orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+
+        Examen examen = examenRepository.findById(idExamen)
+                .orElseThrow(() -> new RuntimeException("Examen no encontrado"));
+
+        if (!examen.getTipoExamen().equals(TipoExamen.FINAL)) {
+            throw new RuntimeException("Solo se puede inscribir a exámenes finales");
+        }
+
+        AlumnoInscripcionExamenFinal inscripcion = AlumnoInscripcionExamenFinal.builder()
+                .alumno(alumno)
+                .examen(examen)
+                .fecha_inscripcion(LocalDate.now())
+                .build();
+
+        return alumnoExamenRepo.save(inscripcion);
+    }
+
+
 }
