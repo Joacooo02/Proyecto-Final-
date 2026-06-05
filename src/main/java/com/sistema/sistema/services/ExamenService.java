@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Exceptions.ExamenInexistente;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.exceptions.MateriaInexistente;
@@ -30,6 +31,11 @@ public class ExamenService {
     public List<Examen> listarExamenes()
     {
         return examenRepository.findAll();
+    }
+
+    public Examen verExamen(Long idExamen)
+    {
+        return examenRepository.findById(idExamen).orElseThrow(() -> new ExamenInexistente("Examen no encontrado"));
     }
 
 }

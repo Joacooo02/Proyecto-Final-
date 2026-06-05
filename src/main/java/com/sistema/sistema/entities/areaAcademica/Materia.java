@@ -1,4 +1,5 @@
 package com.sistema.sistema.entities.areaAcademica;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,8 @@ public class Materia {
 
     @ManyToOne
     @JoinColumn(name = "idCarrera", nullable = false)
+    //MUCHACHOS ESTO ES PARA CUANDO MUESTRA UNA MATERIA NO MUESTRA LA CARRERA
+    @JsonIgnore
     private Carrera carrera;
 
     @Column(length = 50)

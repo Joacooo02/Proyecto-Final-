@@ -25,4 +25,10 @@ public class ExamenController {
     {
         return examenService.listarExamenes();
     }
+
+    @GetMapping("/{idExamen}")
+    public Examen verExamen(@PathVariable Long idExamen)
+    {
+        return examenService.verExamen(idExamen);
+    }
 }
