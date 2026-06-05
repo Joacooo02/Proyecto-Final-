@@ -123,8 +123,8 @@ INSERT INTO PreguntaEncuesta (orden, enunciado) VALUES
 (5, '¿Recomendarías esta materia/comisión?');
 
 CREATE TABLE RespuestaEncuesta (
-    idRespuestaEncuesta BIGINT AUTO_INCREMENT PRIMARY KEY,
-    idComision BIGINT NOT NULL,
+    idRespuestaEncuesta BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    idComision BIGINT UNSIGNED NOT NULL,
     hashAlumno VARCHAR(64) NOT NULL,
     fechaRespuesta DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     comentarioFinal VARCHAR(1000) NULL,
@@ -133,17 +133,39 @@ CREATE TABLE RespuestaEncuesta (
 );
 
 CREATE TABLE RespuestaPregunta (
-    idRespuestaPregunta BIGINT AUTO_INCREMENT PRIMARY KEY,
-    idRespuestaEncuesta BIGINT NOT NULL,
+    idRespuestaPregunta BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    idRespuestaEncuesta BIGINT UNSIGNED NOT NULL,
     idPreguntaEncuesta BIGINT NOT NULL,
     calificacion INT NOT NULL CHECK (calificacion BETWEEN 1 AND 5),
     CONSTRAINT fk_rp_respuesta FOREIGN KEY (idRespuestaEncuesta) REFERENCES RespuestaEncuesta(idRespuestaEncuesta),
-    CONSTRAINT fk_rp_pregunta  FOREIGN KEY (idPreguntaEncuesta)          REFERENCES PreguntaEncuesta(idPreguntaEncuesta)
+    CONSTRAINT fk_rp_pregunta  FOREIGN KEY (idPreguntaEncuesta) REFERENCES PreguntaEncuesta(idPreguntaEncuesta)
 );
 
+CREATE TABLE Alumno_Inscripcion_Materia (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno BIGINT UNSIGNED NOT NULL,
+    idMateria BIGINT UNSIGNED NOT NULL,
+    fecha_inscripcion DATE,
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
+    FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
+);
 
+CREATE TABLE Alumno_Inscripcion_Comision (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno BIGINT UNSIGNED NOT NULL,
+    idComision BIGINT UNSIGNED NOT NULL,
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
+    FOREIGN KEY (idComision) REFERENCES Comision(idComision) ON DELETE CASCADE
+);
 
-
+CREATE TABLE Alumno_Inscripcion_Examen_Final (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno BIGINT UNSIGNED NOT NULL,
+    idExamen BIGINT UNSIGNED NOT NULL,
+    fecha_inscripcion DATE,
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
+    FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE
+);
 
 
 -- ------------------------------------------TODO ESTO ES DE PRUEBA ----------------------------------------------------------
@@ -217,6 +239,10 @@ VALUES
 (2, 30000, '2026-06-01', '2026-06-10', 'CUOTA', 'PAGADA'),
 (3, 30000, NULL, '2026-06-10', 'CUOTA', 'PENDIENTE');
 
+-- EXAMEN FINAL
+INSERT INTO Examen (idMateria, fecha, tipoExamen)
+VALUES (1, '2026-07-10', 'FINAL');
+
 
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
@@ -228,3 +254,4 @@ SELECT * FROM Examen;
 SELECT * FROM Nota;
 SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
+
