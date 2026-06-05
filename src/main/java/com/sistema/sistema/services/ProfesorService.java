@@ -80,7 +80,7 @@ public class ProfesorService {
     }
 
     public List<ComisionDTO> obtenerComisionesProfesor(Long profesorId) {
-        List<Comision> comisiones = comisionRepository.findByProfesorId(profesorId);
+        List<Comision> comisiones = comisionRepository.findByProfesorIdPersona(profesorId);
 
         return comisiones.stream()
                 .map(comision -> new ComisionDTO(

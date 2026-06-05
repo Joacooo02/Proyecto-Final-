@@ -8,6 +8,9 @@ import com.sistema.sistema.repositories.MateriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.print.DocFlavor;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExamenService {
@@ -23,4 +26,10 @@ public class ExamenService {
 
         return examenRepository.save(examen);
     }
+
+    public List<Examen> listarExamenes()
+    {
+        return examenRepository.findAll();
+    }
+
 }
