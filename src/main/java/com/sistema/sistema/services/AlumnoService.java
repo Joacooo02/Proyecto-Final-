@@ -1,11 +1,8 @@
 package com.sistema.sistema.services;
 
-<<<<<<< HEAD
-import com.sistema.sistema.entities.areaAcademica.Materia;
-=======
 import com.sistema.sistema.entities.areaAcademica.Nota;
 import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
->>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
+import com.sistema.sistema.entities.dto.MateriaDto;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -85,8 +81,6 @@ public class AlumnoService {
 
         return alumnoRepository.save(alumnoExistente);
     }
-<<<<<<< HEAD
-=======
 
     public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(Long idAlumno)
     {
@@ -115,5 +109,17 @@ public class AlumnoService {
         return historial;
     }
 
->>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
+    public List<MateriaDto> obtenerMaterias(Long idAlumno)
+    {
+        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("no existe el alumno"));
+
+        return alumno.getInscripcionMateriaList()
+                .stream()
+                .map(ins -> MateriaDto.builder()
+                        .id(ins.getMateria().getIdMateria())
+                        .nombre(ins.getMateria().getNombre())
+                        .build())
+                .toList();
+    }
+
 }

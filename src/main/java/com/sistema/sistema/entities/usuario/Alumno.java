@@ -1,11 +1,12 @@
 package com.sistema.sistema.entities.usuario;
 
-import com.sistema.sistema.entities.areaAcademica.Materia;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Alumno")
@@ -28,5 +29,8 @@ public class Alumno extends Persona{
     private Integer planEstudio;
 
     private double promedio;
+
+    @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL)
+    private List<AlumnoInscripcionMateria> inscripcionMateriaList = new ArrayList<>();
 
 }

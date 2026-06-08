@@ -1,10 +1,7 @@
 package com.sistema.sistema.controllers;
 
-<<<<<<< HEAD
-import com.sistema.sistema.entities.areaAcademica.Materia;
-=======
 import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
->>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
+import com.sistema.sistema.entities.dto.MateriaDto;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +46,6 @@ public class AlumnoController {
     public Alumno modificarAlumno(@PathVariable Long id,@RequestBody Alumno alumnoModificado){
         return alumnoService.modificarAlumno(id,alumnoModificado);
     }
-<<<<<<< HEAD
-=======
 
     @GetMapping("/{idAlumno}/historial-academico")
     public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(@PathVariable Long idAlumno)
@@ -58,5 +53,10 @@ public class AlumnoController {
         return alumnoService.verHistorialAcademicoAlumno(idAlumno);
     }
 
->>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
+    @GetMapping("/{idAlumno}/materias")
+    public List<MateriaDto> obtenerMaterias(@PathVariable Long idAlumno)
+    {
+        return alumnoService.obtenerMaterias(idAlumno);
+    }
+
 }
