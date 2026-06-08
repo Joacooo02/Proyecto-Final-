@@ -7,6 +7,7 @@ import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.ExamenInexistente;
 import com.sistema.sistema.exceptions.NotaInvalidaException;
+<<<<<<< HEAD
 import com.sistema.sistema.repositories.AlumnoRepository;
 import com.sistema.sistema.repositories.ExamenRepository;
 import com.sistema.sistema.repositories.NotaRepository;
@@ -18,6 +19,14 @@ import java.time.LocalDate;
 public class NotaService {
     private final NotaRepository notaRepo;
     // Se elimina la inyección de NotaDto
+=======
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+@Service
+public class NotaService {
+    private final NotaRepository notaRepo;
+>>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
     private final AlumnoRepository AlumnoRepo;
     private final ExamenRepository ExamenRepo;
 

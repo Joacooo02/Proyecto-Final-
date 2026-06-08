@@ -1,13 +1,21 @@
 package com.sistema.sistema.services;
 
+<<<<<<< HEAD
 import com.sistema.sistema.entities.areaAcademica.Materia;
+=======
+import com.sistema.sistema.entities.areaAcademica.Nota;
+import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
+>>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.AlumnoRepository;
+import com.sistema.sistema.repositories.NotaRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +26,7 @@ import java.util.Optional;
 public class AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
+    private final NotaRepository notaRepository;
 
     public Alumno buscarAlumnoPorId(Long id){
        return alumnoRepository.findById(id)
@@ -76,4 +85,35 @@ public class AlumnoService {
 
         return alumnoRepository.save(alumnoExistente);
     }
+<<<<<<< HEAD
+=======
+
+    public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(Long idAlumno)
+    {
+        List<Nota> notas = notaRepository.findByAlumnoIdPersona(idAlumno);
+        List<HistorialAcademicoDTO> historial = new ArrayList<>();
+
+        for(Nota nota : notas)
+        {
+            String estadoMateria;
+
+            if(nota.getNota() >= 6)
+            {
+                estadoMateria = "APROBADA";
+            }else
+            {
+                estadoMateria = "DESAPROBADA";
+            }
+            historial.add(new HistorialAcademicoDTO(
+                    nota.getExamen().getMateria().getNombre(),
+                    nota.getExamen().getTipoExamen().toString(),
+                    nota.getNota(),
+                    nota.getExamen().getFecha(),
+                    estadoMateria
+            ));
+        }
+        return historial;
+    }
+
+>>>>>>> 8caa415bc9c1174405bd084ea7221e6ff65faf5b
 }
