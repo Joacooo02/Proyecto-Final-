@@ -243,6 +243,10 @@ VALUES
 INSERT INTO Examen (idMateria, fecha, tipoExamen)
 VALUES (1, '2026-07-10', 'FINAL');
 
+Update Comision
+set cantAlumnos = 50
+where idComision = 1;
+
 
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
