@@ -247,6 +247,19 @@ Update Comision
 set cantAlumnos = 50
 where idComision = 1;
 
+-- Alumno 2 cursa varias materias
+INSERT INTO Alumno_Inscripcion_Materia (idAlumno, idMateria, fecha_inscripcion)
+VALUES
+(2, 1, '2025-03-10'),
+(2, 2, '2025-03-12'),
+(2, 3, '2025-03-15');
+
+-- Alumno 3 cursa algunas materias
+INSERT INTO Alumno_Inscripcion_Materia (idAlumno, idMateria, fecha_inscripcion)
+VALUES
+(3, 1, '2024-03-10'),
+(3, 3, '2024-03-12');
+
 
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
