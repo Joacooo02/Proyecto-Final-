@@ -1,7 +1,7 @@
 package com.sistema.sistema.repositories;
 
 import com.sistema.sistema.entities.areaAcademica.Materia;
-import com.sistema.sistema.entities.dto.MateriaDto;
+import com.sistema.sistema.entities.dto.MateriaDTO;
 import com.sistema.sistema.entities.usuario.Alumno;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

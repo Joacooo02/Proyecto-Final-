@@ -1,7 +1,7 @@
 package com.sistema.sistema.controllers;
 
 import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
-import com.sistema.sistema.entities.dto.MateriaDto;
+import com.sistema.sistema.entities.dto.MateriaDTO;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class AlumnoController {
     }
 
     @GetMapping("/{idAlumno}/materias")
-    public List<MateriaDto> obtenerMaterias(@PathVariable Long idAlumno)
+    public List<MateriaDTO> obtenerMaterias(@PathVariable Long idAlumno)
     {
         return alumnoService.obtenerMaterias(idAlumno);
     }

@@ -2,7 +2,7 @@ package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Nota;
 import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
-import com.sistema.sistema.entities.dto.MateriaDto;
+import com.sistema.sistema.entities.dto.MateriaDTO;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
@@ -109,13 +109,13 @@ public class AlumnoService {
         return historial;
     }
 
-    public List<MateriaDto> obtenerMaterias(Long idAlumno)
+    public List<MateriaDTO> obtenerMaterias(Long idAlumno)
     {
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("no existe el alumno"));
 
         return alumno.getInscripcionMateriaList()
                 .stream()
-                .map(ins -> MateriaDto.builder()
+                .map(ins -> MateriaDTO.builder()
                         .id(ins.getMateria().getIdMateria())
                         .nombre(ins.getMateria().getNombre())
                         .build())

@@ -30,7 +30,7 @@ public class Alumno extends Persona{
 
     private double promedio;
 
-    @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL)
-    private List<AlumnoInscripcionMateria> inscripcionMateriaList = new ArrayList<>();
+    @OneToMany(mappedBy = "alumno")
+    private List<AlumnoInscripcionMateria> inscripcionMateriaList;
 
 }
