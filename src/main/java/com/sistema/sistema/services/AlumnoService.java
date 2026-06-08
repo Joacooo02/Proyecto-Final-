@@ -1,11 +1,16 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.entities.areaAcademica.Nota;
+import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.AlumnoRepository;
+import com.sistema.sistema.repositories.NotaRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +20,7 @@ import java.util.List;
 public class AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
+    private final NotaRepository notaRepository;
 
     public Alumno buscarAlumnoPorId(Long id){
        return alumnoRepository.findById(id)
@@ -72,6 +78,33 @@ public class AlumnoService {
         alumnoExistente.setPromedio(alumnoModificado.getPromedio());
 
         return alumnoRepository.save(alumnoExistente);
+    }
+
+    public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(Long idAlumno)
+    {
+        List<Nota> notas = notaRepository.findByAlumnoIdPersona(idAlumno);
+        List<HistorialAcademicoDTO> historial = new ArrayList<>();
+
+        for(Nota nota : notas)
+        {
+            String estadoMateria;
+
+            if(nota.getNota() >= 6)
+            {
+                estadoMateria = "APROBADA";
+            }else
+            {
+                estadoMateria = "DESAPROBADA";
+            }
+            historial.add(new HistorialAcademicoDTO(
+                    nota.getExamen().getMateria().getNombre(),
+                    nota.getExamen().getTipoExamen().toString(),
+                    nota.getNota(),
+                    nota.getExamen().getFecha(),
+                    estadoMateria
+            ));
+        }
+        return historial;
     }
 
 }

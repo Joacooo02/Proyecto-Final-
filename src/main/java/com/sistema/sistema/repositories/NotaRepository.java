@@ -1,9 +1,13 @@
 package com.sistema.sistema.repositories;
 
 import com.sistema.sistema.entities.areaAcademica.Nota;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface NotaRepository extends JpaRepository<Nota,Long> {
+    List<Nota> findByAlumnoIdPersona(Long idAlumno);
 }
