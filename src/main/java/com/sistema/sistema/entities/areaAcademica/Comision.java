@@ -26,6 +26,8 @@ public class Comision {
     private Profesor profesor;
 
     private Integer nroComision;
+
+    @Builder.Default
     private Integer cantAlumnos = 0;
 
     @Column(length = 50)

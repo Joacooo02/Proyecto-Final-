@@ -113,7 +113,7 @@ public class InscripcionService {
 
     public List<Comision> obtenerComisionesDisponibles(Long idMateria)
     {
-        List<Comision> comisiones = comisionRepository.findByMateriaIdMateria(idMateria);
+        List<Comision> comisiones = comisionRepository.findByMateria_IdMateria(idMateria);
 
         List<Comision> disponibles = new ArrayList<>();
 

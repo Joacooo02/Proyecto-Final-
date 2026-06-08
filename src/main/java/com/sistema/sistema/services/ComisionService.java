@@ -52,7 +52,7 @@ public class ComisionService {
     }
 
     public List<ComisionDTO> obtenerComisionesPorProfesor(Long profesorId) {
-        return comisionRepository.findByProfesor_IdProfesor(profesorId)
+        return comisionRepository.findByProfesor_IdPersona(profesorId)
                 .stream()
                 .map(comision -> new ComisionDTO(
                         comision.getIdComision(),

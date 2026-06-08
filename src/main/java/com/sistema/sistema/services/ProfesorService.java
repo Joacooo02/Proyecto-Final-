@@ -84,7 +84,7 @@ public class ProfesorService {
     }
 
     public List<ComisionDTO> obtenerComisionesProfesor(Long profesorId) {
-        List<Comision> comisiones = comisionRepository.findByProfesorIdPersona(profesorId);
+        List<Comision> comisiones = comisionRepository.findByProfesor_IdPersona(profesorId);
 
         return comisiones.stream()
                 .map(comision -> new ComisionDTO(
@@ -92,18 +92,20 @@ public class ProfesorService {
                 .collect(Collectors.toList());
     }
 
-    public List<MateriaDTO> obtenerMateriasProfesor(Long profesorId) {
-        return comisionRepository.findByProfesor_IdProfesor(profesorId)
+    public List<MateriaDTO> obtenerMateriasProfesor(Long profesorId)
+    {
+        return comisionRepository.findByProfesor_IdPersona(profesorId)
                 .stream()
-                .map(comision -> new MateriaDTO(
-                        comision.getMateria().getCarrera(),
-                        comision.getMateria().getNombre(),
-                        comision.getMateria().getCargaHoraria(),
-                        comision.getMateria().getCuatrimestre(),
-                        comision.getMateria().getAnioCursado()
-                ))
+                .map(comision -> MateriaDTO.builder()
+                        .id(comision.getMateria().getIdMateria())
+                        .nombre(comision.getMateria().getNombre())
+                        .cargaHoraria(comision.getMateria().getCargaHoraria())
+                        .cuatrimestre(comision.getMateria().getCuatrimestre())
+                        .anioCursado(comision.getMateria().getAnioCursado())
+                        .build()
+                )
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
 

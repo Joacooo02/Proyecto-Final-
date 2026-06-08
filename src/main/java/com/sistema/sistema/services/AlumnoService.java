@@ -109,16 +109,21 @@ public class AlumnoService {
         return historial;
     }
 
-    public List<MateriaDTO> obtenerMaterias(Long idAlumno)
-    {
-        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("no existe el alumno"));
+    public List<MateriaDTO> obtenerMaterias(Long idAlumno) {
+
+        Alumno alumno = alumnoRepository.findById(idAlumno)
+                .orElseThrow(() -> new AlumnoInvalidoException("no existe el alumno"));
 
         return alumno.getInscripcionMateriaList()
                 .stream()
                 .map(ins -> MateriaDTO.builder()
                         .id(ins.getMateria().getIdMateria())
                         .nombre(ins.getMateria().getNombre())
-                        .build())
+                        .cargaHoraria(ins.getMateria().getCargaHoraria())
+                        .cuatrimestre(ins.getMateria().getCuatrimestre())
+                        .anioCursado(ins.getMateria().getAnioCursado())
+                        .build()
+                )
                 .toList();
     }
 

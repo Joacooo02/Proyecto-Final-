@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MateriaDTO {
-    private Carrera carrera;
+    private Long id;
     private String nombre;
     private Integer cargaHoraria;
     private Integer cuatrimestre;
