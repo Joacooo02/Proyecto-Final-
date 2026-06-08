@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.Exceptions.ExamenInexistente;
+import com.sistema.sistema.exceptions.ExamenInexistente;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.enums.TipoExamen;
@@ -9,9 +9,9 @@ import com.sistema.sistema.repositories.ExamenRepository;
 import com.sistema.sistema.repositories.MateriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.print.DocFlavor;
 import java.time.LocalDate;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExamenService {

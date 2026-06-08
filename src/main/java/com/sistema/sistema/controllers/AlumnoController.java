@@ -1,5 +1,6 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,8 @@ public class AlumnoController {
         return alumnoService.listarAlumnos(nombre, apellido, dni, email, legajo);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public Alumno modificarAlumno(@PathVariable Long id,@RequestBody Alumno alumnoModificado){
         return alumnoService.modificarAlumno(id,alumnoModificado);
     }
-
 }

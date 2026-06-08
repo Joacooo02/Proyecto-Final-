@@ -1,6 +1,8 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.usuario.Alumno;
+import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.AlumnoRepository;
 import jakarta.persistence.criteria.Predicate;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -73,5 +76,4 @@ public class AlumnoService {
 
         return alumnoRepository.save(alumnoExistente);
     }
-
 }

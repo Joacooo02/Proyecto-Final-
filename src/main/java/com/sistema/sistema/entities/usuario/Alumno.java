@@ -1,8 +1,11 @@
 package com.sistema.sistema.entities.usuario;
 
+import com.sistema.sistema.entities.areaAcademica.Materia;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "Alumno")
