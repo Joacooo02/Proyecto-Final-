@@ -1,12 +1,15 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Comision;
+import com.sistema.sistema.entities.areaAcademica.Materia;
+import com.sistema.sistema.entities.dto.ComisionDTO;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.ComisionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +49,18 @@ public class ComisionService {
         comisionExistente.setProfesor(comisionModificada.getProfesor());
 
         return comisionRepository.save(comisionExistente);
+    }
+
+    public List<ComisionDTO> obtenerComisionesPorProfesor(Long profesorId) {
+        return comisionRepository.findByProfesor_IdProfesor(profesorId)
+                .stream()
+                .map(comision -> new ComisionDTO(
+                        comision.getIdComision(),
+                        comision.getNroComision(),
+                        comision.getAula(),
+                        comision.getCantAlumnos(),
+                        comision.getMateria().getNombre()
+                ))
+                .collect(Collectors.toList());
     }
 }

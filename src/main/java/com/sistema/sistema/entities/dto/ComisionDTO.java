@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ComisionDTO {
-    private Materia materia;
-    private Profesor profesor;
+    private Long idComision;
     private Integer nroComision;
-    private Integer cantAlumnos;
     private String aula;
+    private Integer cantAlumnos;
+    private String materiaNombre;
 }

@@ -1,6 +1,7 @@
 package com.sistema.sistema.controllers;
 
 import com.sistema.sistema.entities.dto.ComisionDTO;
+import com.sistema.sistema.entities.dto.MateriaDTO;
 import com.sistema.sistema.entities.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.services.ProfesorService;
@@ -53,5 +54,11 @@ public class ProfesorController {
     public ResponseEntity<List<ComisionDTO>> listarComisiones(@PathVariable Long profesorId) {
         List<ComisionDTO> comisiones = profesorService.obtenerComisionesProfesor(profesorId);
         return ResponseEntity.ok(comisiones);
+    }
+
+    @GetMapping("/{id}/materias")
+    public ResponseEntity<List<MateriaDTO>> listarMaterias(@PathVariable Long profesorId) {
+        List<MateriaDTO> materias = profesorService.obtenerMateriasProfesor(profesorId);
+        return ResponseEntity.ok(materias);
     }
 }
