@@ -9,11 +9,14 @@ import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import com.sistema.sistema.entities.enums.TipoExamen;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.repositories.*;
+import org.antlr.v4.runtime.RuntimeMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InscripcionService {
@@ -64,10 +67,24 @@ public class InscripcionService {
         Comision comision = comisionRepository.findById(idComision)
                 .orElseThrow(() -> new RuntimeException("Comisión no encontrada"));
 
+        if(comisionRepo.existsByAlumnoIdPersonaAndComisionMateriaIdMateria(idAlumno, comision.getMateria().getIdMateria()))
+        {
+            throw new RuntimeException("El alumno ya esta inscripto en una comision de esta materiq");
+        }
+
+        if(comision.getCantAlumnos() >= 50)
+        {
+            throw new RuntimeException("La comision esta completa");
+        }
+
         AlumnoInscripcionComision inscripcion = AlumnoInscripcionComision.builder()
                 .alumno(alumno)
                 .comision(comision)
                 .build();
+
+        comision.setCantAlumnos(comision.getCantAlumnos() + 1);
+        comisionRepository.save(comision);
+
 
         return comisionRepo.save(inscripcion);
     }
@@ -91,6 +108,23 @@ public class InscripcionService {
                 .build();
 
         return alumnoExamenRepo.save(inscripcion);
+    }
+
+
+    public List<Comision> obtenerComisionesDisponibles(Long idMateria)
+    {
+        List<Comision> comisiones = comisionRepository.findByMateriaIdMateria(idMateria);
+
+        List<Comision> disponibles = new ArrayList<>();
+
+        for (Comision comision : comisiones)
+        {
+            if(comision.getCantAlumnos() < 50)
+            {
+                disponibles.add(comision);
+            }
+        }
+        return disponibles;
     }
 
 

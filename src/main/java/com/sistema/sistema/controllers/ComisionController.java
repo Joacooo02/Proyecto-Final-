@@ -21,6 +21,12 @@ public class ComisionController {
 
     @PostMapping
     public Comision agregarComision(@RequestBody Comision comision) {
+
+        if(comision.getCantAlumnos() == null)
+        {
+            comision.setCantAlumnos(0);
+        }
+
         return comisionService.agregarComision(comision);
     }
 

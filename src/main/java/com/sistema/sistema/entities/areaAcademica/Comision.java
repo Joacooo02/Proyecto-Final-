@@ -26,7 +26,7 @@ public class Comision {
     private Profesor profesor;
 
     private Integer nroComision;
-    private Integer cantAlumnos;
+    private Integer cantAlumnos = 0;
 
     @Column(length = 50)
     private String aula;
