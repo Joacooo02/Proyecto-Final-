@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.Exceptions.ExamenInexistente;
+import com.sistema.sistema.exceptions.ExamenInexistente;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.enums.TipoExamen;
