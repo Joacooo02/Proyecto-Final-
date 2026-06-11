@@ -3,6 +3,7 @@ package com.sistema.sistema.services;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.dto.ComisionDTO;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.mappers.ComisionMapper;
 import com.sistema.sistema.repositories.ComisionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class ComisionService {
 
     private final ComisionRepository comisionRepository;
+    private final ComisionMapper comisionMapper;
 
     public Comision buscarComisionPorId(Long id) {
         return comisionRepository.findById(id)

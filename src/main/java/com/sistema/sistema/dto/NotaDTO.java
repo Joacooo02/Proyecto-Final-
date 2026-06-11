@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 
-public class NotaDto {
+public class NotaDTO {
     private Long id;
     private Long idExamn;
     private Long idAlumno;

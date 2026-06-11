@@ -1,7 +1,7 @@
 package com.sistema.sistema.controllers;
 
 import com.sistema.sistema.entities.areaAcademica.Nota;
-import com.sistema.sistema.dto.NotaDto;
+import com.sistema.sistema.dto.NotaDTO;
 import com.sistema.sistema.services.NotaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class NotaController {
     private final NotaService serv;
 
     @PostMapping
-    public Nota registrarNota(@RequestBody NotaDto dto){
+    public Nota registrarNota(@RequestBody NotaDTO dto){
         return serv.registrarNota(dto);
     }
 

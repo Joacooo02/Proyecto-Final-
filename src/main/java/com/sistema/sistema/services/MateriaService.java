@@ -3,6 +3,7 @@ package com.sistema.sistema.services;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.mappers.MateriaMapper;
 import com.sistema.sistema.repositories.AlumnoCursaCarreraRepository;
 import com.sistema.sistema.repositories.MateriaRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class MateriaService {
 
     private final MateriaRepository materiaRepository;
     private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
+    private final MateriaMapper materiaMapper;
 
     public Materia buscarMateriaPorId(Long id) {
         return materiaRepository.findById(id)

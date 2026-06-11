@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+
 public class Comision {
 
     @Id
@@ -27,7 +27,6 @@ public class Comision {
 
     private Integer nroComision;
 
-    @Builder.Default
     private Integer cantAlumnos = 0;
 
     @Column(length = 50)
