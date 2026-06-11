@@ -2,7 +2,7 @@ package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Nota;
-import com.sistema.sistema.entities.dto.NotaDto;
+import com.sistema.sistema.dto.NotaDto;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.ExamenInexistente;
@@ -12,8 +12,7 @@ import com.sistema.sistema.repositories.AlumnoRepository;
 import com.sistema.sistema.repositories.ExamenRepository;
 import com.sistema.sistema.repositories.NotaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.stereotype.Service;
-import java.time.LocalDate;
+
 import java.time.LocalDate;
 
 

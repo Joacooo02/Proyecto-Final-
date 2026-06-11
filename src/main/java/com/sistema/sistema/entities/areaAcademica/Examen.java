@@ -1,6 +1,6 @@
 package com.sistema.sistema.entities.areaAcademica;
 
-import com.sistema.sistema.entities.enums.TipoExamen;
+import com.sistema.sistema.enums.TipoExamen;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;

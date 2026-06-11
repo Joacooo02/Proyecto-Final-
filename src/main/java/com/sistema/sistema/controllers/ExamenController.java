@@ -1,7 +1,7 @@
 package com.sistema.sistema.controllers;
 
 import com.sistema.sistema.entities.areaAcademica.Examen;
-import com.sistema.sistema.entities.enums.TipoExamen;
+import com.sistema.sistema.enums.TipoExamen;
 import com.sistema.sistema.services.ExamenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

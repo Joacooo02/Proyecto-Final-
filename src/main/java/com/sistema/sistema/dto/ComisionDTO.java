@@ -1,4 +1,4 @@
-package com.sistema.sistema.entities.dto;
+package com.sistema.sistema.dto;
 
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.usuario.Profesor;

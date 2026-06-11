@@ -1,6 +1,6 @@
 package com.sistema.sistema.controllers;
 
-import com.sistema.sistema.entities.dto.EncuestaRequest;
+import com.sistema.sistema.dto.EncuestaRequest;
 import com.sistema.sistema.entities.encuestas.PreguntaEncuesta;
 import com.sistema.sistema.entities.encuestas.RespuestaEncuesta;
 import com.sistema.sistema.services.EncuestaService;

@@ -1,7 +1,7 @@
 package com.sistema.sistema.entities.areaAdministrativa;
 
-import com.sistema.sistema.entities.enums.ConceptoCuota;
-import com.sistema.sistema.entities.enums.EstadoCuota;
+import com.sistema.sistema.enums.ConceptoCuota;
+import com.sistema.sistema.enums.EstadoCuota;
 import com.sistema.sistema.entities.usuario.Alumno;
 import jakarta.persistence.*;
 import lombok.*;

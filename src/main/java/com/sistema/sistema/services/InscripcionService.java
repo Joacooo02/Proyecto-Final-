@@ -6,12 +6,10 @@ import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFinal;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
-import com.sistema.sistema.entities.enums.TipoExamen;
+import com.sistema.sistema.enums.TipoExamen;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.repositories.*;
-import org.antlr.v4.runtime.RuntimeMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

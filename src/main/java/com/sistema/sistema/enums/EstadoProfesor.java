@@ -1,4 +1,4 @@
-package com.sistema.sistema.entities.enums;
+package com.sistema.sistema.enums;
 
 public enum EstadoProfesor {
     ACTIVO,

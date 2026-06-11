@@ -1,5 +1,5 @@
 package com.sistema.sistema.entities.usuario;
-import com.sistema.sistema.entities.enums.EstadoProfesor;
+import com.sistema.sistema.enums.EstadoProfesor;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

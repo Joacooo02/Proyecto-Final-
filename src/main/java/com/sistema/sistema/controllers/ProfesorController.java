@@ -1,8 +1,8 @@
 package com.sistema.sistema.controllers;
 
-import com.sistema.sistema.entities.dto.ComisionDTO;
-import com.sistema.sistema.entities.dto.MateriaDTO;
-import com.sistema.sistema.entities.enums.EstadoProfesor;
+import com.sistema.sistema.dto.ComisionDTO;
+import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.services.ProfesorService;
 import lombok.RequiredArgsConstructor;

@@ -1,16 +1,18 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Nota;
-import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
-import com.sistema.sistema.entities.dto.MateriaDTO;
+import com.sistema.sistema.dto.AlumnoDTO;
+import com.sistema.sistema.dto.HistorialAcademicoDTO;
+import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.entities.usuario.Alumno;
+import com.sistema.sistema.enums.RolUsuario;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.mappers.AlumnoMapper;
 import com.sistema.sistema.repositories.AlumnoRepository;
 import com.sistema.sistema.repositories.NotaRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
 
@@ -23,23 +25,25 @@ public class AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
     private final NotaRepository notaRepository;
+    private final AlumnoMapper alumnoMapper;
 
-    public Alumno buscarAlumnoPorId(Long id){
-       return alumnoRepository.findById(id)
-                .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con id: " +id+ " no encontrado"));
+    public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
+        return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
     }
 
-    public Alumno agregarAlumno(Alumno alumno){
-        return alumnoRepository.save(alumno);
+    public AlumnoDTO agregarAlumno(AlumnoDTO alumnoDTO){
+        Alumno alumno = alumnoMapper.toEntity(alumnoDTO);
+        alumno.setRolUsuario(RolUsuario.ALUMNO);
+        return alumnoMapper.toDTO(alumnoRepository.save(alumno));
     }
 
-    public void eliminarAlumno(Long id){
-        buscarAlumnoPorId(id);
-        alumnoRepository.deleteById(id);
+    public void eliminarAlumno(Long legajo){
+        Alumno alumno = obtenerAlumnoPorLegajo(legajo);
+        alumnoRepository.delete(alumno);
     }
 
-    public List<Alumno> listarAlumnos(String nombre, String apellido, String dni, String email, Long legajo) {
-        return alumnoRepository.findAll((root, query, criteriaBuilder) -> {
+    public List<AlumnoDTO> listarAlumnos(String nombre, String apellido, String dni, String email, Long legajo) {
+        List<Alumno> alumnos = alumnoRepository.findAll((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (nombre != null && !nombre.isBlank()) {
@@ -59,32 +63,19 @@ public class AlumnoService {
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
+        return alumnoMapper.toDTOList(alumnos);
     }
 
-    public Alumno modificarAlumno(Long id, Alumno alumnoModificado) {
-
-        Alumno alumnoExistente = buscarAlumnoPorId(id);
-
-        alumnoExistente.setNombre(alumnoModificado.getNombre());
-        alumnoExistente.setApellido(alumnoModificado.getApellido());
-        alumnoExistente.setDni(alumnoModificado.getDni());
-        alumnoExistente.setTelefono(alumnoModificado.getTelefono());
-        alumnoExistente.setFechaNacimiento(alumnoModificado.getFechaNacimiento());
-        alumnoExistente.setEmail(alumnoModificado.getEmail());
-
-        alumnoExistente.setLegajo(alumnoModificado.getLegajo());
-        alumnoExistente.setAnioIngreso(alumnoModificado.getAnioIngreso());
-        alumnoExistente.setAnaliticoParcial(alumnoModificado.isAnaliticoParcial());
-        alumnoExistente.setEsRegular(alumnoModificado.isEsRegular());
-        alumnoExistente.setPlanEstudio(alumnoModificado.getPlanEstudio());
-        alumnoExistente.setPromedio(alumnoModificado.getPromedio());
-
-        return alumnoRepository.save(alumnoExistente);
+    public AlumnoDTO modificarAlumno(Long legajo, AlumnoDTO alumnoModificado) {
+        Alumno alumnoExistente = obtenerAlumnoPorLegajo(legajo);
+        alumnoMapper.actualizarEntity(alumnoModificado, alumnoExistente);
+        return alumnoMapper.toDTO(alumnoRepository.save(alumnoExistente));
     }
 
-    public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(Long idAlumno)
+    public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(Long legajo)
     {
-        List<Nota> notas = notaRepository.findByAlumnoIdPersona(idAlumno);
+        Alumno alumno = obtenerAlumnoPorLegajo(legajo);
+        List<Nota> notas = notaRepository.findByAlumnoIdPersona(alumno.getIdPersona());
         List<HistorialAcademicoDTO> historial = new ArrayList<>();
 
         for(Nota nota : notas)
@@ -109,9 +100,9 @@ public class AlumnoService {
         return historial;
     }
 
-    public List<MateriaDTO> obtenerMaterias(Long idAlumno) {
+    public List<MateriaDTO> obtenerMaterias(Long legajo) {
 
-        Alumno alumno = alumnoRepository.findById(idAlumno)
+        Alumno alumno = alumnoRepository.findByLegajo(legajo)
                 .orElseThrow(() -> new AlumnoInvalidoException("no existe el alumno"));
 
         return alumno.getInscripcionMateriaList()
@@ -125,6 +116,11 @@ public class AlumnoService {
                         .build()
                 )
                 .toList();
+    }
+
+    private Alumno obtenerAlumnoPorLegajo(Long legajo){
+        return alumnoRepository.findByLegajo(legajo)
+                .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con legajo: " +legajo+ " no encontrado"));
     }
 
 }

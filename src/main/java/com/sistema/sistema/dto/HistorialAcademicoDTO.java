@@ -1,4 +1,4 @@
-package com.sistema.sistema.entities.dto;
+package com.sistema.sistema.dto;
 import lombok.*;
 
 import java.time.LocalDate;

@@ -1,7 +1,7 @@
 package com.sistema.sistema.controllers;
 
 import com.sistema.sistema.entities.areaAcademica.Comision;
-import com.sistema.sistema.entities.dto.ComisionDTO;
+import com.sistema.sistema.dto.ComisionDTO;
 import com.sistema.sistema.services.ComisionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

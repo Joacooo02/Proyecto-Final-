@@ -1,6 +1,6 @@
 package com.sistema.sistema.entities.areaAcademica;
 
-import com.sistema.sistema.entities.enums.ModalidadCarrera;
+import com.sistema.sistema.enums.ModalidadCarrera;
 import jakarta.persistence.*;
 import lombok.*;
 

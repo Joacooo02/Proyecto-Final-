@@ -1,4 +1,4 @@
-package com.sistema.sistema.entities.dto;
+package com.sistema.sistema.dto;
 
 import com.sistema.sistema.entities.encuestas.RespuestaPregunta;
 import lombok.AllArgsConstructor;

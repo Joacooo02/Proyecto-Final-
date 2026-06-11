@@ -1,17 +1,14 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Comision;
-import com.sistema.sistema.entities.areaAcademica.Materia;
-import com.sistema.sistema.entities.dto.ComisionDTO;
-import com.sistema.sistema.entities.dto.MateriaDTO;
-import com.sistema.sistema.entities.enums.EstadoProfesor;
+import com.sistema.sistema.dto.ComisionDTO;
+import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.ComisionRepository;
-import com.sistema.sistema.repositories.MateriaRepository;
 import com.sistema.sistema.repositories.ProfesorRepository;
 import jakarta.persistence.criteria.Predicate;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

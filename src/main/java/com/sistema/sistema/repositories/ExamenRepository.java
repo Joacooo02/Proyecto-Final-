@@ -1,7 +1,7 @@
 package com.sistema.sistema.repositories;
 
 import com.sistema.sistema.entities.areaAcademica.Examen;
-import com.sistema.sistema.entities.enums.TipoExamen;
+import com.sistema.sistema.enums.TipoExamen;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

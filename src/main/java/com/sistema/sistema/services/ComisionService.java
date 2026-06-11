@@ -1,8 +1,7 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.entities.areaAcademica.Comision;
-import com.sistema.sistema.entities.areaAcademica.Materia;
-import com.sistema.sistema.entities.dto.ComisionDTO;
+import com.sistema.sistema.dto.ComisionDTO;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.repositories.ComisionRepository;
 import lombok.RequiredArgsConstructor;

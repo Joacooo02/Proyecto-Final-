@@ -1,8 +1,8 @@
 package com.sistema.sistema.controllers;
 
-import com.sistema.sistema.entities.dto.HistorialAcademicoDTO;
-import com.sistema.sistema.entities.dto.MateriaDTO;
-import com.sistema.sistema.entities.usuario.Alumno;
+import com.sistema.sistema.dto.AlumnoDTO;
+import com.sistema.sistema.dto.HistorialAcademicoDTO;
+import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +16,23 @@ public class AlumnoController {
 
     private final AlumnoService alumnoService;
 
-    @GetMapping("/{id}")
-    public Alumno buscarAlumnoPorId(@PathVariable Long id){
-        return alumnoService.buscarAlumnoPorId(id);
+    @GetMapping("/{legajo}")
+    public AlumnoDTO buscarAlumnoPorLegajo(@PathVariable Long legajo){
+        return alumnoService.buscarAlumnoPorLegajo(legajo);
     }
 
     @PostMapping
-    public Alumno agregarAlumno(@RequestBody Alumno alumno){
+    public AlumnoDTO agregarAlumno(@RequestBody AlumnoDTO alumno){
         return alumnoService.agregarAlumno(alumno);
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminarAlumno(@PathVariable Long id){
-        alumnoService.eliminarAlumno(id);
+    @DeleteMapping("/{legajo}")
+    public void eliminarAlumno(@PathVariable Long legajo){
+        alumnoService.eliminarAlumno(legajo);
     }
 
     @GetMapping
-    public List<Alumno> listarAlumnos(
+    public List<AlumnoDTO> listarAlumnos(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String apellido,
             @RequestParam(required = false) String dni,
@@ -42,21 +42,21 @@ public class AlumnoController {
         return alumnoService.listarAlumnos(nombre, apellido, dni, email, legajo);
     }
 
-    @PutMapping("/{id}")
-    public Alumno modificarAlumno(@PathVariable Long id,@RequestBody Alumno alumnoModificado){
-        return alumnoService.modificarAlumno(id,alumnoModificado);
+    @PutMapping("/{legajo}")
+    public AlumnoDTO modificarAlumno(@PathVariable Long legajo,@RequestBody AlumnoDTO alumnoModificado){
+        return alumnoService.modificarAlumno(legajo,alumnoModificado);
     }
 
-    @GetMapping("/{idAlumno}/historial-academico")
-    public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(@PathVariable Long idAlumno)
+    @GetMapping("/{legajo}/historial-academico")
+    public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(@PathVariable Long legajo)
     {
-        return alumnoService.verHistorialAcademicoAlumno(idAlumno);
+        return alumnoService.verHistorialAcademicoAlumno(legajo);
     }
 
-    @GetMapping("/{idAlumno}/materias")
-    public List<MateriaDTO> obtenerMaterias(@PathVariable Long idAlumno)
+    @GetMapping("/{legajo}/materias")
+    public List<MateriaDTO> obtenerMaterias(@PathVariable Long legajo)
     {
-        return alumnoService.obtenerMaterias(idAlumno);
+        return alumnoService.obtenerMaterias(legajo);
     }
 
 }
