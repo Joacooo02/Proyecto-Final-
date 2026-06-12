@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @Service
@@ -42,5 +43,22 @@ public class NotaService {
 
          notaRepo.save(nota);
          return nota;
+    }
+
+    public Optional<NotaDTO> modificar(Long id, NotaDTO dto) {
+        Alumno alm = AlumnoRepo.findById(dto.getIdAlumno()).orElseThrow(()-> new AlumnoInvalidoException("El alumno con id " + dto.getIdAlumno() + " no existe"));
+        Examen exm = ExamenRepo.findById(dto.getIdExamn()).orElseThrow(()-> new ExamenInexistente("El examen con id " +dto.getIdExamn() + " no existe"));
+        if(dto.getNota() < 0 || dto.getNota() > 10){
+            throw new NotaInvalidaException("La nota debe estar entre 0 y 10");
+        }
+
+        return notaRepo.findById(id)
+                .map(nota -> {
+                    nota.setAlumno(alm);
+                    nota.setExamen(exm);
+                    nota.setNota(dto.getNota());
+                    nota.setFechaRegistro(dto.getFechaRegistro());
+                    return notaMapper.toDTO(notaRepo.save(nota));
+                });
     }
 }
