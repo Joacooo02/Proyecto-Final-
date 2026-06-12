@@ -1,5 +1,6 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.services.MateriaService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class MateriaController {
     }
 
     @PostMapping
-    public Materia agregarMateria(@RequestBody Materia materia) {
-        return materiaService.agregarMateria(materia);
+    public Materia agregarMateria(@RequestBody MateriaDTO materiaDTO) {
+        return materiaService.agregarMateria(materiaDTO);
     }
 
     @DeleteMapping("/{id}")

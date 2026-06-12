@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
@@ -25,8 +26,15 @@ public class MateriaService {
                 .orElseThrow(() -> new EntidadNoEncontradaException("Materia con id: " + id + " no encontrada"));
     }
 
-    public Materia agregarMateria(Materia materia) {
-        return materiaRepository.save(materia);
+    public Materia agregarMateria(MateriaDTO materiaDTO) {
+        Materia materia = new Materia();
+        materia.setNombre(materiaDTO.getNombre());
+        materia.setCuatrimestre(materiaDTO.getCuatrimestre());
+        materia.setAnioCursado(materiaDTO.getAnioCursado());
+        materia.setCargaHoraria(materiaDTO.getCargaHoraria());
+
+        materiaRepository.save(materia);
+        return materia;
     }
 
     public void eliminarMateria(Long id) {
