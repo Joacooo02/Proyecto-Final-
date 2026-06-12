@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Cuota")
+@Table(name = "cuota")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,21 +18,30 @@ public class Cuota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cuota")
     private Long idCuota;
 
     @ManyToOne
-    @JoinColumn(name = "idAlumno", nullable = false)
+    @JoinColumn(name = "id_alumno",referencedColumnName = "idPersona", nullable = false)
     private Alumno alumno;
 
+    @Column(name = "anio")
+    private Integer anio;
+    @Column(name = "mes")
+    private Integer mes;
+
+    @Column(name = "valor_cuota")
     private Integer valorCuota;
+    @Column(name = "fecha_pago")
     private LocalDate fechaPago;
+    @Column(name = "fecha_vencimiento")
     private LocalDate fechaVencimiento;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "concepto_cuota", length = 50)
     private ConceptoCuota conceptoCuota;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "estado_cuota", length = 50)
     private EstadoCuota estadoCuota;
 }
