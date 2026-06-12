@@ -61,4 +61,8 @@ public class NotaService {
                     return notaMapper.toDTO(notaRepo.save(nota));
                 });
     }
+
+    public void eliminar(Long id) {
+        notaRepo.deleteById(id);
+    }
 }

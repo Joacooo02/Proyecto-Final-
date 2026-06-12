@@ -25,4 +25,10 @@ public class NotaController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        serv.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
