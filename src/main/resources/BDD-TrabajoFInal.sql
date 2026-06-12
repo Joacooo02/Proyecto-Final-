@@ -167,6 +167,17 @@ CREATE TABLE Alumno_Inscripcion_Examen_Final (
     FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE
 );
 
+CREATE TABLE aviso (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_persona BIGINT UNSIGNED NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
+    contenido VARCHAR(1000) NOT NULL,
+    fecha_aviso DATETIME NOT NULL,
+
+    CONSTRAINT fk_aviso_persona
+        FOREIGN KEY (id_persona)
+        REFERENCES persona(idPersona)
+);
 
 -- ------------------------------------------TODO ESTO ES DE PRUEBA ----------------------------------------------------------
 -- CARRERA
@@ -271,4 +282,7 @@ SELECT * FROM Examen;
 SELECT * FROM Nota;
 SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
+SELECT * FROM Aviso;
+
+
 
