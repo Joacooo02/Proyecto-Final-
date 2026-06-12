@@ -79,16 +79,22 @@ CREATE TABLE Comision(
 
 -- AREA ADMINISTRATIVA
 
-CREATE TABLE Cuota(
-    idCuota BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idAlumno BIGINT UNSIGNED NOT NULL,
-    valorCuota INT,
-    fechaPago DATE,
-    fechaVencimiento DATE,
-    conceptoCuota ENUM('CUOTA', 'MATRICULA'),
-    estadoCuota ENUM('PAGADA', 'PENDIENTE', 'VENCIDA') NOT NULL DEFAULT 'PENDIENTE',
-    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
+CREATE TABLE cuota (
+    id_cuota BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_alumno BIGINT UNSIGNED NULL,
+    anio INT NOT NULL,
+    mes INT NOT NULL,
+    valor_cuota INT NOT NULL,
+    fecha_generacion DATE,
+    fecha_vencimiento DATE,
+    fecha_pago DATE,
+    concepto_cuota VARCHAR(50) NOT NULL,
+    estado_cuota VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_cuota_alumno
+        FOREIGN KEY (id_alumno)
+        REFERENCES alumno(idPersona)
 );
+
 
 CREATE TABLE Alumno_Cursa_Carrera (
     idAlumno BIGINT UNSIGNED NOT NULL,
@@ -245,10 +251,9 @@ VALUES
 (1, 3, 10, '2026-06-20');
 
 -- CUOTAS
-INSERT INTO Cuota (idAlumno,valorCuota,fechaPago,fechaVencimiento,conceptoCuota,estadoCuota)
-VALUES
-(2, 30000, '2026-06-01', '2026-06-10', 'CUOTA', 'PAGADA'),
-(3, 30000, NULL, '2026-06-10', 'CUOTA', 'PENDIENTE');
+INSERT INTO cuota (id_alumno,valor_cuota,fecha_pago,fecha_vencimiento,concepto_cuota,estado_cuota,anio,mes) VALUES
+(2, 30000, '2026-06-01', '2026-06-10', 'CUOTA', 'PAGADA', 2026, 6),
+(3, 30000, NULL, '2026-06-10', 'CUOTA', 'PENDIENTE', 2026, 6);
 
 -- EXAMEN FINAL
 INSERT INTO Examen (idMateria, fecha, tipoExamen)
@@ -284,5 +289,12 @@ SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
 SELECT * FROM Aviso;
 
+SHOW CREATE TABLE alumno;
 
+SELECT id_cuota, estado_cuota
+FROM cuota
+WHERE id_alumno = 2;
 
+SELECT *
+FROM cuota
+WHERE id_cuota = 1;
