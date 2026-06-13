@@ -1,11 +1,14 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.dto.CorrelativaDTO;
 import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.exceptions.MateriaInexistente;
 import com.sistema.sistema.mappers.MateriaMapper;
 import com.sistema.sistema.repositories.AlumnoCursaCarreraRepository;
+import com.sistema.sistema.repositories.CorrelativaRepo;
 import com.sistema.sistema.repositories.MateriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ public class MateriaService {
     private final MateriaRepository materiaRepository;
     private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
     private final MateriaMapper materiaMapper;
+    private final CorrelativaRepo correlativaRepo;
 
     public Materia buscarMateriaPorId(Long id) {
         return materiaRepository.findById(id)
@@ -71,4 +75,27 @@ public class MateriaService {
         return materiaRepository.findByCarreraIdCarrera(idCarrera);
     }
 
+    public CorrelativaDTO materiaToCorrel (Materia materia){
+        return CorrelativaDTO.builder()
+                .id(materia.getIdMateria())
+                .nombre(materia.getNombre())
+                .build();
+    }
+
+    public Materia correlToMateria (CorrelativaDTO dto){
+        Materia materia = materiaRepository.findById(dto.getId())
+                .orElseThrow(() -> new MateriaInexistente("No se encontro la materia a la cual hace referencia. \n"));
+        return materia;
+    }
+
+    public Materia agregarCorrel (Long idMateria, Long idCorrelativa){
+        Materia materia = materiaRepository.findById(idMateria)
+                .orElseThrow(() -> new MateriaInexistente("No se encontro la materia a la cual hace referencia.\n"));
+
+        CorrelativaDTO correlativa = correlativaRepo.findById(idCorrelativa)
+                .orElseThrow(() -> new MateriaInexistente("No se encontro la correlativa a la cual hace referencia.\n"));
+
+        materia.getCorrelativas().add(correlativa);
+        return materiaRepository.save(materia);
+    }
 }

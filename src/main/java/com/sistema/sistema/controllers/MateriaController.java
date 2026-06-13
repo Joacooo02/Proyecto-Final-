@@ -1,5 +1,6 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.dto.CorrelativaDTO;
 import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.services.MateriaService;
@@ -45,4 +46,13 @@ public class MateriaController {
     {
         return materiaService.verPlanAcademicoAlumno(idAlumno);
     }
+
+    @PostMapping("/{idMateria}/correlativas/{idCorrelativa}")
+    public Materia agregarCorrelativa(@PathVariable Long idMateria, @PathVariable Long idCorrelativa) {
+        return materiaService.agregarCorrel(idMateria, idCorrelativa);
+    }
+
+
+
+
 }

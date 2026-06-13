@@ -1,7 +1,10 @@
 package com.sistema.sistema.entities.areaAcademica;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sistema.sistema.dto.CorrelativaDTO;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Materia")
@@ -22,6 +25,10 @@ public class Materia {
 
     @Column(length = 50)
     private String nombre;
+
+    @ManyToOne
+    @JoinColumn(name = "correlativas")
+    private List<CorrelativaDTO> correlativas;
 
     private Integer cargaHoraria;
     private Integer cuatrimestre;
