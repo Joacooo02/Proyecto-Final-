@@ -42,7 +42,6 @@ CREATE TABLE Profesor (
 CREATE TABLE PlanEstudio(
     idPlanEstudio BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     idCarrera BIGINT UNSIGNED NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
     anioInicio INT NOT NULL,
 
     FOREIGN KEY (idCarrera)
