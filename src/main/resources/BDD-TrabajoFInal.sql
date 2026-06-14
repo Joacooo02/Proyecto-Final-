@@ -80,12 +80,16 @@ CREATE TABLE Comision(
 CREATE TABLE Cuota(
     idCuota BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idAlumno BIGINT UNSIGNED NOT NULL,
+	mes INT NOT NULL,
+    anio INT NOT NULL,
     valorCuota INT,
     fechaPago DATE,
     fechaVencimiento DATE,
     conceptoCuota ENUM('CUOTA', 'MATRICULA'),
     estadoCuota ENUM('PAGADA', 'PENDIENTE', 'VENCIDA') NOT NULL DEFAULT 'PENDIENTE',
-    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
+
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona)
+	ON DELETE CASCADE
 );
 
 CREATE TABLE Alumno_Cursa_Carrera (
@@ -367,11 +371,19 @@ VALUES
 (1,3,10,'2026-06-20');
 
 -- CUOTAS
-INSERT INTO Cuota
-(idAlumno,valorCuota,fechaPago,fechaVencimiento,conceptoCuota,estadoCuota)
+INSERT INTO Cuota (
+    idAlumno,
+    valorCuota,
+    fechaPago,
+    fechaVencimiento,
+    mes,
+    anio,
+    conceptoCuota,
+    estadoCuota
+)
 VALUES
-(2,30000,'2026-06-01','2026-06-10','CUOTA','PAGADA'),
-(3,30000,NULL,'2026-06-10','CUOTA','PENDIENTE');
+(2, 30000, '2026-06-01', '2026-06-10', 6, 2026, 'CUOTA', 'PAGADA'),
+(3, 30000, NULL, '2026-06-10', 6, 2026, 'CUOTA', 'PENDIENTE');
 
 -- INSCRIPCION A MATERIAS
 INSERT INTO Alumno_Inscripcion_Materia
@@ -421,3 +433,4 @@ SELECT * FROM Nota;
 SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
 
+ 
