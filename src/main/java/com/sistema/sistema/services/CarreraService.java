@@ -42,7 +42,6 @@ public class CarreraService {
         carreraExistente.setDuracion(carreraModificada.getDuracion());
         carreraExistente.setTituloOtorgado(carreraModificada.getTituloOtorgado());
         carreraExistente.setModalidadCarrera(carreraModificada.getModalidadCarrera());
-        carreraExistente.setPlanDeEstudio(carreraModificada.getPlanDeEstudio());
 
         return carreraRepository.save(carreraExistente);
     }

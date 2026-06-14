@@ -1,20 +1,18 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.dto.CorrelativaDTO;
 import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.entities.areaAcademica.Carrera;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
-import com.sistema.sistema.exceptions.MateriaInexistente;
 import com.sistema.sistema.mappers.MateriaMapper;
 import com.sistema.sistema.repositories.AlumnoCursaCarreraRepository;
-import com.sistema.sistema.repositories.CorrelativaRepo;
+import com.sistema.sistema.repositories.CarreraRepository;
 import com.sistema.sistema.repositories.MateriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,22 +21,32 @@ public class MateriaService {
     private final MateriaRepository materiaRepository;
     private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
     private final MateriaMapper materiaMapper;
-    private final CorrelativaRepo correlativaRepo;
+    private final CarreraRepository carreraRepository;
 
-    public Materia buscarMateriaPorId(Long id) {
-        return materiaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoEncontradaException("Materia con id: " + id + " no encontrada"));
+    private Materia obtenerMateria(Long id)
+    {
+        return materiaRepository.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Materia con id: " + id + " no encontrada"));
     }
 
-    public Materia agregarMateria(MateriaDTO materiaDTO) {
-        Materia materia = new Materia();
-        materia.setNombre(materiaDTO.getNombre());
-        materia.setCuatrimestre(materiaDTO.getCuatrimestre());
-        materia.setAnioCursado(materiaDTO.getAnioCursado());
-        materia.setCargaHoraria(materiaDTO.getCargaHoraria());
+    public MateriaDTO buscarMateriaPorId(Long id)
+    {
+        return materiaMapper.toDTO(materiaRepository.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Materia con id: " + id + " no encontrada")));
+    }
 
-        materiaRepository.save(materia);
-        return materia;
+    public MateriaDTO agregarMateria(MateriaDTO materiaDTO)
+    {
+
+        Carrera carrera = carreraRepository.findById(materiaDTO.getIdCarrera())
+                .orElseThrow(() ->
+                        new EntidadNoEncontradaException("Carrera no encontrada"));
+
+        Materia materia = materiaMapper.toEntity(materiaDTO);
+
+        materia.setCarrera(carrera);
+
+        return materiaMapper.toDTO(
+                materiaRepository.save(materia)
+        );
     }
 
     public void eliminarMateria(Long id) {
@@ -46,26 +54,39 @@ public class MateriaService {
         materiaRepository.deleteById(id);
     }
 
-    public List<Materia> listarMaterias(String nombre) {
+    public List<MateriaDTO> listarMaterias(String nombre)
+    {
+        List<Materia> materias;
+
         if (nombre != null && !nombre.isBlank()) {
-            return materiaRepository.findByNombreContainingIgnoreCase(nombre);
+            materias = materiaRepository.findByNombreContainingIgnoreCase(nombre);
+        } else {
+            materias = materiaRepository.findAll();
         }
-        return materiaRepository.findAll();
+
+        return materiaMapper.toDTOList(materias);
     }
 
-    public Materia modificarMateria(Long id, Materia materiaModificada) {
-        Materia materiaExistente = buscarMateriaPorId(id);
+    public MateriaDTO modificarMateria(Long id, MateriaDTO dto)
+    {
 
-        materiaExistente.setNombre(materiaModificada.getNombre());
-        materiaExistente.setCargaHoraria(materiaModificada.getCargaHoraria());
-        materiaExistente.setCuatrimestre(materiaModificada.getCuatrimestre());
-        materiaExistente.setAnioCursado(materiaModificada.getAnioCursado());
+        Materia materia = obtenerMateria(id);
 
-        materiaExistente.setCarrera(materiaModificada.getCarrera());
+        materiaMapper.actualizarEntity(dto, materia);
 
-        return materiaRepository.save(materiaExistente);
+        if(dto.getIdCarrera() != null)
+        {
+            Carrera carrera = carreraRepository.findById(dto.getIdCarrera())
+                    .orElseThrow(() ->
+                            new EntidadNoEncontradaException("Carrera no encontrada"));
+
+            materia.setCarrera(carrera);
+        }
+
+        return materiaMapper.toDTO(
+                materiaRepository.save(materia)
+        );
     }
-
 
     public List<Materia> verPlanAcademicoAlumno(Long idAlumno)
     {
@@ -75,27 +96,9 @@ public class MateriaService {
         return materiaRepository.findByCarreraIdCarrera(idCarrera);
     }
 
-    public CorrelativaDTO materiaToCorrel (Materia materia){
-        return CorrelativaDTO.builder()
-                .id(materia.getIdMateria())
-                .nombre(materia.getNombre())
-                .build();
-    }
 
-    public Materia correlToMateria (CorrelativaDTO dto){
-        Materia materia = materiaRepository.findById(dto.getId())
-                .orElseThrow(() -> new MateriaInexistente("No se encontro la materia a la cual hace referencia. \n"));
-        return materia;
-    }
 
-    public Materia agregarCorrel (Long idMateria, Long idCorrelativa){
-        Materia materia = materiaRepository.findById(idMateria)
-                .orElseThrow(() -> new MateriaInexistente("No se encontro la materia a la cual hace referencia.\n"));
 
-        CorrelativaDTO correlativa = correlativaRepo.findById(idCorrelativa)
-                .orElseThrow(() -> new MateriaInexistente("No se encontro la correlativa a la cual hace referencia.\n"));
 
-        materia.getCorrelativas().add(correlativa);
-        return materiaRepository.save(materia);
-    }
+
 }

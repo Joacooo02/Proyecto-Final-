@@ -25,11 +25,6 @@ public class Materia {
 
     @Column(length = 50)
     private String nombre;
-
-    @ManyToOne
-    @JoinColumn(name = "correlativas")
-    private List<CorrelativaDTO> correlativas;
-
     private Integer cargaHoraria;
     private Integer cuatrimestre;
     private Integer anioCursado;

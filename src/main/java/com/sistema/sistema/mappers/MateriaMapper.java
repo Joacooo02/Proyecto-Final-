@@ -11,13 +11,18 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MateriaMapper {
 
+
+    @Mapping(target = "idCarrera", source = "carrera.idCarrera")
+    @Mapping(target = "id", source = "idMateria")
     MateriaDTO toDTO(Materia materia);
 
+    @Mapping(target = "idMateria", ignore = true)
     @Mapping(target = "carrera", ignore = true)
     Materia toEntity(MateriaDTO materiaDTO);
 
     List<MateriaDTO> toDTOList(List<Materia> materias);
 
+    @Mapping(target = "idMateria", ignore = true)
     @Mapping(target = "carrera", ignore = true)
     void actualizarEntity(MateriaDTO materiaDTO, @MappingTarget Materia materia);
 }

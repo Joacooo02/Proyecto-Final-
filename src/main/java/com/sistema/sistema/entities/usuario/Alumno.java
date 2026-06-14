@@ -26,8 +26,6 @@ public class Alumno extends Persona{
 
     private boolean esRegular;
 
-    private Integer planEstudio;
-
     private double promedio;
 
     @OneToMany(mappedBy = "alumno")

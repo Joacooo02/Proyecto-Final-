@@ -23,6 +23,5 @@ public class AlumnoDTO {
     private Integer anioIngreso;
     private boolean analiticoParcial;
     private boolean esRegular;
-    private Integer planEstudio;
     private double promedio;
 }

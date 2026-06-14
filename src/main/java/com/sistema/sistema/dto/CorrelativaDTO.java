@@ -1,5 +1,6 @@
 package com.sistema.sistema.dto;
 
+import com.sistema.sistema.enums.EstadoCorrelatividad;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class CorrelativaDTO {
-    private Long id;
-    private String nombre;
+    private Long idCorrelatividad;
+    private Long idMateria;
+    private Long idMateriaCorrelativa;
+    private EstadoCorrelatividad estadoParaCursar;
+    private EstadoCorrelatividad estadoParaRendir;
 }

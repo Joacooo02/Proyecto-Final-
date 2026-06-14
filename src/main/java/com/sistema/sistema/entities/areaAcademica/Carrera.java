@@ -29,5 +29,4 @@ public class Carrera {
     @Column(nullable = false)
     private ModalidadCarrera modalidadCarrera;
 
-    private Integer planDeEstudio;
 }

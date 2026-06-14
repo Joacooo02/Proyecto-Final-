@@ -18,7 +18,7 @@ public class Cuota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_cuota")
+    @Column(name = "idCuota")
     private Long idCuota;
 
     @ManyToOne
@@ -30,18 +30,18 @@ public class Cuota {
     @Column(name = "mes")
     private Integer mes;
 
-    @Column(name = "valor_cuota")
+    @Column(name = "valorCuota")
     private Integer valorCuota;
-    @Column(name = "fecha_pago")
+    @Column(name = "fechaPago")
     private LocalDate fechaPago;
-    @Column(name = "fecha_vencimiento")
+    @Column(name = "fechaVencimiento")
     private LocalDate fechaVencimiento;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "concepto_cuota", length = 50)
+    @Column(name = "conceptoCuota", length = 50)
     private ConceptoCuota conceptoCuota;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado_cuota", length = 50)
+    @Column(name = "estadoCuota", length = 50)
     private EstadoCuota estadoCuota;
 }
