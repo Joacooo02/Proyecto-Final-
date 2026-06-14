@@ -20,7 +20,6 @@ CREATE TABLE Alumno (
     anioIngreso INT,
     analiticoParcial BOOLEAN,
     esRegular BOOLEAN,
-    planEstudio INT,
     promedio DOUBLE,
     FOREIGN KEY (idPersona) REFERENCES Persona(idPersona) ON DELETE CASCADE
 );
@@ -39,13 +38,122 @@ CREATE TABLE Profesor (
 
 -- AREA ACADEMICA
 
+-- ---------------------------------------------- ESTO ES LO NUEVO QUE AGREGAMOS ----------------------------------------------
+CREATE TABLE PlanEstudio(
+    idPlanEstudio BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    idCarrera BIGINT UNSIGNED NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    anioInicio INT NOT NULL,
+
+    FOREIGN KEY (idCarrera)
+        REFERENCES Carrera(idCarrera)
+        ON DELETE CASCADE
+);
+
+ALTER TABLE Materia
+ADD COLUMN idPlanEstudio BIGINT UNSIGNED;
+
+ALTER TABLE Materia
+ADD CONSTRAINT fk_materia_plan
+FOREIGN KEY (idPlanEstudio)
+REFERENCES PlanEstudio(idPlanEstudio);
+
+CREATE TABLE Correlatividad(
+    idCorrelatividad BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    idMateria BIGINT UNSIGNED NOT NULL,
+    idMateriaCorrelativa BIGINT UNSIGNED NOT NULL,
+
+    estadoParaCursar ENUM('CURSADA','APROBADA'),
+    estadoParaRendir ENUM('CURSADA','APROBADA'),
+
+    FOREIGN KEY (idMateria)
+        REFERENCES Materia(idMateria)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (idMateriaCorrelativa)
+        REFERENCES Materia(idMateria)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Alumno_Materia(
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    idAlumno BIGINT UNSIGNED NOT NULL,
+    idMateria BIGINT UNSIGNED NOT NULL,
+
+    estado ENUM(
+        'PENDIENTE',
+        'CURSANDO',
+        'CURSADA',
+        'APROBADA'
+    ) NOT NULL DEFAULT 'PENDIENTE',
+
+    notaFinal DOUBLE,
+    fechaAprobacion DATE,
+
+    UNIQUE(idAlumno,idMateria),
+
+    FOREIGN KEY (idAlumno)
+        REFERENCES Alumno(idPersona)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (idMateria)
+        REFERENCES Materia(idMateria)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE ComisionHorario(
+    idComisionHorario BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    idComision BIGINT UNSIGNED NOT NULL,
+
+    diaSemana ENUM(
+        'LUNES',
+        'MARTES',
+        'MIERCOLES',
+        'JUEVES',
+        'VIERNES',
+        'SABADO'
+    ) NOT NULL,
+
+    horaInicio TIME NOT NULL,
+    horaFin TIME NOT NULL,
+
+    FOREIGN KEY (idComision)
+        REFERENCES Comision(idComision)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE PeriodoInscripcion(
+    idPeriodo BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    idCarrera BIGINT UNSIGNED NOT NULL,
+
+    tipo ENUM('CURSADA','FINAL') NOT NULL,
+
+    anioLectivo INT NOT NULL,
+    cuatrimestre INT NOT NULL,
+
+    fechaInicio DATETIME NOT NULL,
+    fechaCierre DATETIME NOT NULL,
+
+    activa BOOLEAN DEFAULT TRUE,
+
+    FOREIGN KEY (idCarrera)
+        REFERENCES Carrera(idCarrera)
+        ON DELETE CASCADE
+);
+
+
+-- ---------------------------------------------- ESTO ES LO NUEVO QUE AGREGAMOS ----------------------------------------------
+
 CREATE TABLE Carrera(
     idCarrera BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
     duracion INT,
     tituloOtorgado VARCHAR(50),
-    modalidadCarrera ENUM ('PRESENCIAL', 'VIRTUAL'),
-    planDeEstudio INT
+    modalidadCarrera ENUM ('PRESENCIAL', 'VIRTUAL')
 );
 
 CREATE TABLE Materia(
@@ -79,22 +187,16 @@ CREATE TABLE Comision(
 
 -- AREA ADMINISTRATIVA
 
-CREATE TABLE cuota (
-    id_cuota BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_alumno BIGINT UNSIGNED NULL,
-    anio INT NOT NULL,
-    mes INT NOT NULL,
-    valor_cuota INT NOT NULL,
-    fecha_generacion DATE,
-    fecha_vencimiento DATE,
-    fecha_pago DATE,
-    concepto_cuota VARCHAR(50) NOT NULL,
-    estado_cuota VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_cuota_alumno
-        FOREIGN KEY (id_alumno)
-        REFERENCES alumno(idPersona)
+CREATE TABLE Cuota(
+    idCuota BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno BIGINT UNSIGNED NOT NULL,
+    valorCuota INT,
+    fechaPago DATE,
+    fechaVencimiento DATE,
+    conceptoCuota ENUM('CUOTA', 'MATRICULA'),
+    estadoCuota ENUM('PAGADA', 'PENDIENTE', 'VENCIDA') NOT NULL DEFAULT 'PENDIENTE',
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
 );
-
 
 CREATE TABLE Alumno_Cursa_Carrera (
     idAlumno BIGINT UNSIGNED NOT NULL,
@@ -173,17 +275,6 @@ CREATE TABLE Alumno_Inscripcion_Examen_Final (
     FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE
 );
 
-CREATE TABLE aviso (
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_persona BIGINT UNSIGNED NOT NULL,
-    titulo VARCHAR(255) NOT NULL,
-    contenido VARCHAR(1000) NOT NULL,
-    fecha_aviso DATETIME NOT NULL,
-
-    CONSTRAINT fk_aviso_persona
-        FOREIGN KEY (id_persona)
-        REFERENCES persona(idPersona)
-);
 
 -- ------------------------------------------TODO ESTO ES DE PRUEBA ----------------------------------------------------------
 -- CARRERA
@@ -251,9 +342,10 @@ VALUES
 (1, 3, 10, '2026-06-20');
 
 -- CUOTAS
-INSERT INTO cuota (id_alumno,valor_cuota,fecha_pago,fecha_vencimiento,concepto_cuota,estado_cuota,anio,mes) VALUES
-(2, 30000, '2026-06-01', '2026-06-10', 'CUOTA', 'PAGADA', 2026, 6),
-(3, 30000, NULL, '2026-06-10', 'CUOTA', 'PENDIENTE', 2026, 6);
+INSERT INTO Cuota (idAlumno,valorCuota,fechaPago,fechaVencimiento,conceptoCuota,estadoCuota)
+VALUES
+(2, 30000, '2026-06-01', '2026-06-10', 'CUOTA', 'PAGADA'),
+(3, 30000, NULL, '2026-06-10', 'CUOTA', 'PENDIENTE');
 
 -- EXAMEN FINAL
 INSERT INTO Examen (idMateria, fecha, tipoExamen)
@@ -277,6 +369,8 @@ VALUES
 (3, 3, '2024-03-12');
 
 
+
+
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
 SELECT * FROM Alumno;
@@ -287,14 +381,4 @@ SELECT * FROM Examen;
 SELECT * FROM Nota;
 SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
-SELECT * FROM Aviso;
 
-SHOW CREATE TABLE alumno;
-
-SELECT id_cuota, estado_cuota
-FROM cuota
-WHERE id_alumno = 2;
-
-SELECT *
-FROM cuota
-WHERE id_cuota = 1;
