@@ -3,6 +3,7 @@ package com.sistema.sistema.controllers;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFinal;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import com.sistema.sistema.services.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,13 @@ public class InscripcionController {
     public List<Comision> obtenerComisionesDisponibles(@PathVariable Long idMateria)
     {
         return service.obtenerComisionesDisponibles(idMateria);
+    }
+
+    @PostMapping("/materia/{idAlumno}/{idMateria}")
+    public AlumnoInscripcionMateria inscribirMateria(
+            @PathVariable Long idAlumno,
+            @PathVariable Long idMateria)
+    {
+        return service.inscribirMateria(idAlumno,idMateria);
     }
 }
