@@ -1,6 +1,8 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.Exceptions.BoletoException;
+import com.sistema.sistema.dto.CorrelatividadDTO;
+import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAcademica.Nota;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
@@ -11,9 +13,7 @@ import com.sistema.sistema.enums.RolUsuario;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
-import com.sistema.sistema.repositories.AlumnoRepository;
-import com.sistema.sistema.repositories.BoletoEspecialEducativoRepository;
-import com.sistema.sistema.repositories.NotaRepository;
+import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,8 @@ public class AlumnoService {
     private final NotaRepository notaRepository;
     private final AlumnoMapper alumnoMapper;
     private final BoletoEspecialEducativoRepository boletoEspecialEducativoRepository;
+    private final CorrelatividadService correlatividadService;
+    private final MateriaRepository materiaRepository;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
