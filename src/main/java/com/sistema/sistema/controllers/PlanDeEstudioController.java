@@ -18,7 +18,7 @@ public class PlanDeEstudioController {
     }
 
     @PostMapping("/crear")
-    public PlanDeEstudioDTO crear(@PathVariable PlanDeEstudio planDeEstudio) {
+    public PlanDeEstudioDTO crear(@RequestBody PlanDeEstudio planDeEstudio) {
         return planDeEstudioService.crear(planDeEstudio);
     }
 
