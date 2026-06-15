@@ -83,7 +83,6 @@ CREATE TABLE Cuota(
 	mes INT NOT NULL,
     anio INT NOT NULL,
     valorCuota INT,
-    fechaPago DATE,
     fechaVencimiento DATE,
     conceptoCuota ENUM('CUOTA', 'MATRICULA'),
     estadoCuota ENUM('PAGADA', 'PENDIENTE', 'VENCIDA') NOT NULL DEFAULT 'PENDIENTE',
@@ -293,6 +292,18 @@ CREATE TABLE Aviso (
         ON DELETE CASCADE
 );
 
+CREATE TABLE PagoCuota(
+    idPagoCuota BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idCuota BIGINT UNSIGNED NOT NULL,
+    montoPagado INT NOT NULL,
+    fechaPago DATE NOT NULL,
+    metodoPago ENUM('EFECTIVO','TRANSFERENCIA','TARJETA'),
+
+    FOREIGN KEY (idCuota)
+        REFERENCES Cuota(idCuota)
+        ON DELETE CASCADE
+);
+
 -- ---------------------------------------------- ESTO ES LO NUEVO QUE AGREGAMOS ----------------------------------------------
 
 
@@ -386,10 +397,13 @@ VALUES
 (1,3,10,'2026-06-20');
 
 -- CUOTAS
-INSERT INTO Cuota (idAlumno,valorCuota,fechaPago,fechaVencimiento,mes,anio,conceptoCuota,estadoCuota)
+INSERT INTO Cuota (idAlumno, valorCuota, fechaVencimiento, mes, anio, conceptoCuota, estadoCuota)
 VALUES
-(2, 30000, '2026-06-01', '2026-06-10', 6, 2026, 'CUOTA', 'PAGADA'),
-(3, 30000, NULL, '2026-06-10', 6, 2026, 'CUOTA', 'PENDIENTE');
+(2, 30000, '2026-06-10', 6, 2026, 'CUOTA', 'PAGADA'),
+(3, 30000, '2026-06-10', 6, 2026, 'CUOTA', 'PENDIENTE');
+
+INSERT INTO PagoCuota (idCuota, montoPagado, fechaPago, metodoPago)
+VALUES (1, 30000, '2026-06-01', 'EFECTIVO');
 
 -- INSCRIPCION A MATERIAS
 INSERT INTO Alumno_Inscripcion_Materia
