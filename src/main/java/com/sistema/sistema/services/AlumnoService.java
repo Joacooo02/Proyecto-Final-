@@ -4,6 +4,7 @@ import com.sistema.sistema.entities.areaAcademica.Nota;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.entities.funcionalidades.BoletoEspecialEducativo;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.RolUsuario;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -123,4 +125,12 @@ public class AlumnoService {
                 .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con legajo: " +legajo+ " no encontrado"));
     }
 
+    public void registrarBoleto(Long id) {
+        BoletoEspecialEducativo boletoEspecialEducativo = new BoletoEspecialEducativo();
+        boletoEspecialEducativo.setAlumnoId(id);
+        boletoEspecialEducativo.setFueSolicitado(true);
+
+        Random generador = new Random();
+        boletoEspecialEducativo.setEstaActivo(generador.nextBoolean());
+    }
 }
