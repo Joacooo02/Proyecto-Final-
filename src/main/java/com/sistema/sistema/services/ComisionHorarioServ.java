@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.dto.ComisionHorarioDto;
+import com.sistema.sistema.dto.ComisionHorarioDTO;
 import com.sistema.sistema.entities.ComisionHorario;
 import com.sistema.sistema.mappers.ComisionHorarioMapper;
 import com.sistema.sistema.repositories.ComisionHorarioRepo;
@@ -19,14 +19,14 @@ public class ComisionHorarioServ {
         this.mapper = mapper;
     }
 
-    public ComisionHorarioDto agregar (ComisionHorario comHor){
+    public ComisionHorarioDTO agregar (ComisionHorario comHor){
         return mapper.toDTO(repo.save(comHor));
     }
     public void eliminar (Long id){
         repo.deleteById(id);
     }
 
-    public Optional<ComisionHorarioDto> modificar(Long id, ComisionHorarioDto dto){
+    public Optional<ComisionHorarioDTO> modificar(Long id, ComisionHorarioDTO dto){
         return repo.findById(id)
                 .map(comisionHorario ->{
                     comisionHorario.setIdComision(dto.getIdComision());
@@ -37,13 +37,13 @@ public class ComisionHorarioServ {
                 });
     }
 
-    public List<ComisionHorarioDto> mostrar(){
+    public List<ComisionHorarioDTO> mostrar(){
         return repo.findAll().stream()
                 .map(mapper :: toDTO)
                 .toList();
     }
 
-    public Optional<ComisionHorarioDto> buscarPorId(Long id){
+    public Optional<ComisionHorarioDTO> buscarPorId(Long id){
         return repo.findById(id)
                 .map(mapper :: toDTO);
     }

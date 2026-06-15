@@ -1,7 +1,7 @@
 package com.sistema.sistema.controllers;
 
 
-import com.sistema.sistema.dto.ComisionHorarioDto;
+import com.sistema.sistema.dto.ComisionHorarioDTO;
 import com.sistema.sistema.entities.ComisionHorario;
 import com.sistema.sistema.services.ComisionHorarioServ;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +19,24 @@ public class ComisionHorarioCont {
     }
 
     @PostMapping("/agregar")
-    public ComisionHorarioDto agregar (@PathVariable ComisionHorario comHor){
+    public ComisionHorarioDTO agregar (@PathVariable ComisionHorario comHor){
         return serv.agregar(comHor);
     }
 
     @GetMapping("/mostrar")
-    public List<ComisionHorarioDto> mostrar(){
+    public List<ComisionHorarioDTO> mostrar(){
         return serv.mostrar();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ComisionHorarioDto> modificar (@PathVariable Long id, @RequestBody ComisionHorarioDto comisionHorarioDto){
+    public ResponseEntity<ComisionHorarioDTO> modificar (@PathVariable Long id, @RequestBody ComisionHorarioDTO comisionHorarioDto){
         return serv.modificar(id, comisionHorarioDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ComisionHorarioDto> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<ComisionHorarioDTO> buscarPorId(@PathVariable Long id){
         return serv.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

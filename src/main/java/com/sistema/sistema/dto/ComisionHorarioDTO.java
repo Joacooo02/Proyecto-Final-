@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 
-public class ComisionHorarioDto {
+public class ComisionHorarioDTO {
     private Long idComision;
     private DiaSemana diaSemana;
     private LocalTime horaInicio;

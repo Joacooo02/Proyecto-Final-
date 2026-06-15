@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 
-public class CorrelativaDTO {
+public class CorrelatividadDTO {
     private Long idCorrelatividad;
     private Long idMateria;
     private Long idMateriaCorrelativa;
