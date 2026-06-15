@@ -8,15 +8,13 @@ import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarreraId;
+import com.sistema.sistema.entities.funcionalidades.BoletoEspecialEducativo;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.RolUsuario;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
-import com.sistema.sistema.repositories.AlumnoCursaCarreraRepository;
-import com.sistema.sistema.repositories.AlumnoRepository;
-import com.sistema.sistema.repositories.CarreraRepository;
-import com.sistema.sistema.repositories.NotaRepository;
+import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,7 @@ public class AlumnoService {
     private final AlumnoMapper alumnoMapper;
     private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
     private final CarreraRepository carreraRepository;
+    private final BoletoEspecialEducativoRepository boletoEspecialEducativoRepository;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
@@ -162,4 +162,12 @@ public class AlumnoService {
                 .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con legajo: " +legajo+ " no encontrado"));
     }
 
+    public BoletoEspecialEducativo registrarBoleto(Long id) {
+        Random generador = new Random();
+        BoletoEspecialEducativo boletoEspecialEducativo = new BoletoEspecialEducativo();
+        boletoEspecialEducativo.setAlumnoId(id);
+        boletoEspecialEducativo.setFueSolicitado(true);
+        boletoEspecialEducativo.setEstaActivo(generador.nextBoolean());
+        return boletoEspecialEducativoRepository.save(boletoEspecialEducativo);
+    }
 }
