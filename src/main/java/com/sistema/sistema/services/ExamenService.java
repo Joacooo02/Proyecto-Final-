@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ExamenService {
+public class    ExamenService {
 
     private final ExamenRepository examenRepository;
     private final MateriaRepository materiaRepository;

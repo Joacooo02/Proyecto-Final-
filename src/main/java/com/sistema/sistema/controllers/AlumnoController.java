@@ -4,7 +4,6 @@ import com.sistema.sistema.dto.AltaAlumnoDTO;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
-import com.sistema.sistema.entities.funcionalidades.BoletoEspecialEducativo;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class AlumnoController {
 
     @PostMapping
     public AlumnoDTO agregarAlumno(@RequestBody AltaAlumnoDTO altaAlumno){
-        return alumnoService.agregarAlumno(altaAlumno.getAlumno());
+        return alumnoService.agregarAlumno(altaAlumno);
     }
 
     @DeleteMapping("/{legajo}")

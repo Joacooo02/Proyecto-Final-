@@ -1,12 +1,12 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.Exceptions.BoletoException;
-import com.sistema.sistema.dto.CorrelatividadDTO;
+import com.sistema.sistema.dto.*;
+import com.sistema.sistema.entities.areaAcademica.Carrera;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAcademica.Nota;
-import com.sistema.sistema.dto.AlumnoDTO;
-import com.sistema.sistema.dto.HistorialAcademicoDTO;
-import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarreraId;
 import com.sistema.sistema.entities.funcionalidades.BoletoEspecialEducativo;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.RolUsuario;
@@ -15,10 +15,12 @@ import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
 import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,16 +35,48 @@ public class AlumnoService {
     private final BoletoEspecialEducativoRepository boletoEspecialEducativoRepository;
     private final CorrelatividadService correlatividadService;
     private final MateriaRepository materiaRepository;
+    private final CarreraRepository carreraRepository;
+    private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
     }
 
-    public AlumnoDTO agregarAlumno(AlumnoDTO alumnoDTO){
+    @Transactional
+    public AlumnoDTO agregarAlumno(AltaAlumnoDTO altaAlumnoDTO){
+        AlumnoDTO alumnoDTO = altaAlumnoDTO.getAlumno();
+
+        if (altaAlumnoDTO.getIdCarrera() == null) {
+            throw new AlumnoInvalidoException("Debe indicarse la carrera a la que se inscribe el alumno");
+        }
+        Carrera carrera = carreraRepository.findById(altaAlumnoDTO.getIdCarrera())
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Carrera con id: " + altaAlumnoDTO.getIdCarrera() + " no encontrada"));
+
+        if (alumnoDTO.getLegajo() != null && alumnoRepository.findByLegajo(alumnoDTO.getLegajo()).isPresent()) {
+            throw new AlumnoInvalidoException("Ya existe un alumno con legajo: " + alumnoDTO.getLegajo());
+        }
+
+        if (alumnoDTO.getDni() != null && alumnoRepository.findByDni(alumnoDTO.getDni()).isPresent()) {
+            throw new AlumnoInvalidoException(
+                    "Ya existe un alumno con DNI: " + alumnoDTO.getDni());
+        }
+
         Alumno alumno = alumnoMapper.toEntity(alumnoDTO);
         alumno.setRolUsuario(RolUsuario.ALUMNO);
-        return alumnoMapper.toDTO(alumnoRepository.save(alumno));
+        Alumno alumnoGuardado = alumnoRepository.save(alumno);
+
+        AlumnoCursaCarrera inscripcion = AlumnoCursaCarrera.builder()
+                .id(new AlumnoCursaCarreraId())
+                .alumno(alumnoGuardado)
+                .carrera(carrera)
+                .fecha_inscripcion(LocalDate.now())
+                .build();
+        alumnoCursaCarreraRepository.save(inscripcion);
+
+        return alumnoMapper.toDTO(alumnoGuardado);
     }
+
 
     public void eliminarAlumno(Long legajo){
         Alumno alumno = obtenerAlumnoPorLegajo(legajo);
