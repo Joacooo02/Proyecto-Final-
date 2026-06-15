@@ -3,6 +3,7 @@ package com.sistema.sistema.controllers;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.entities.funcionalidades.BoletoEspecialEducativo;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -59,4 +60,8 @@ public class AlumnoController {
         return alumnoService.obtenerMaterias(legajo);
     }
 
+    @PostMapping("/boleto")
+    public BoletoEspecialEducativo registrarBoleto(@PathVariable Long id) {
+        return alumnoService.registrarBoleto(id);
+    }
 }

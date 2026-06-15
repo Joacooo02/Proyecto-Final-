@@ -17,12 +17,12 @@ public class BoletoEspecialEducativo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "")
+    @Column(name = "alumno_id")
     private Long alumnoId;
 
-    @Column(name = "")
+    @Column(name = "fue_solicitado")
     private Boolean fueSolicitado;
 
-    @Column(name = "")
+    @Column(name = "esta_activo")
     private Boolean estaActivo;
 }

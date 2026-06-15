@@ -11,6 +11,7 @@ import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
 import com.sistema.sistema.repositories.AlumnoRepository;
+import com.sistema.sistema.repositories.BoletoEspecialEducativoRepository;
 import com.sistema.sistema.repositories.NotaRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class AlumnoService {
     private final AlumnoRepository alumnoRepository;
     private final NotaRepository notaRepository;
     private final AlumnoMapper alumnoMapper;
+    private final BoletoEspecialEducativoRepository boletoEspecialEducativoRepository;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
@@ -125,12 +127,14 @@ public class AlumnoService {
                 .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con legajo: " +legajo+ " no encontrado"));
     }
 
-    public void registrarBoleto(Long id) {
+    public BoletoEspecialEducativo registrarBoleto(Long id) {
+        Random generador = new Random();
+
         BoletoEspecialEducativo boletoEspecialEducativo = new BoletoEspecialEducativo();
         boletoEspecialEducativo.setAlumnoId(id);
         boletoEspecialEducativo.setFueSolicitado(true);
-
-        Random generador = new Random();
         boletoEspecialEducativo.setEstaActivo(generador.nextBoolean());
+
+        return boletoEspecialEducativoRepository.save(boletoEspecialEducativo);
     }
 }

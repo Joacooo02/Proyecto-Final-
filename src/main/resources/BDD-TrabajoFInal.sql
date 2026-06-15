@@ -441,6 +441,13 @@ UPDATE Comision
 SET cantAlumnos = 50
 WHERE idComision = 1;
 
+CREATE TABLE boleto_especial_educativo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    alumno_id BIGINT,
+    fue_solicitado BOOLEAN,
+    esta_activo BOOLEAN,
+    FOREIGN KEY (alumno_id) REFERENCES alumno(id_persona) ON DELETE CASCADE
+);
 
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
