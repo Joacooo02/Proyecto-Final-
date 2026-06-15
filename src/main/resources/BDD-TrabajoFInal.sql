@@ -221,8 +221,8 @@ CREATE TABLE Alumno_Materia(
         'APROBADA'
     ) NOT NULL DEFAULT 'PENDIENTE',
 
-    notaFinal DOUBLE,
-    fechaAprobacion DATE,
+    notaFinal DOUBLE NULL,
+    fechaAprobacion DATE NULL,
 
     UNIQUE(idAlumno,idMateria),
 
