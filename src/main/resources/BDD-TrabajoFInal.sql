@@ -277,6 +277,21 @@ CREATE TABLE PeriodoInscripcion(
         ON DELETE CASCADE
 );
 
+CREATE TABLE Aviso (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+    id_persona BIGINT UNSIGNED NOT NULL,
+
+    titulo VARCHAR(255) NOT NULL,
+
+    contenido VARCHAR(1000) NOT NULL,
+
+    fecha_aviso DATETIME NOT NULL,
+
+    FOREIGN KEY (id_persona)
+        REFERENCES Persona(idPersona)
+        ON DELETE CASCADE
+);
 
 -- ---------------------------------------------- ESTO ES LO NUEVO QUE AGREGAMOS ----------------------------------------------
 
@@ -371,16 +386,7 @@ VALUES
 (1,3,10,'2026-06-20');
 
 -- CUOTAS
-INSERT INTO Cuota (
-    idAlumno,
-    valorCuota,
-    fechaPago,
-    fechaVencimiento,
-    mes,
-    anio,
-    conceptoCuota,
-    estadoCuota
-)
+INSERT INTO Cuota (idAlumno,valorCuota,fechaPago,fechaVencimiento,mes,anio,conceptoCuota,estadoCuota)
 VALUES
 (2, 30000, '2026-06-01', '2026-06-10', 6, 2026, 'CUOTA', 'PAGADA'),
 (3, 30000, NULL, '2026-06-10', 6, 2026, 'CUOTA', 'PENDIENTE');
