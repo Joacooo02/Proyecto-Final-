@@ -1,6 +1,6 @@
 package com.sistema.sistema.controllers;
 
-import com.sistema.sistema.dto.CorrelativaDTO;
+import com.sistema.sistema.dto.CorrelatividadDTO;
 import com.sistema.sistema.services.CorrelatividadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +14,19 @@ public class CorrelatividadController {
     private final CorrelatividadService correlatividadService;
 
     @PostMapping
-    public CorrelativaDTO crear(@RequestBody CorrelativaDTO dto)
+    public CorrelatividadDTO crear(@RequestBody CorrelatividadDTO dto)
     {
         return correlatividadService.crear(dto);
     }
 
     @GetMapping
-    public List<CorrelativaDTO> listar()
+    public List<CorrelatividadDTO> listar()
     {
         return correlatividadService.listar();
     }
 
     @GetMapping("/materia/{idMateria}")
-    public List<CorrelativaDTO> buscarPorMateria(@PathVariable Long idMateria)
+    public List<CorrelatividadDTO> buscarPorMateria(@PathVariable Long idMateria)
     {
         return correlatividadService.buscarPorMateria(idMateria);
     }

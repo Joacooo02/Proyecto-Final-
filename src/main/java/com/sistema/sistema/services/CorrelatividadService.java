@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.dto.CorrelativaDTO;
+import com.sistema.sistema.dto.CorrelatividadDTO;
 import com.sistema.sistema.entities.areaAcademica.Correlatividad;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.exceptions.MateriaInexistente;
@@ -20,7 +20,7 @@ public class CorrelatividadService {
     private final MateriaRepository materiaRepository;
     private final CorrelatividadMapper correlatividadMapper;
 
-    public CorrelativaDTO crear(CorrelativaDTO dto)
+    public CorrelatividadDTO crear(CorrelatividadDTO dto)
     {
         Materia materia = materiaRepository.findById(dto.getIdMateria())
                 .orElseThrow(() -> new MateriaInexistente("Materia no encontrada"));
@@ -38,13 +38,13 @@ public class CorrelatividadService {
         return correlatividadMapper.toDTO(correlatividadRepository.save(correlatividad));
     }
 
-    public List<CorrelativaDTO> listar()
+    public List<CorrelatividadDTO> listar()
     {
         return correlatividadMapper.toDTOList(
                 correlatividadRepository.findAll());
     }
 
-    public List<CorrelativaDTO> buscarPorMateria(Long idMateria)
+    public List<CorrelatividadDTO> buscarPorMateria(Long idMateria)
     {
         return correlatividadMapper.toDTOList(correlatividadRepository.findByMateriaIdMateria(idMateria));
     }

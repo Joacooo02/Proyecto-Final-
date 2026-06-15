@@ -1,10 +1,7 @@
 package com.sistema.sistema.entities.areaAcademica;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sistema.sistema.dto.CorrelativaDTO;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Materia")
