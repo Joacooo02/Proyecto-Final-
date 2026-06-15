@@ -1,5 +1,6 @@
 package com.sistema.sistema.entities.usuario;
 
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,9 @@ public class Alumno extends Persona{
     private double promedio;
 
     @OneToMany(mappedBy = "alumno")
-    private List<AlumnoInscripcionMateria> inscripcionMateriaList;
+    private List<AlumnoInscripcionComision> inscripcionComision = new ArrayList<>();
+
+    @OneToMany(mappedBy = "alumno")
+    private List<AlumnoInscripcionMateria> inscripcionesMateria = new ArrayList<>();
 
 }

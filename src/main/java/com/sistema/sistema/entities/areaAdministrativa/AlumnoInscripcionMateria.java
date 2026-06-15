@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class AlumnoInscripcionMateria {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +28,5 @@ public class AlumnoInscripcionMateria {
     @JoinColumn(name = "idMateria", nullable = false)
     private Materia materia;
 
-    private LocalDate fecha_inscripcion;
-
+    private LocalDate fechaInscripcion;
 }
-

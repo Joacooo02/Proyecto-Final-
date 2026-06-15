@@ -5,6 +5,8 @@ import com.sistema.sistema.entities.usuario.Alumno;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "Alumno_Inscripcion_Comision")
 @Getter
@@ -24,5 +26,7 @@ public class AlumnoInscripcionComision {
     @ManyToOne
     @JoinColumn(name = "idComision", nullable = false)
     private Comision comision;
+
+    private LocalDate fechaInscripcion;
 
 }

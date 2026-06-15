@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Exceptions.InscripcionInvalida;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
@@ -8,6 +9,9 @@ import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFi
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import com.sistema.sistema.enums.TipoExamen;
 import com.sistema.sistema.entities.usuario.Alumno;
+import com.sistema.sistema.exceptions.AlumnoInvalidoException;
+import com.sistema.sistema.exceptions.ComisionInvalidaException;
+import com.sistema.sistema.exceptions.MateriaInexistente;
 import com.sistema.sistema.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,49 +46,59 @@ public class InscripcionService {
 
     public AlumnoInscripcionMateria inscribirMateria(Long idAlumno, Long idMateria) {
 
-        Alumno alumno = alumnoRepository.findById(idAlumno)
-                .orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
 
-        Materia materia = materiaRepository.findById(idMateria)
-                .orElseThrow(() -> new RuntimeException("Materia no encontrada"));
+        Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new RuntimeException("Materia no encontrada"));
 
-        AlumnoInscripcionMateria inscripcion = AlumnoInscripcionMateria.builder()
+        boolean existe = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, idMateria);
+
+        if (existe) {
+            throw new MateriaInexistente("Ya se inscribio en esta materia");
+        }
+
+        return materiaRepo.save(AlumnoInscripcionMateria.builder()
                 .alumno(alumno)
                 .materia(materia)
-                .fecha_inscripcion(LocalDate.now())
-                .build();
-
-        return materiaRepo.save(inscripcion);
+                .fechaInscripcion(LocalDate.now())
+                .build());
     }
+
 
     public AlumnoInscripcionComision inscribirComision(Long idAlumno, Long idComision) {
 
-        Alumno alumno = alumnoRepository.findById(idAlumno)
-                .orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
-        Comision comision = comisionRepository.findById(idComision)
-                .orElseThrow(() -> new RuntimeException("Comisión no encontrada"));
+        Comision comision = comisionRepository.findById(idComision).orElseThrow(() -> new ComisionInvalidaException("Comisión no encontrada"));
 
-        if(comisionRepo.existsByAlumnoIdPersonaAndComisionMateriaIdMateria(idAlumno, comision.getMateria().getIdMateria()))
+        boolean estaInscripto = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, comision.getMateria().getIdMateria());
+
+        if (!estaInscripto)
         {
-            throw new RuntimeException("El alumno ya esta inscripto en una comision de esta materiq");
+            throw new MateriaInexistente("Tenes que inscribirte a la materia");
+        }
+        boolean yaInscriptoComision = comisionRepo.existsByAlumnoIdPersonaAndComisionIdComision(idAlumno, idComision);
+
+        if (yaInscriptoComision)
+        {
+            throw new InscripcionInvalida("Ya estás inscripto en una comisión de esta materia");
         }
 
-        if(comision.getCantAlumnos() >= 50)
+        if (comision.getCantAlumnos() >= 50)
         {
-            throw new RuntimeException("La comision esta completa");
+            throw new ComisionInvalidaException("La comisión está completa");
         }
 
-        AlumnoInscripcionComision inscripcion = AlumnoInscripcionComision.builder()
-                .alumno(alumno)
-                .comision(comision)
-                .build();
 
         comision.setCantAlumnos(comision.getCantAlumnos() + 1);
         comisionRepository.save(comision);
 
 
-        return comisionRepo.save(inscripcion);
+        return comisionRepo.save(
+                AlumnoInscripcionComision.builder()
+                        .alumno(alumno)
+                        .comision(comision)
+                        .fechaInscripcion(LocalDate.now())
+                        .build());
     }
 
     public AlumnoInscripcionExamenFinal inscribirExamen(Long idAlumno, Long idExamen) {
@@ -124,6 +138,4 @@ public class InscripcionService {
         }
         return disponibles;
     }
-
-
 }

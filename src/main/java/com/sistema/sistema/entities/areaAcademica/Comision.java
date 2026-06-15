@@ -18,7 +18,7 @@ public class Comision {
     private Long idComision;
 
     @ManyToOne
-    @JoinColumn(name = "idMateria")
+    @JoinColumn(name = "idMateria", nullable = false)
     private Materia materia;
 
     @ManyToOne
@@ -26,7 +26,6 @@ public class Comision {
     private Profesor profesor;
 
     private Integer nroComision;
-
     private Integer cantAlumnos = 0;
 
     @Column(length = 50)
