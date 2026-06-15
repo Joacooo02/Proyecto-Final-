@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.Exceptions.CuotaInvalidaException;
+import com.sistema.sistema.exceptions.CuotaInvalidaException;
 import com.sistema.sistema.dto.PagoCuotaDTO;
 import com.sistema.sistema.entities.areaAdministrativa.Cuota;
 import com.sistema.sistema.entities.areaAdministrativa.PagoCuota;

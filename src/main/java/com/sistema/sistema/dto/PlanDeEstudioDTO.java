@@ -1,6 +1,5 @@
 package com.sistema.sistema.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PlanDeEstudioDTO {
     private Long idCarrera;
-    private Integer anioInicio;
+    private String nombre;
 }

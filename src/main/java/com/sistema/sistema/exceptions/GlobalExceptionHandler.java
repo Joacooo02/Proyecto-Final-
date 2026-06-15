@@ -36,6 +36,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(EntidadDuplicadaException.class)
+    public ResponseEntity<ErrorResponse> manejarEntidadDuplicada(EntidadDuplicadaException ex) {
+
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Entidad duplicada",
+                ex.getMessage()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> manejarErroresGlobales(Exception ex) {
 

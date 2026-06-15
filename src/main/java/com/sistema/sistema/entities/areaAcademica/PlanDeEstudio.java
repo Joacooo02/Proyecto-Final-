@@ -21,6 +21,9 @@ public class PlanDeEstudio {
     @Column(name = "idCarrera")
     private Long idCarrera;
 
+    @Column(name = "nombre", length = 100, nullable = false)
+    private String nombre;
+
     @Column(name = "anioInicio")
     private Integer anioInicio;
 }

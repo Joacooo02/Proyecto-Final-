@@ -31,7 +31,7 @@ public class PlanDeEstudioService {
         return planDeEstudioRepository.findById(id)
                 .map(planDeEstudio -> {
                     planDeEstudio.setIdCarrera(planDeEstudioDTO.getIdCarrera());
-                    planDeEstudio.setAnioInicio(planDeEstudioDTO.getAnioInicio());
+                    planDeEstudio.setNombre(planDeEstudioDTO.getNombre());
                     return planDeEstudioMapper.toDTO(planDeEstudioRepository.save(planDeEstudio));
                 });
     }

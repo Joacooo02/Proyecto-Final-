@@ -1,6 +1,6 @@
 package com.sistema.sistema.controllers;
 
-import com.sistema.sistema.entities.areaAcademica.Carrera;
+import com.sistema.sistema.dto.CarreraDTO;
 import com.sistema.sistema.services.CarreraService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +15,12 @@ public class CarreraController {
     private final CarreraService carreraService;
 
     @GetMapping("/{id}")
-    public Carrera buscarCarreraPorId(@PathVariable Long id) {
+    public CarreraDTO buscarCarreraPorId(@PathVariable Long id) {
         return carreraService.buscarCarreraPorId(id);
     }
 
     @PostMapping
-    public Carrera agregarCarrera(@RequestBody Carrera carrera) {
+    public CarreraDTO agregarCarrera(@RequestBody CarreraDTO carrera) {
         return carreraService.agregarCarrera(carrera);
     }
 
@@ -30,12 +30,12 @@ public class CarreraController {
     }
 
     @GetMapping
-    public List<Carrera> listarCarreras(@RequestParam(required = false) String nombre) {
-        return carreraService.listarCarreras(nombre);
+    public List<CarreraDTO> listarCarreras() {
+        return carreraService.listarCarreras();
     }
 
     @PutMapping("/{id}")
-    public Carrera modificarCarrera(@PathVariable Long id, @RequestBody Carrera carreraModificada) {
+    public CarreraDTO modificarCarrera(@PathVariable Long id, @RequestBody CarreraDTO carreraModificada) {
         return carreraService.modificarCarrera(id, carreraModificada);
     }
 }

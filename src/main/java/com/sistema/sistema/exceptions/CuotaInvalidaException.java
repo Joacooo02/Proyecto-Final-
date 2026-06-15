@@ -1,4 +1,4 @@
-package com.sistema.sistema.Exceptions;
+package com.sistema.sistema.exceptions;
 
 public class CuotaInvalidaException extends RuntimeException {
     public CuotaInvalidaException(String message) {

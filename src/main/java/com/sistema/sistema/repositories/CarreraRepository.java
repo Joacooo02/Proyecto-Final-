@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CarreraRepository extends JpaRepository<Carrera,Long> {
-    List<Carrera> findByNombreContainingIgnoreCase(String nombre);
+    List<Carrera> findByNombreIgnoreCase(String nombre);
+    boolean existsByNombreIgnoreCase(String nombre);
 }

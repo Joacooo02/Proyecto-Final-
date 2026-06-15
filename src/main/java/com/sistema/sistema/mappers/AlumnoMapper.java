@@ -15,13 +15,13 @@ public interface AlumnoMapper {
 
     @Mapping(target = "idPersona", ignore = true)
     @Mapping(target = "rolUsuario", ignore = true)
-    @Mapping(target = "inscripcionMateriaList", ignore = true)
+    @Mapping(target = "inscripcionesMateria", ignore = true)
     Alumno toEntity(AlumnoDTO alumnoDTO);
 
     List<AlumnoDTO> toDTOList(List<Alumno> alumnos);
 
     @Mapping(target = "idPersona", ignore = true)
     @Mapping(target = "rolUsuario", ignore = true)
-    @Mapping(target = "inscripcionMateriaList", ignore = true)
+    @Mapping(target = "inscripcionesMateria", ignore = true)
     void actualizarEntity(AlumnoDTO alumnoDTO, @MappingTarget Alumno alumno);
 }

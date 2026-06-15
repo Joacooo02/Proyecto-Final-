@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.Exceptions.InscripcionInvalida;
+import com.sistema.sistema.exceptions.InscripcionInvalida;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;

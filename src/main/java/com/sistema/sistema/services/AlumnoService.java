@@ -1,6 +1,6 @@
 package com.sistema.sistema.services;
 
-import com.sistema.sistema.Exceptions.BoletoException;
+import com.sistema.sistema.exceptions.BoletoException;
 import com.sistema.sistema.dto.*;
 import com.sistema.sistema.entities.areaAcademica.Carrera;
 import com.sistema.sistema.entities.areaAcademica.Materia;
