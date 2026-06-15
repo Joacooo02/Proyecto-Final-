@@ -2,7 +2,7 @@ package com.sistema.sistema.controllers;
 
 
 import com.sistema.sistema.dto.ComisionHorarioDTO;
-import com.sistema.sistema.entities.ComisionHorario;
+import com.sistema.sistema.entities.areaAcademica.ComisionHorario;
 import com.sistema.sistema.services.ComisionHorarioServ;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

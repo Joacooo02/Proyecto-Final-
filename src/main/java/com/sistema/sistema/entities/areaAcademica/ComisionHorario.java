@@ -1,6 +1,5 @@
-package com.sistema.sistema.entities;
+package com.sistema.sistema.entities.areaAcademica;
 
-import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.enums.DiaSemana;
 import jakarta.persistence.*;
 import lombok.*;

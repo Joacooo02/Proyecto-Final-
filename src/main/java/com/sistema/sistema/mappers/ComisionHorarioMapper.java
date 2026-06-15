@@ -1,7 +1,7 @@
 package com.sistema.sistema.mappers;
 
 import com.sistema.sistema.dto.ComisionHorarioDTO;
-import com.sistema.sistema.entities.ComisionHorario;
+import com.sistema.sistema.entities.areaAcademica.ComisionHorario;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

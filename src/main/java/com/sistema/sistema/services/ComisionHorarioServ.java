@@ -1,7 +1,7 @@
 package com.sistema.sistema.services;
 
 import com.sistema.sistema.dto.ComisionHorarioDTO;
-import com.sistema.sistema.entities.ComisionHorario;
+import com.sistema.sistema.entities.areaAcademica.ComisionHorario;
 import com.sistema.sistema.mappers.ComisionHorarioMapper;
 import com.sistema.sistema.repositories.ComisionHorarioRepo;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.sistema.sistema.repositories;
 
-import com.sistema.sistema.entities.ComisionHorario;
+import com.sistema.sistema.entities.areaAcademica.ComisionHorario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
