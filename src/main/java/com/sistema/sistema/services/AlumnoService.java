@@ -1,26 +1,31 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.entities.areaAcademica.Carrera;
 import com.sistema.sistema.entities.areaAcademica.Nota;
+import com.sistema.sistema.dto.AltaAlumnoDTO;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
-import com.sistema.sistema.entities.funcionalidades.BoletoEspecialEducativo;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarrera;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoCursaCarreraId;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.RolUsuario;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
+import com.sistema.sistema.repositories.AlumnoCursaCarreraRepository;
 import com.sistema.sistema.repositories.AlumnoRepository;
-import com.sistema.sistema.repositories.BoletoEspecialEducativoRepository;
+import com.sistema.sistema.repositories.CarreraRepository;
 import com.sistema.sistema.repositories.NotaRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -29,16 +34,46 @@ public class AlumnoService {
     private final AlumnoRepository alumnoRepository;
     private final NotaRepository notaRepository;
     private final AlumnoMapper alumnoMapper;
-    private final BoletoEspecialEducativoRepository boletoEspecialEducativoRepository;
+    private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
+    private final CarreraRepository carreraRepository;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
     }
 
-    public AlumnoDTO agregarAlumno(AlumnoDTO alumnoDTO){
+    @Transactional
+    public AlumnoDTO agregarAlumno(AltaAlumnoDTO altaAlumnoDTO){
+        AlumnoDTO alumnoDTO = altaAlumnoDTO.getAlumno();
+
+        if (altaAlumnoDTO.getIdCarrera() == null) {
+            throw new AlumnoInvalidoException("Debe indicarse la carrera a la que se inscribe el alumno");
+        }
+        Carrera carrera = carreraRepository.findById(altaAlumnoDTO.getIdCarrera())
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Carrera con id: " + altaAlumnoDTO.getIdCarrera() + " no encontrada"));
+
+        if (alumnoDTO.getLegajo() != null && alumnoRepository.findByLegajo(alumnoDTO.getLegajo()).isPresent()) {
+            throw new AlumnoInvalidoException("Ya existe un alumno con legajo: " + alumnoDTO.getLegajo());
+        }
+
+        if (alumnoDTO.getDni() != null && alumnoRepository.findByDni(alumnoDTO.getDni()).isPresent()) {
+            throw new AlumnoInvalidoException(
+                    "Ya existe un alumno con DNI: " + alumnoDTO.getDni());
+        }
+
         Alumno alumno = alumnoMapper.toEntity(alumnoDTO);
         alumno.setRolUsuario(RolUsuario.ALUMNO);
-        return alumnoMapper.toDTO(alumnoRepository.save(alumno));
+        Alumno alumnoGuardado = alumnoRepository.save(alumno);
+
+        AlumnoCursaCarrera inscripcion = AlumnoCursaCarrera.builder()
+                .id(new AlumnoCursaCarreraId())
+                .alumno(alumnoGuardado)
+                .carrera(carrera)
+                .fecha_inscripcion(LocalDate.now())
+                .build();
+        alumnoCursaCarreraRepository.save(inscripcion);
+
+        return alumnoMapper.toDTO(alumnoGuardado);
     }
 
     public void eliminarAlumno(Long legajo){
@@ -127,14 +162,4 @@ public class AlumnoService {
                 .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con legajo: " +legajo+ " no encontrado"));
     }
 
-    public BoletoEspecialEducativo registrarBoleto(Long id) {
-        Random generador = new Random();
-
-        BoletoEspecialEducativo boletoEspecialEducativo = new BoletoEspecialEducativo();
-        boletoEspecialEducativo.setAlumnoId(id);
-        boletoEspecialEducativo.setFueSolicitado(true);
-        boletoEspecialEducativo.setEstaActivo(generador.nextBoolean());
-
-        return boletoEspecialEducativoRepository.save(boletoEspecialEducativo);
-    }
 }

@@ -1,5 +1,6 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.dto.AltaAlumnoDTO;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
@@ -23,8 +24,8 @@ public class AlumnoController {
     }
 
     @PostMapping
-    public AlumnoDTO agregarAlumno(@RequestBody AlumnoDTO alumno){
-        return alumnoService.agregarAlumno(alumno);
+    public AlumnoDTO agregarAlumno(@RequestBody AltaAlumnoDTO altaAlumno){
+        return alumnoService.agregarAlumno(altaAlumno);
     }
 
     @DeleteMapping("/{legajo}")

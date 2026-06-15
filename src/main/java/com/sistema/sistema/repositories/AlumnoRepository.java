@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface AlumnoRepository extends JpaRepository<Alumno,Long>, JpaSpecificationExecutor<Alumno> {
 
     Optional<Alumno> findByLegajo(Long legajo);
+
+    Optional<Alumno> findByDni(String dni);
 }
