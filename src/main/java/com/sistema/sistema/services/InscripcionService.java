@@ -116,7 +116,7 @@ public class InscripcionService {
         AlumnoInscripcionExamenFinal inscripcion = AlumnoInscripcionExamenFinal.builder()
                 .alumno(alumno)
                 .examen(examen)
-                .fecha_inscripcion(LocalDate.now())
+                .fechaInscripcion(LocalDate.now())
                 .build();
 
         return alumnoExamenRepo.save(inscripcion);

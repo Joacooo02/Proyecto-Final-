@@ -25,7 +25,7 @@ public class AlumnoController {
 
     @PostMapping
     public AlumnoDTO agregarAlumno(@RequestBody AltaAlumnoDTO altaAlumno){
-        return alumnoService.agregarAlumno(altaAlumno);
+        return alumnoService.agregarAlumno(altaAlumno.getAlumno());
     }
 
     @DeleteMapping("/{legajo}")
@@ -61,8 +61,8 @@ public class AlumnoController {
         return alumnoService.obtenerMaterias(legajo);
     }
 
-    @PostMapping("/boleto")
-    public BoletoEspecialEducativo registrarBoleto(@PathVariable Long id) {
-        return alumnoService.registrarBoleto(id);
+    @PostMapping("/boleto/{id}")
+    public void registrarBoleto(@PathVariable Long id) {
+         alumnoService.registrarBoleto(id);
     }
 }

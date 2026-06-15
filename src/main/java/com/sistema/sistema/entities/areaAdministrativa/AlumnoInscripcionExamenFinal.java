@@ -27,5 +27,6 @@ public class AlumnoInscripcionExamenFinal {
     @JoinColumn(name = "idExamen", nullable = false)
     private Examen examen;
 
-    private LocalDate fecha_inscripcion;
+    @Column(name = "fechaInscripcion")
+    private LocalDate fechaInscripcion;
 }

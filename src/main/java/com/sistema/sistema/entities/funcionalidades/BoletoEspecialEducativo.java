@@ -1,5 +1,6 @@
 package com.sistema.sistema.entities.funcionalidades;
 
+import com.sistema.sistema.entities.usuario.Alumno;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +18,13 @@ public class BoletoEspecialEducativo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "alumno_id")
-    private Long alumnoId;
+    @ManyToOne
+    @JoinColumn(name = "idAlumno", nullable = false)
+    private Alumno alumno;
 
-    @Column(name = "fue_solicitado")
+    @Column(name = "fueSolicitado")
     private Boolean fueSolicitado;
 
-    @Column(name = "esta_activo")
+    @Column(name = "estaActivo")
     private Boolean estaActivo;
 }

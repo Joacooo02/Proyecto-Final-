@@ -27,6 +27,7 @@ public class AlumnoInscripcionComision {
     @JoinColumn(name = "idComision", nullable = false)
     private Comision comision;
 
+    @Column(name = "fechaInscripcion")
     private LocalDate fechaInscripcion;
 
 }

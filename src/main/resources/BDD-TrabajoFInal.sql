@@ -46,14 +46,27 @@ CREATE TABLE Carrera(
     modalidadCarrera ENUM ('PRESENCIAL', 'VIRTUAL')
 );
 
+CREATE TABLE PlanEstudio(
+    idPlanEstudio BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    idCarrera BIGINT UNSIGNED NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    anioInicio INT NOT NULL,
+
+    FOREIGN KEY (idCarrera)
+        REFERENCES Carrera(idCarrera)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE Materia(
     idMateria BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idCarrera BIGINT UNSIGNED NOT NULL,
+    idPlanEstudio BIGINT UNSIGNED,
     nombre VARCHAR(50),
     cargaHoraria INT,
     cuatrimestre INT,
     anioCursado INT,
-    FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera) ON DELETE CASCADE
+    FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera) ON DELETE CASCADE,
+    FOREIGN KEY (idPlanEstudio) REFERENCES PlanEstudio(idPlanEstudio)
 );
 
 CREATE TABLE Examen(
@@ -66,8 +79,8 @@ CREATE TABLE Examen(
 
 CREATE TABLE Comision(
     idComision BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idMateria BIGINT UNSIGNED,
-    idProfesor BIGINT UNSIGNED,
+    idMateria BIGINT UNSIGNED NOT NULL,
+    idProfesor BIGINT UNSIGNED NOT NULL,
     nroComision INT,
     cantAlumnos INT,
     aula VARCHAR(50),
@@ -146,7 +159,8 @@ CREATE TABLE Alumno_Inscripcion_Materia (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idAlumno BIGINT UNSIGNED NOT NULL,
     idMateria BIGINT UNSIGNED NOT NULL,
-    fecha_inscripcion DATE,
+    fechaInscripcion DATE NOT NULL,
+    UNIQUE KEY uq_alumno_materia (idAlumno, idMateria),
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
     FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
 );
@@ -155,6 +169,10 @@ CREATE TABLE Alumno_Inscripcion_Comision (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idAlumno BIGINT UNSIGNED NOT NULL,
     idComision BIGINT UNSIGNED NOT NULL,
+    fechaInscripcion DATE NOT NULL,
+
+    UNIQUE KEY uq_alumno_comision (idAlumno, idComision),
+
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
     FOREIGN KEY (idComision) REFERENCES Comision(idComision) ON DELETE CASCADE
 );
@@ -163,31 +181,20 @@ CREATE TABLE Alumno_Inscripcion_Examen_Final (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idAlumno BIGINT UNSIGNED NOT NULL,
     idExamen BIGINT UNSIGNED NOT NULL,
-    fecha_inscripcion DATE,
+    fechaInscripcion DATE NOT NULL,
+
+    UNIQUE KEY uq_alumno_examen (idAlumno, idExamen),
+
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
     FOREIGN KEY (idExamen) REFERENCES Examen(idExamen) ON DELETE CASCADE
 );
 
 
+
 -- ---------------------------------------------- ESTO ES LO NUEVO QUE AGREGAMOS ----------------------------------------------
-CREATE TABLE PlanEstudio(
-    idPlanEstudio BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    idCarrera BIGINT UNSIGNED NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    anioInicio INT NOT NULL,
 
-    FOREIGN KEY (idCarrera)
-        REFERENCES Carrera(idCarrera)
-        ON DELETE CASCADE
-);
 
-ALTER TABLE Materia
-ADD COLUMN idPlanEstudio BIGINT UNSIGNED;
 
-ALTER TABLE Materia
-ADD CONSTRAINT fk_materia_plan
-FOREIGN KEY (idPlanEstudio)
-REFERENCES PlanEstudio(idPlanEstudio);
 
 CREATE TABLE Correlatividad(
     idCorrelatividad BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -407,7 +414,7 @@ VALUES (1, 30000, '2026-06-01', 'EFECTIVO');
 
 -- INSCRIPCION A MATERIAS
 INSERT INTO Alumno_Inscripcion_Materia
-(idAlumno,idMateria,fecha_inscripcion)
+(idAlumno,idMateria,fechaInscripcion)
 VALUES
 (2,1,'2025-03-10'),
 (2,2,'2025-03-12'),
@@ -417,15 +424,14 @@ VALUES
 
 -- INSCRIPCION A COMISIONES
 INSERT INTO Alumno_Inscripcion_Comision
-(idAlumno,idComision)
+(idAlumno,idComision,fechaInscripcion)
 VALUES
-(2,1),
-(2,2),
-(3,1);
+(2,1,'2026-06-15'),
+(2,2,'2026-06-15'),
+(3,1,'2026-06-15');
 
 -- INSCRIPCION A FINAL
-INSERT INTO Alumno_Inscripcion_Examen_Final
-(idAlumno,idExamen,fecha_inscripcion)
+INSERT INTO Alumno_Inscripcion_Examen_Final (idAlumno, idExamen, fechaInscripcion)
 VALUES
 (2,2,'2026-07-01'),
 (3,2,'2026-07-01');
@@ -441,12 +447,13 @@ UPDATE Comision
 SET cantAlumnos = 50
 WHERE idComision = 1;
 
+
 CREATE TABLE boleto_especial_educativo (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    alumno_id BIGINT,
-    fue_solicitado BOOLEAN,
-    esta_activo BOOLEAN,
-    FOREIGN KEY (alumno_id) REFERENCES alumno(id_persona) ON DELETE CASCADE
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    idAlumno BIGINT UNSIGNED NOT NULL,
+    fueSolicitado BOOLEAN DEFAULT FALSE,
+    estaActivo BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
 );
 
 SELECT * FROM Persona;
@@ -459,4 +466,5 @@ SELECT * FROM Examen;
 SELECT * FROM Nota;
 SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
+
 

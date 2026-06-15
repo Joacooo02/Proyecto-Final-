@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Exceptions.BoletoException;
 import com.sistema.sistema.entities.areaAcademica.Nota;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.HistorialAcademicoDTO;
@@ -11,6 +12,7 @@ import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
 import com.sistema.sistema.repositories.AlumnoRepository;
+import com.sistema.sistema.repositories.BoletoEspecialEducativoRepository;
 import com.sistema.sistema.repositories.NotaRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class AlumnoService {
     private final AlumnoRepository alumnoRepository;
     private final NotaRepository notaRepository;
     private final AlumnoMapper alumnoMapper;
+    private final BoletoEspecialEducativoRepository boletoEspecialEducativoRepository;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
@@ -107,7 +110,7 @@ public class AlumnoService {
         Alumno alumno = alumnoRepository.findByLegajo(legajo)
                 .orElseThrow(() -> new AlumnoInvalidoException("no existe el alumno"));
 
-        return alumno.getInscripcionMateriaList()
+        return alumno.getInscripcionesMateria()
                 .stream()
                 .map(ins -> MateriaDTO.builder()
                         .id(ins.getMateria().getIdMateria())
@@ -125,12 +128,21 @@ public class AlumnoService {
                 .orElseThrow(()-> new EntidadNoEncontradaException("Alumno con legajo: " +legajo+ " no encontrado"));
     }
 
-    public void registrarBoleto(Long id) {
+    public void registrarBoleto(Long id)
+    {
+        Alumno alumno = alumnoRepository.findById(id).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
+
+        if (boletoEspecialEducativoRepository.existsByAlumno(alumno)) {
+            throw new BoletoException("El alumno ya posee una solicitud de boleto");
+        }
+
         BoletoEspecialEducativo boletoEspecialEducativo = new BoletoEspecialEducativo();
-        boletoEspecialEducativo.setAlumnoId(id);
+
+        boletoEspecialEducativo.setAlumno(alumno);
         boletoEspecialEducativo.setFueSolicitado(true);
 
         Random generador = new Random();
         boletoEspecialEducativo.setEstaActivo(generador.nextBoolean());
+        boletoEspecialEducativoRepository.save(boletoEspecialEducativo);
     }
 }
