@@ -43,7 +43,6 @@ public class CuotaService {
                 .mes(dto.getMes())
                 .anio(dto.getAnio())
                 .valorCuota(dto.getValorCuota())
-                .fechaPago(null)
                 .fechaVencimiento(dto.getFechaVencimiento() != null
                         ? dto.getFechaVencimiento()
                         : LocalDate.of(dto.getAnio(), dto.getMes(), 10))
@@ -91,6 +90,7 @@ public class CuotaService {
                 cuotaRepository.findByEstadoCuota(estadoCuota)
         );
     }
+
 
 
 }

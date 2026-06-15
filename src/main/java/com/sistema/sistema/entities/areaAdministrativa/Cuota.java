@@ -6,6 +6,7 @@ import com.sistema.sistema.entities.usuario.Alumno;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "cuota")
@@ -32,8 +33,6 @@ public class Cuota {
 
     @Column(name = "valorCuota")
     private Integer valorCuota;
-    @Column(name = "fechaPago")
-    private LocalDate fechaPago;
     @Column(name = "fechaVencimiento")
     private LocalDate fechaVencimiento;
 
@@ -44,4 +43,7 @@ public class Cuota {
     @Enumerated(EnumType.STRING)
     @Column(name = "estadoCuota", length = 50)
     private EstadoCuota estadoCuota;
+
+    @OneToMany(mappedBy = "cuota")
+    private List<PagoCuota> pagos;
 }

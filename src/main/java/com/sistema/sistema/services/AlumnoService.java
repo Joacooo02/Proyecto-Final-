@@ -84,10 +84,10 @@ public class AlumnoService {
 
             if(nota.getNota() >= 6)
             {
-                estadoMateria = "APROBADA";
+                estadoMateria = "APROBADO";
             }else
             {
-                estadoMateria = "DESAPROBADA";
+                estadoMateria = "DESAPROBADO";
             }
             historial.add(new HistorialAcademicoDTO(
                     nota.getExamen().getMateria().getNombre(),
