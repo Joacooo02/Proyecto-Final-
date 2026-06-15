@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "PeriodoInscripcion")
@@ -18,11 +19,14 @@ import java.time.LocalDate;
 public class PeriodoInscripcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "idPeriodo")
+    private Long idPeriodo;
 
     @Column(name = "idCarrera")
     private Long idCarrera;
 
+    @Column(name = "tipo")
+    @Enumerated(EnumType.STRING)
     private TipoInscripcion tipoInscripcion;
 
     @Column(name = "anioLectivo")
@@ -32,10 +36,10 @@ public class PeriodoInscripcion {
     private Integer cuatrimestre;
 
     @Column(name = "fechaInicio")
-    private LocalDate fechaInicio;
+    private LocalDateTime fechaInicio;
 
     @Column(name = "fechaCierre")
-    private LocalDate fechaCierre;
+    private LocalDateTime fechaCierre;
 
     @Column(name = "activa")
     private Boolean activa;

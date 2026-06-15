@@ -34,6 +34,4 @@ public class Aviso {
     private LocalDateTime fechaAviso;
 
 
-
-
 }

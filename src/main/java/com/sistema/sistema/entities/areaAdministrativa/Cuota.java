@@ -22,7 +22,7 @@ public class Cuota {
     private Long idCuota;
 
     @ManyToOne
-    @JoinColumn(name = "id_alumno",referencedColumnName = "idPersona", nullable = false)
+    @JoinColumn(name = "idAlumno",referencedColumnName = "idPersona", nullable = false)
     private Alumno alumno;
 
     @Column(name = "anio")

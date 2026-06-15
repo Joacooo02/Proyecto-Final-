@@ -32,8 +32,8 @@ public class PeriodoInscripcionService {
                 .map(periodoInscripcion -> {
                     periodoInscripcion.setIdCarrera(periodoInscripcionDTO.getIdCarrera());
                     periodoInscripcion.setTipoInscripcion(periodoInscripcionDTO.getTipoInscripcion());
-                    periodoInscripcion.setFechaInicio(periodoInscripcionDTO.getFechaInicio());
-                    periodoInscripcion.setFechaCierre(periodoInscripcionDTO.getFechaCierre());
+                    periodoInscripcion.setFechaInicio(periodoInscripcionDTO.getFechaInicio().atStartOfDay());
+                    periodoInscripcion.setFechaCierre(periodoInscripcionDTO.getFechaCierre().atStartOfDay());
                     periodoInscripcion.setAnioLectivo(periodoInscripcionDTO.getAnioLectivo());
                     periodoInscripcion.setCuatrimestre(periodoInscripcionDTO.getCuatrimestre());
                     periodoInscripcion.setActiva(periodoInscripcionDTO.getActiva());

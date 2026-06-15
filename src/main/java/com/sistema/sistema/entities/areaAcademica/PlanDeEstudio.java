@@ -15,6 +15,7 @@ import lombok.Setter;
 public class PlanDeEstudio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idPlanEstudio")
     private Long id;
 
     @Column(name = "idCarrera")

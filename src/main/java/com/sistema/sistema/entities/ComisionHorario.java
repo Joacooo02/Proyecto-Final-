@@ -42,6 +42,7 @@ public class ComisionHorario {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(name = "idComisionHorario")
     private Long id;
 
     @Column(name = "idComision")
