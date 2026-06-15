@@ -56,7 +56,6 @@ public class CuotaService {
         return "Cuota generada correctamente";
     }
 
-
     public List<CuotaDTO> listarPorAlumno(Long idAlumno)
     {
         return cuotaMapper.toDTOList(cuotaRepository.findByAlumnoIdPersona(idAlumno));
@@ -71,24 +70,19 @@ public class CuotaService {
                 .sum();
     }
 
-    public void actualizarVencidas()
-    {
-        List<Cuota> cuotas = cuotaRepository.findAll();
-
-        for(Cuota c : cuotas)
-        {
-            if(c.getEstadoCuota() == EstadoCuota.PENDIENTE && c.getFechaVencimiento().isBefore(LocalDate.now()))
-            {
-                c.setEstadoCuota(EstadoCuota.VENCIDA);
-                cuotaRepository.save(c);
-            }
-        }
-    }
 
     public List<CuotaDTO> listarPorEstado(EstadoCuota estadoCuota) {
         return cuotaMapper.toDTOList(
                 cuotaRepository.findByEstadoCuota(estadoCuota)
         );
+    }
+
+    public Integer obtenerDeudaTotal(Long idAlumno)
+    {
+        List<Cuota> cuotasDeuda = cuotaRepository.findByAlumno_IdPersonaAndEstadoCuotaIn(idAlumno,List.of(EstadoCuota.PENDIENTE,EstadoCuota.VENCIDA));
+        return cuotasDeuda.stream()
+                .mapToInt(Cuota::getValorCuota)
+                .sum();
     }
 
 

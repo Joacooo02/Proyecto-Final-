@@ -39,6 +39,9 @@ public class CuotaController {
     public List<CuotaDTO> listarPorEstado(@RequestParam EstadoCuota estado) {
         return cuotaService.listarPorEstado(estado);
     }
-
+    @GetMapping("/deuda/{idAlumno}")
+    public Integer obtenerDeudaTotal(@PathVariable Long idAlumno) {
+        return cuotaService.obtenerDeudaTotal(idAlumno);
+    }
 
 }
