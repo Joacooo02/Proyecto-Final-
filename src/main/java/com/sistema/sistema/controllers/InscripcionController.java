@@ -18,10 +18,10 @@ public class InscripcionController {
     private InscripcionService service;
 
 
-    @PostMapping("/comision/{idAlumno}/{idComision}")
-    public AlumnoInscripcionComision inscribirComision(@PathVariable Long idAlumno, @PathVariable Long idComision)
+    @PostMapping("/comision/{idAlumno}/{idComision}/{idPeriodo}")
+    public AlumnoInscripcionComision inscribirComision(@PathVariable Long idAlumno, @PathVariable Long idComision, @PathVariable Long idPeriodo)
     {
-        return service.inscribirComision(idAlumno, idComision);
+        return service.inscribirComision(idAlumno, idComision,idPeriodo);
     }
 
     @PostMapping("/examenFinal/{idAlumno}/{idExamen}")
@@ -37,9 +37,7 @@ public class InscripcionController {
     }
 
     @PostMapping("/materia/{idAlumno}/{idMateria}")
-    public AlumnoInscripcionMateria inscribirMateria(
-            @PathVariable Long idAlumno,
-            @PathVariable Long idMateria)
+    public AlumnoInscripcionMateria inscribirMateria(@PathVariable Long idAlumno, @PathVariable Long idMateria)
     {
         return service.inscribirMateria(idAlumno,idMateria);
     }

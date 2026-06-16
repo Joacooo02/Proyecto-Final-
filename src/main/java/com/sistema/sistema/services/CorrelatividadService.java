@@ -46,7 +46,7 @@ public class CorrelatividadService {
 
     public List<CorrelatividadDTO> buscarPorMateria(Long idMateria)
     {
-        return correlatividadMapper.toDTOList(correlatividadRepository.findByMateriaIdMateria(idMateria));
+        return correlatividadMapper.toDTOList(correlatividadRepository.findByMateria_IdMateria(idMateria));
     }
 
     public void eliminar(Long id)

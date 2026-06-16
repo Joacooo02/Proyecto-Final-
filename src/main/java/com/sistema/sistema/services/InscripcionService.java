@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.entities.areaAcademica.PeriodoInscripcionComision;
 import com.sistema.sistema.exceptions.InscripcionInvalida;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.entities.areaAcademica.Examen;
@@ -44,6 +45,9 @@ public class InscripcionService {
     @Autowired
     private ExamenRepository examenRepository;
 
+    @Autowired
+    private PeriodoInscripcionComisionRepository periodoInscripcionComisionRepository;
+
     public AlumnoInscripcionMateria inscribirMateria(Long idAlumno, Long idMateria) {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
@@ -64,50 +68,58 @@ public class InscripcionService {
     }
 
 
-    public AlumnoInscripcionComision inscribirComision(Long idAlumno, Long idComision) {
+    public AlumnoInscripcionComision inscribirComision(Long idAlumno, Long idComision, Long idPeriodo) {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
+        if (!alumno.isEsRegular()) {
+            throw new ComisionInvalidaException("El alumno no es regular");
+        }
+
         Comision comision = comisionRepository.findById(idComision).orElseThrow(() -> new ComisionInvalidaException("Comisión no encontrada"));
 
-        boolean estaInscripto = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, comision.getMateria().getIdMateria());
+        boolean habilitada = periodoInscripcionComisionRepository.existsByPeriodo_IdPeriodoAndComision_IdComision(idPeriodo, idComision);
 
-        if (!estaInscripto)
-        {
-            throw new MateriaInexistente("Tenes que inscribirte a la materia");
+        if (!habilitada) {
+            throw new ComisionInvalidaException("La comision no esta habilitada");
         }
-        boolean yaInscriptoComision = comisionRepo.existsByAlumnoIdPersonaAndComisionIdComision(idAlumno, idComision);
+
+        boolean inscriptoMateria = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, comision.getMateria().getIdMateria());
+
+        if (!inscriptoMateria)
+        {
+            throw new MateriaInexistente("Tenes que estar inscripto en la materia");
+        }
+
+        boolean yaInscriptoComision = comisionRepo.existsByAlumno_IdPersonaAndComision_IdComision(idAlumno,idComision);
 
         if (yaInscriptoComision)
         {
-            throw new InscripcionInvalida("Ya estás inscripto en una comisión de esta materia");
+            throw new InscripcionInvalida("Ya estas inscripto en esta comision");
         }
 
-        if (comision.getCantAlumnos() >= 50)
+        if(comision.getCantAlumnos() != null && comision.getCantAlumnos() >= 50)
         {
-            throw new ComisionInvalidaException("La comisión está completa");
+            throw new ComisionInvalidaException("La comision esta completa");
         }
 
+        comision.setCantAlumnos(comision.getCantAlumnos() == null ? 1 : comision.getCantAlumnos() + 1);
 
-        comision.setCantAlumnos(comision.getCantAlumnos() + 1);
         comisionRepository.save(comision);
 
+        return comisionRepo.save(AlumnoInscripcionComision.builder()
+                .alumno(alumno)
+                .comision(comision)
+                .fechaInscripcion(LocalDate.now())
+                .build());
 
-        return comisionRepo.save(
-                AlumnoInscripcionComision.builder()
-                        .alumno(alumno)
-                        .comision(comision)
-                        .fechaInscripcion(LocalDate.now())
-                        .build());
     }
 
     public AlumnoInscripcionExamenFinal inscribirExamen(Long idAlumno, Long idExamen) {
 
-        Alumno alumno = alumnoRepository.findById(idAlumno)
-                .orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
 
-        Examen examen = examenRepository.findById(idExamen)
-                .orElseThrow(() -> new RuntimeException("Examen no encontrado"));
+        Examen examen = examenRepository.findById(idExamen).orElseThrow(() -> new RuntimeException("Examen no encontrado"));
 
         if (!examen.getTipoExamen().equals(TipoExamen.FINAL)) {
             throw new RuntimeException("Solo se puede inscribir a exámenes finales");
