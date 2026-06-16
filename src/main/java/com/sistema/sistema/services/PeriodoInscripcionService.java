@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.dto.PeriodoInscripcionComisionDTO;
 import com.sistema.sistema.dto.PeriodoInscripcionDTO;
 import com.sistema.sistema.entities.areaAcademica.PeriodoInscripcion;
 import com.sistema.sistema.mappers.PeriodoInscripcionMapper;
@@ -51,4 +52,5 @@ public class PeriodoInscripcionService {
         return periodoInscripcionRepository.findById(id)
                 .map(periodoInscripcionMapper::toDTO);
     }
+
 }
