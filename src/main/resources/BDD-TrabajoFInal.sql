@@ -456,6 +456,30 @@ CREATE TABLE boleto_especial_educativo (
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
 );
 
+CREATE TABLE usuarios (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE periodo_inscripcion_comision (
+    id BIGINT NOT NULL AUTO_INCREMENT primary KEY,
+    idPeriodo BIGINT UNSIGNED NOT NULL,
+    idComision BIGINT UNSIGNED  NOT NULL,
+    CONSTRAINT fk_periodo
+	FOREIGN KEY (idPeriodo)
+        REFERENCES PeriodoInscripcion(idPeriodo),
+    CONSTRAINT fk_comision
+        FOREIGN KEY (idComision)
+        REFERENCES Comision(idComision)
+);
+
+INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaInicio,fechaCierre,activa)
+VALUES (1,'CURSADA',2026,1,'2026-06-01 00:00:00','2026-07-01 00:00:00',true);
+
+
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
 SELECT * FROM Alumno;
@@ -466,5 +490,9 @@ SELECT * FROM Examen;
 SELECT * FROM Nota;
 SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
+SELECT * FROM usuarios;
+SELECT * FROM PeriodoInscripcion;
 
+DESCRIBE PeriodoInscripcion;
+DESCRIBE periodo_inscripcion_comision;
 
