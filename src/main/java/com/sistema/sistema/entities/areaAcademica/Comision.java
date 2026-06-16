@@ -30,4 +30,6 @@ public class Comision {
 
     @Column(length = 50)
     private String aula;
+
+    private Integer cupoMaximo = 50;
 }

@@ -48,6 +48,12 @@ public class InscripcionService {
     @Autowired
     private PeriodoInscripcionComisionRepository periodoInscripcionComisionRepository;
 
+    @Autowired
+    private AlumnoMateriaAprobadaRepository materiaAprobadaRepository;
+
+    @Autowired
+    private CorrelatividadRepository correlatividadRepository;
+
     public AlumnoInscripcionMateria inscribirMateria(Long idAlumno, Long idMateria) {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
@@ -84,27 +90,31 @@ public class InscripcionService {
             throw new ComisionInvalidaException("La comision no esta habilitada");
         }
 
-        boolean inscriptoMateria = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, comision.getMateria().getIdMateria());
+        boolean yaInscripto = comisionRepo.existsByAlumno_IdPersonaAndComision_IdComision(idAlumno,idComision);
 
-        if (!inscriptoMateria)
+        if (yaInscripto)
         {
-            throw new MateriaInexistente("Tenes que estar inscripto en la materia");
+            throw new ComisionInvalidaException("Ya estas inscripto en la comision");
         }
 
-        boolean yaInscriptoComision = comisionRepo.existsByAlumno_IdPersonaAndComision_IdComision(idAlumno,idComision);
+        var correlativas = correlatividadRepository.findByMateria_IdMateria(comision.getMateria().getIdMateria());
 
-        if (yaInscriptoComision)
+        for (var c : correlativas)
         {
-            throw new InscripcionInvalida("Ya estas inscripto en esta comision");
+            boolean aprobada = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,c.getMateriaCorrelativa().getIdMateria());
+
+            if(!aprobada)
+            {
+                throw new MateriaInexistente("No cumple correlativas");
+            }
         }
 
-        if(comision.getCantAlumnos() != null && comision.getCantAlumnos() >= 50)
+        if(comision.getCantAlumnos() >= comision.getCupoMaximo())
         {
-            throw new ComisionInvalidaException("La comision esta completa");
+            throw new ComisionInvalidaException("Cupo lleno");
         }
 
-        comision.setCantAlumnos(comision.getCantAlumnos() == null ? 1 : comision.getCantAlumnos() + 1);
-
+        comision.setCantAlumnos(comision.getCantAlumnos()+1);
         comisionRepository.save(comision);
 
         return comisionRepo.save(AlumnoInscripcionComision.builder()
@@ -112,7 +122,6 @@ public class InscripcionService {
                 .comision(comision)
                 .fechaInscripcion(LocalDate.now())
                 .build());
-
     }
 
     public AlumnoInscripcionExamenFinal inscribirExamen(Long idAlumno, Long idExamen) {
