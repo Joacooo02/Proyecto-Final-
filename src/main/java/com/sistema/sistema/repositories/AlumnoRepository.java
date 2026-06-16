@@ -1,6 +1,7 @@
 package com.sistema.sistema.repositories;
 
 import com.sistema.sistema.entities.usuario.Alumno;
+import com.sistema.sistema.enums.EstadoMateria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno,Long>, JpaSpecifi
     Optional<Alumno> findByDni(String dni);
 
     List<Alumno> findByInscripcionesMateria_Materia_IdMateria(Long idMateria);
+
+
 }

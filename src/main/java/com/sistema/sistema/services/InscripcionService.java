@@ -2,10 +2,8 @@ package com.sistema.sistema.services;
 
 import com.sistema.sistema.Exceptions.CorrelativaException;
 import com.sistema.sistema.Exceptions.ExamenFinalException;
-import com.sistema.sistema.entities.areaAcademica.PeriodoInscripcionComision;
 import com.sistema.sistema.enums.EstadoMateria;
 import com.sistema.sistema.enums.TipoInscripcion;
-import com.sistema.sistema.exceptions.InscripcionInvalida;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
@@ -53,10 +51,10 @@ public class InscripcionService {
     private PeriodoInscripcionComisionRepository periodoInscripcionComisionRepository;
 
     @Autowired
-    private AlumnoMateriaAprobadaRepository materiaAprobadaRepository;
+    private CorrelatividadRepository correlatividadRepository;
 
     @Autowired
-    private CorrelatividadRepository correlatividadRepository;
+    private AlumnoMateriaRepository alumnoMateriaRepository;
 
 
     public void validarCorrelativas(Long idAlumno, Materia materia, TipoInscripcion tipo)
@@ -67,13 +65,7 @@ public class InscripcionService {
         {
             boolean cumple;
 
-            if(tipo == TipoInscripcion.CURSADA)
-            {
-                cumple = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,c.getMateriaCorrelativa().getIdMateria());
-            }else
-            {
-                cumple = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,c.getMateriaCorrelativa().getIdMateria());
-            }
+            cumple = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,c.getMateriaCorrelativa().getIdMateria(),EstadoMateria.APROBADA);
 
             if(!cumple)
             {
@@ -86,14 +78,14 @@ public class InscripcionService {
     {
         validarCorrelativas(idAlumno,materia,TipoInscripcion.FINAL);
 
-        boolean regular = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateriaAndEstado(idAlumno,materia.getIdMateria(), EstadoMateria.REGULAR);
+        boolean regular = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,materia.getIdMateria(), EstadoMateria.REGULAR);
 
         if(!regular)
         {
             throw new CorrelativaException("No regularizo la materia");
         }
 
-        boolean aprobado = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,materia.getIdMateria());
+        boolean aprobado = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,materia.getIdMateria(),EstadoMateria.APROBADA);
 
         if(aprobado)
         {
@@ -151,7 +143,7 @@ public class InscripcionService {
 
         for (var c : correlativas)
         {
-            boolean aprobada = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,c.getMateriaCorrelativa().getIdMateria());
+            boolean aprobada = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,c.getMateriaCorrelativa().getIdMateria(),EstadoMateria.APROBADA);
 
             if(!aprobada)
             {

@@ -6,7 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AlumnoInscripcionMateriaRepository extends JpaRepository<AlumnoInscripcionMateria, Long> {
     boolean existsByAlumnoIdPersonaAndMateriaIdMateria(Long idAlumno, Long idMateria);
-
-    boolean existsByAlumnoIdPersonaAndMateriaIdMateriaAndEstado(Long idAlumno, Long idMateria, EstadoMateria estadoMateria);
-
 }
