@@ -12,5 +12,4 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Administrador extends Persona{
 
-
 }
