@@ -3,6 +3,7 @@ package com.sistema.sistema.services;
 import com.sistema.sistema.Exceptions.CorrelativaException;
 import com.sistema.sistema.Exceptions.ExamenFinalException;
 import com.sistema.sistema.entities.areaAcademica.PeriodoInscripcionComision;
+import com.sistema.sistema.enums.EstadoMateria;
 import com.sistema.sistema.enums.TipoInscripcion;
 import com.sistema.sistema.exceptions.InscripcionInvalida;
 import com.sistema.sistema.entities.areaAcademica.Comision;
@@ -78,6 +79,25 @@ public class InscripcionService {
             {
                 throw new CorrelativaException("no cumple correlativas para" +tipo);
             }
+        }
+    }
+
+    public void validarInscripcionExamenFinal(Long idAlumno, Materia materia)
+    {
+        validarCorrelativas(idAlumno,materia,TipoInscripcion.FINAL);
+
+        boolean regular = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateriaAndEstado(idAlumno,materia.getIdMateria(), EstadoMateria.REGULAR);
+
+        if(!regular)
+        {
+            throw new CorrelativaException("No regularizo la materia");
+        }
+
+        boolean aprobado = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,materia.getIdMateria());
+
+        if(aprobado)
+        {
+            throw new CorrelativaException("La materia ya esta aprobada");
         }
     }
 
@@ -166,7 +186,7 @@ public class InscripcionService {
             throw new ExamenFinalException("Solo se puede inscribir a exámenes finales");
         }
 
-        validarCorrelativas(idAlumno,examen.getMateria(),TipoInscripcion.FINAL);
+        validarInscripcionExamenFinal(idAlumno,examen.getMateria());
 
         AlumnoInscripcionExamenFinal inscripcion = AlumnoInscripcionExamenFinal.builder()
                 .alumno(alumno)

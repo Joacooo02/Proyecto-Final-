@@ -3,6 +3,6 @@ package com.sistema.sistema.enums;
 public enum EstadoMateria {
     PENDIENTE,
     CURSANDO,
-    CURSADA,
+    REGULAR,
     APROBADA
 }
