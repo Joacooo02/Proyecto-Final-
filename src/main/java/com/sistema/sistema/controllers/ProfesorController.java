@@ -1,5 +1,6 @@
 package com.sistema.sistema.controllers;
 
+import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.dto.ComisionDTO;
 import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.enums.EstadoProfesor;
@@ -50,7 +51,7 @@ public class ProfesorController {
         return profesorService.modificarProfesor(id, profesorModificado);
     }
 
-    @GetMapping("/{Id}/comisiones")
+    @GetMapping("/{id}/comisiones")
     public ResponseEntity<List<ComisionDTO>> listarComisiones(@PathVariable Long profesorId) {
         List<ComisionDTO> comisiones = profesorService.obtenerComisionesProfesor(profesorId);
         return ResponseEntity.ok(comisiones);
@@ -60,5 +61,11 @@ public class ProfesorController {
     public ResponseEntity<List<MateriaDTO>> listarMaterias(@PathVariable Long profesorId) {
         List<MateriaDTO> materias = profesorService.obtenerMateriasProfesor(profesorId);
         return ResponseEntity.ok(materias);
+    }
+
+    @GetMapping("/{materiaId}/alumnos")
+    public ResponseEntity<List<AlumnoDTO>> obtenerAlumnosMateria(@PathVariable Long materiaId) {
+        List<AlumnoDTO> alumnos = profesorService.obtenerAlumnosMateria(materiaId);
+        return ResponseEntity.ok(alumnos);
     }
 }

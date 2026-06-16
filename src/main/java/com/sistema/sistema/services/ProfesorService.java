@@ -1,12 +1,17 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.dto.ComisionDTO;
 import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.mappers.AlumnoMapper;
+import com.sistema.sistema.repositories.AlumnoRepository;
 import com.sistema.sistema.repositories.ComisionRepository;
+import com.sistema.sistema.repositories.MateriaRepository;
 import com.sistema.sistema.repositories.ProfesorRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +31,12 @@ public class ProfesorService {
 
     @Autowired
     private final ComisionRepository comisionRepository;
+
+    @Autowired
+    private final AlumnoRepository alumnoRepository;
+
+    @Autowired
+    private final AlumnoMapper alumnoMapper;
 
     public Profesor buscarProfesorPorId(Long id) {
         return profesorRepository.findById(id)
@@ -103,6 +114,12 @@ public class ProfesorService {
                 )
                 .distinct()
                 .toList();
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosMateria(Long materiaId) {
+        List<Alumno> alumnosInscriptos = alumnoRepository
+                .findByInscripcionesMateria_Materia_IdMateria(materiaId);
+        return alumnoMapper.toDTOList(alumnosInscriptos);
     }
 }
 
