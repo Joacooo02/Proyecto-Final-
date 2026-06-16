@@ -84,6 +84,7 @@ CREATE TABLE Comision(
     nroComision INT,
     cantAlumnos INT,
     aula VARCHAR(50),
+    cupo_maximo INT DEFAULT 50,
     FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE,
     FOREIGN KEY (idProfesor) REFERENCES Profesor(idPersona) ON DELETE CASCADE
 );
@@ -478,6 +479,15 @@ CREATE TABLE periodo_inscripcion_comision (
 
 INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaInicio,fechaCierre,activa)
 VALUES (1,'CURSADA',2026,1,'2026-06-01 00:00:00','2026-07-01 00:00:00',true);
+
+CREATE TABLE alumno_materia_aprobada (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_alumno BIGINT UNSIGNED NOT NULL,
+    id_materia BIGINT UNSIGNED NOT NULL,
+    fecha_aprobacion DATE,
+    FOREIGN KEY (id_alumno) REFERENCES alumno(idPersona),
+    FOREIGN KEY (id_materia) REFERENCES materia(idMateria)
+);
 
 
 SELECT * FROM Persona;

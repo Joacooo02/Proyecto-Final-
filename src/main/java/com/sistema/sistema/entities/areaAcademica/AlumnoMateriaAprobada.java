@@ -7,7 +7,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Alumno_Materia_Aprobada")
+@Table(name = "alumno_materia_aprobada")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,11 +20,14 @@ public class AlumnoMateriaAprobada {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "id_alumno", nullable = false)
     private Alumno alumno;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "id_materia", nullable = false)
     private Materia materia;
 
+    @Column(name = "fecha_aprobacion")
     private LocalDate fechaAprobacion;
 
 
