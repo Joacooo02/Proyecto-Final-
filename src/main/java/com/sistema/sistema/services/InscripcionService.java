@@ -1,6 +1,9 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Exceptions.CorrelativaException;
+import com.sistema.sistema.Exceptions.ExamenFinalException;
 import com.sistema.sistema.entities.areaAcademica.PeriodoInscripcionComision;
+import com.sistema.sistema.enums.TipoInscripcion;
 import com.sistema.sistema.exceptions.InscripcionInvalida;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.entities.areaAcademica.Examen;
@@ -54,11 +57,35 @@ public class InscripcionService {
     @Autowired
     private CorrelatividadRepository correlatividadRepository;
 
+
+    public void validarCorrelativas(Long idAlumno, Materia materia, TipoInscripcion tipo)
+    {
+        var correlativas = correlatividadRepository.findByMateria_IdMateria(materia.getIdMateria());
+
+        for (var c : correlativas)
+        {
+            boolean cumple;
+
+            if(tipo == TipoInscripcion.CURSADA)
+            {
+                cumple = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,c.getMateriaCorrelativa().getIdMateria());
+            }else
+            {
+                cumple = materiaAprobadaRepository.existsByAlumno_IdPersonaAndMateria_IdMateria(idAlumno,c.getMateriaCorrelativa().getIdMateria());
+            }
+
+            if(!cumple)
+            {
+                throw new CorrelativaException("no cumple correlativas para" +tipo);
+            }
+        }
+    }
+
     public AlumnoInscripcionMateria inscribirMateria(Long idAlumno, Long idMateria) {
 
-        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
-        Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new RuntimeException("Materia no encontrada"));
+        Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new MateriaInexistente("Materia no encontrada"));
 
         boolean existe = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, idMateria);
 
@@ -66,12 +93,15 @@ public class InscripcionService {
             throw new MateriaInexistente("Ya se inscribio en esta materia");
         }
 
+        validarCorrelativas(idAlumno,materia,TipoInscripcion.CURSADA);
+
         return materiaRepo.save(AlumnoInscripcionMateria.builder()
                 .alumno(alumno)
                 .materia(materia)
                 .fechaInscripcion(LocalDate.now())
                 .build());
     }
+
 
 
     public AlumnoInscripcionComision inscribirComision(Long idAlumno, Long idComision, Long idPeriodo) {
@@ -109,6 +139,8 @@ public class InscripcionService {
             }
         }
 
+        validarCorrelativas(idAlumno,comision.getMateria(),TipoInscripcion.CURSADA);
+
         if(comision.getCantAlumnos() >= comision.getCupoMaximo())
         {
             throw new ComisionInvalidaException("Cupo lleno");
@@ -126,13 +158,15 @@ public class InscripcionService {
 
     public AlumnoInscripcionExamenFinal inscribirExamen(Long idAlumno, Long idExamen) {
 
-        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
+        Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
-        Examen examen = examenRepository.findById(idExamen).orElseThrow(() -> new RuntimeException("Examen no encontrado"));
+        Examen examen = examenRepository.findById(idExamen).orElseThrow(() -> new ExamenFinalException("Examen no encontrado"));
 
         if (!examen.getTipoExamen().equals(TipoExamen.FINAL)) {
-            throw new RuntimeException("Solo se puede inscribir a exámenes finales");
+            throw new ExamenFinalException("Solo se puede inscribir a exámenes finales");
         }
+
+        validarCorrelativas(idAlumno,examen.getMateria(),TipoInscripcion.FINAL);
 
         AlumnoInscripcionExamenFinal inscripcion = AlumnoInscripcionExamenFinal.builder()
                 .alumno(alumno)
