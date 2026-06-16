@@ -9,5 +9,5 @@ import java.util.List;
 public interface PeriodoInscripcionComisionRepository extends JpaRepository<PeriodoInscripcionComision,Long>
 {
     List<PeriodoInscripcionComision> findByPeriodoIdPeriodo(Long idPeriodo);
-    boolean existsByPeriodoIdPeriodoAndComisionIdComision(Long idPeriodo, Long idComision);
+    boolean existsByPeriodo_IdPeriodoAndComision_IdComision(Long idPeriodo, Long idComision);
 }

@@ -30,7 +30,7 @@ public class PeriodoInscripcionComisionService {
 
         Comision comision = comisionRepository.findById(idComision).orElseThrow(() -> new EntidadNoEncontradaException("No se encontro la comision"));
 
-        boolean existe = periodoComisionRepository.existsByPeriodoIdPeriodoAndComisionIdComision(idPeriodo, idComision);
+        boolean existe = periodoComisionRepository.existsByPeriodo_IdPeriodoAndComision_IdComision(idPeriodo, idComision);
 
         if (existe) {
             throw new ComisionInvalidaException("La comision ya fue habilitada en este periodo");

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper (componentModel = "spring")
 public interface PeridoInscripcionComisionMapper {
+
     @Mapping(target = "idPeriodo", source = "periodo.idPeriodo")
     @Mapping(target = "idComision", source = "comision.idComision")
     @Mapping(target = "materia", source = "comision.materia.nombre")
