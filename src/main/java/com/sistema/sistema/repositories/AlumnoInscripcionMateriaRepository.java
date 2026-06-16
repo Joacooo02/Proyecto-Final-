@@ -1,9 +1,8 @@
 package com.sistema.sistema.repositories;
 
-import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
-import com.sistema.sistema.enums.EstadoMateria;
+import com.sistema.sistema.entities.areaAcademica.AlumnoMateria;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AlumnoInscripcionMateriaRepository extends JpaRepository<AlumnoInscripcionMateria, Long> {
+public interface AlumnoInscripcionMateriaRepository extends JpaRepository<AlumnoMateria, Long> {
     boolean existsByAlumnoIdPersonaAndMateriaIdMateria(Long idAlumno, Long idMateria);
 }

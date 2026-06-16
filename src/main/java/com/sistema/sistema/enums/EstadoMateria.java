@@ -4,7 +4,8 @@ public enum EstadoMateria {
     PENDIENTE,
     CURSANDO,
     REGULAR,
-    APROBADA;
+    APROBADA,
+    INSCRIPTO;
 
     public boolean cumpleCon(EstadoCorrelatividad requerido) {
         if (requerido == EstadoCorrelatividad.REGULAR) {

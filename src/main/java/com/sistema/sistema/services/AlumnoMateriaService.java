@@ -4,6 +4,7 @@ import com.sistema.sistema.dto.AlumnoMateriaDTO;
 import com.sistema.sistema.entities.areaAcademica.AlumnoMateria;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.usuario.Alumno;
+import com.sistema.sistema.enums.EstadoMateria;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.exceptions.MateriaInexistente;
@@ -13,7 +14,7 @@ import com.sistema.sistema.repositories.AlumnoRepository;
 import com.sistema.sistema.repositories.MateriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -44,10 +45,25 @@ public class AlumnoMateriaService {
     }
 
     public AlumnoMateriaDTO crear(AlumnoMateriaDTO dto) {
-        AlumnoMateria alumnoMateria = alumnoMateriaMapper.toEntity(dto);
-        alumnoMateria.setAlumno(buscarAlumno(dto.getIdAlumno()));
-        alumnoMateria.setMateria(buscarMateria(dto.getIdMateria()));
+
+        Alumno alumno = buscarAlumno(dto.getIdAlumno());
+        Materia materia = buscarMateria(dto.getIdMateria());
+
+        boolean existe = alumnoMateriaRepository.existsByAlumnoAndMateria(alumno, materia);
+
+        if (existe)
+        {
+            throw new AlumnoInvalidoException("El alumno ya se inscribio en la materia");
+        }
+
+        AlumnoMateria alumnoMateria = new AlumnoMateria();
+        alumnoMateria.setAlumno(alumno);
+        alumnoMateria.setMateria(materia);
+        alumnoMateria.setEstado(EstadoMateria.INSCRIPTO);
+        alumnoMateria.setFechaInscripcion(LocalDate.now());
+
         return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(alumnoMateria));
+
     }
 
     public AlumnoMateriaDTO modificar(Long id, AlumnoMateriaDTO dto) {
@@ -72,4 +88,62 @@ public class AlumnoMateriaService {
         return materiaRepository.findById(idMateria)
                 .orElseThrow(() -> new MateriaInexistente("La materia con id " + idMateria + " no existe"));
     }
+
+    public AlumnoMateriaDTO pasarAcursando(Long idAlumno, Long idMateria)
+    {
+        Alumno alumno = buscarAlumno(idAlumno);
+        Materia materia = buscarMateria(idMateria);
+
+        AlumnoMateria alumnoMateria = alumnoMateriaRepository.findByAlumnoAndMateria(alumno,materia).orElseThrow(() -> new EntidadNoEncontradaException("No inscripto"));
+
+        if(alumnoMateria.getEstado() == EstadoMateria.APROBADA)
+        {
+            return alumnoMateriaMapper.toDTO(alumnoMateria);
+        }
+
+        alumnoMateria.setEstado(EstadoMateria.CURSANDO);
+
+        return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(alumnoMateria));
+    }
+
+    public AlumnoMateriaDTO registrarParciales(Long idAlumno, Long idMateria, double n1, double n2)
+    {
+        AlumnoMateria am = alumnoMateriaRepository.findByAlumnoAndMateria(alumnoRepository.findById(idAlumno).orElseThrow(),materiaRepository.findById(idMateria).orElseThrow()).orElseThrow(() -> new EntidadNoEncontradaException("no inscripto"));
+
+        am.setNotaParcial1(n1);
+        am.setNotaParcial2(n2);
+
+        if (n1 >= 6 && n2 >= 6)
+        {
+            am.setEstado(EstadoMateria.REGULAR);
+            am.setFechaRegularizacion(LocalDate.now());
+        }else
+        {
+            am.setEstado(EstadoMateria.CURSANDO);
+        }
+
+        return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(am));
+    }
+
+
+    public AlumnoMateriaDTO aprobarFinal(Long idAlumno, Long idMateria, double notaFinal)
+    {
+        AlumnoMateria am = alumnoMateriaRepository.findByAlumnoAndMateria(alumnoRepository.findById(idAlumno).orElseThrow(),materiaRepository.findById(idMateria).orElseThrow()).orElseThrow(() -> new EntidadNoEncontradaException("No inscripto"));
+
+        if (am.getEstado() != EstadoMateria.REGULAR)
+        {
+            return alumnoMateriaMapper.toDTO(am);
+        }
+
+        am.setNotaFinal(notaFinal);
+
+        if (notaFinal >= 4)
+        {
+            am.setEstado(EstadoMateria.APROBADA);
+            am.setFechaAprobacion(LocalDate.now());
+        }
+
+        return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(am));
+    }
+
 }

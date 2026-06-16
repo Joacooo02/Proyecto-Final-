@@ -1,7 +1,7 @@
 package com.sistema.sistema.entities.usuario;
 
+import com.sistema.sistema.entities.areaAcademica.AlumnoMateria;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
-import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -33,6 +33,6 @@ public class Alumno extends Persona{
     private List<AlumnoInscripcionComision> inscripcionComision = new ArrayList<>();
 
     @OneToMany(mappedBy = "alumno")
-    private List<AlumnoInscripcionMateria> inscripcionesMateria = new ArrayList<>();
+    private List<AlumnoMateria> inscripcionesMateria = new ArrayList<>();
 
 }

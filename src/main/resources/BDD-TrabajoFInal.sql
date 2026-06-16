@@ -52,19 +52,18 @@ CREATE TABLE PlanEstudio(
     nombre VARCHAR(100) NOT NULL,
     anioInicio INT NOT NULL,
 
-    FOREIGN KEY (idCarrera)
-        REFERENCES Carrera(idCarrera)
-        ON DELETE CASCADE
+    FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera) ON DELETE CASCADE
 );
 
 CREATE TABLE Materia(
-    idMateria BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	idMateria BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     idCarrera BIGINT UNSIGNED NOT NULL,
     idPlanEstudio BIGINT UNSIGNED,
     nombre VARCHAR(50),
     cargaHoraria INT,
     cuatrimestre INT,
     anioCursado INT,
+
     FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera) ON DELETE CASCADE,
     FOREIGN KEY (idPlanEstudio) REFERENCES PlanEstudio(idPlanEstudio)
 );
@@ -156,16 +155,6 @@ CREATE TABLE RespuestaPregunta (
     CONSTRAINT fk_rp_pregunta  FOREIGN KEY (idPreguntaEncuesta) REFERENCES PreguntaEncuesta(idPreguntaEncuesta)
 );
 
-CREATE TABLE Alumno_Inscripcion_Materia (
-    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idAlumno BIGINT UNSIGNED NOT NULL,
-    idMateria BIGINT UNSIGNED NOT NULL,
-    fechaInscripcion DATE NOT NULL,
-    UNIQUE KEY uq_alumno_materia (idAlumno, idMateria),
-    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
-    FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
-);
-
 CREATE TABLE Alumno_Inscripcion_Comision (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idAlumno BIGINT UNSIGNED NOT NULL,
@@ -199,47 +188,30 @@ CREATE TABLE Alumno_Inscripcion_Examen_Final (
 
 CREATE TABLE Correlatividad(
     idCorrelatividad BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
     idMateria BIGINT UNSIGNED NOT NULL,
     idMateriaCorrelativa BIGINT UNSIGNED NOT NULL,
-
     estadoParaCursar ENUM('CURSADA','APROBADA'),
     estadoParaRendir ENUM('CURSADA','APROBADA'),
-
-    FOREIGN KEY (idMateria)
-        REFERENCES Materia(idMateria)
-        ON DELETE CASCADE,
-
-    FOREIGN KEY (idMateriaCorrelativa)
-        REFERENCES Materia(idMateria)
-        ON DELETE CASCADE
+    FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE,
+    FOREIGN KEY (idMateriaCorrelativa)REFERENCES Materia(idMateria) ON DELETE CASCADE
 );
 
 CREATE TABLE Alumno_Materia(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
     idAlumno BIGINT UNSIGNED NOT NULL,
     idMateria BIGINT UNSIGNED NOT NULL,
+    estado ENUM('PENDIENTE','CURSANDO','CURSADA','APROBADA') NOT NULL DEFAULT 'PENDIENTE',
+	notaParcial1 DOUBLE DEFAULT NULL,
+	notaParcial2 DOUBLE DEFAULT NULL,
+    notaFinal DOUBLE DEFAULT NULL,
+    fechaInscripcion DATE DEFAULT NULL,
+    fechaRegularizacion DATE DEFAULT NULL,
+    fechaAprobacion DATE DEFAULT NULL,
 
-    estado ENUM(
-        'PENDIENTE',
-        'CURSANDO',
-        'CURSADA',
-        'APROBADA'
-    ) NOT NULL DEFAULT 'PENDIENTE',
+    UNIQUE KEY uq_alumno_materia (idAlumno, idMateria),
 
-    notaFinal DOUBLE NULL,
-    fechaAprobacion DATE NULL,
-
-    UNIQUE(idAlumno,idMateria),
-
-    FOREIGN KEY (idAlumno)
-        REFERENCES Alumno(idPersona)
-        ON DELETE CASCADE,
-
-    FOREIGN KEY (idMateria)
-        REFERENCES Materia(idMateria)
-        ON DELETE CASCADE
+	FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
+    FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
 );
 
 CREATE TABLE ComisionHorario(
@@ -266,22 +238,15 @@ CREATE TABLE ComisionHorario(
 
 CREATE TABLE PeriodoInscripcion(
     idPeriodo BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
     idCarrera BIGINT UNSIGNED NOT NULL,
-
     tipo ENUM('CURSADA','FINAL') NOT NULL,
-
     anioLectivo INT NOT NULL,
     cuatrimestre INT NOT NULL,
-
     fechaInicio DATETIME NOT NULL,
     fechaCierre DATETIME NOT NULL,
-
     activa BOOLEAN DEFAULT TRUE,
 
-    FOREIGN KEY (idCarrera)
-        REFERENCES Carrera(idCarrera)
-        ON DELETE CASCADE
+    FOREIGN KEY (idCarrera) REFERENCES Carrera(idCarrera) ON DELETE CASCADE
 );
 
 CREATE TABLE Aviso (
@@ -413,15 +378,6 @@ VALUES
 INSERT INTO PagoCuota (idCuota, montoPagado, fechaPago, metodoPago)
 VALUES (1, 30000, '2026-06-01', 'EFECTIVO');
 
--- INSCRIPCION A MATERIAS
-INSERT INTO Alumno_Inscripcion_Materia
-(idAlumno,idMateria,fechaInscripcion)
-VALUES
-(2,1,'2025-03-10'),
-(2,2,'2025-03-12'),
-(2,3,'2025-03-15'),
-(3,1,'2024-03-10'),
-(3,3,'2024-03-12');
 
 -- INSCRIPCION A COMISIONES
 INSERT INTO Alumno_Inscripcion_Comision
@@ -469,25 +425,13 @@ CREATE TABLE periodo_inscripcion_comision (
     id BIGINT NOT NULL AUTO_INCREMENT primary KEY,
     idPeriodo BIGINT UNSIGNED NOT NULL,
     idComision BIGINT UNSIGNED  NOT NULL,
-    CONSTRAINT fk_periodo
-	FOREIGN KEY (idPeriodo)
-        REFERENCES PeriodoInscripcion(idPeriodo),
-    CONSTRAINT fk_comision
-        FOREIGN KEY (idComision)
-        REFERENCES Comision(idComision)
+
+    FOREIGN KEY (idPeriodo) REFERENCES PeriodoInscripcion(idPeriodo) ON DELETE CASCADE,
+    FOREIGN KEY (idComision) REFERENCES Comision(idComision) ON DELETE CASCADE
 );
 
 INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaInicio,fechaCierre,activa)
 VALUES (1,'CURSADA',2026,1,'2026-06-01 00:00:00','2026-07-01 00:00:00',true);
-
-CREATE TABLE alumno_materia_aprobada (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_alumno BIGINT UNSIGNED NOT NULL,
-    id_materia BIGINT UNSIGNED NOT NULL,
-    fecha_aprobacion DATE,
-    FOREIGN KEY (id_alumno) REFERENCES alumno(idPersona),
-    FOREIGN KEY (id_materia) REFERENCES materia(idMateria)
-);
 
 
 SELECT * FROM Persona;
@@ -503,6 +447,5 @@ SELECT * FROM Alumno_Cursa_Carrera;
 SELECT * FROM usuarios;
 SELECT * FROM PeriodoInscripcion;
 
-DESCRIBE PeriodoInscripcion;
-DESCRIBE periodo_inscripcion_comision;
+
 

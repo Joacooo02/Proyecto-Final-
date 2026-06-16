@@ -2,6 +2,7 @@ package com.sistema.sistema.services;
 
 import com.sistema.sistema.Exceptions.CorrelativaException;
 import com.sistema.sistema.Exceptions.ExamenFinalException;
+import com.sistema.sistema.entities.areaAcademica.AlumnoMateria;
 import com.sistema.sistema.enums.EstadoMateria;
 import com.sistema.sistema.enums.TipoInscripcion;
 import com.sistema.sistema.entities.areaAcademica.Comision;
@@ -9,7 +10,6 @@ import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.entities.areaAcademica.Materia;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFinal;
-import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionMateria;
 import com.sistema.sistema.enums.TipoExamen;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.exceptions.AlumnoInvalidoException;
@@ -93,7 +93,7 @@ public class InscripcionService {
         }
     }
 
-    public AlumnoInscripcionMateria inscribirMateria(Long idAlumno, Long idMateria) {
+    public AlumnoMateria inscribirMateria(Long idAlumno, Long idMateria) {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
@@ -107,11 +107,21 @@ public class InscripcionService {
 
         validarCorrelativas(idAlumno,materia,TipoInscripcion.CURSADA);
 
-        return materiaRepo.save(AlumnoInscripcionMateria.builder()
+        AlumnoMateria inscripcion = alumnoMateriaRepository.save(AlumnoMateria.builder()
                 .alumno(alumno)
                 .materia(materia)
+                .estado(EstadoMateria.PENDIENTE)
                 .fechaInscripcion(LocalDate.now())
                 .build());
+
+        alumnoMateriaRepository.findByAlumnoAndMateria(alumno,materia).ifPresentOrElse(am -> {}, () -> alumnoMateriaRepository.save(AlumnoMateria.builder()
+                .alumno(alumno)
+                .materia(materia)
+                .estado(EstadoMateria.INSCRIPTO)
+                .build()));
+
+
+        return inscripcion;
     }
 
 
@@ -120,7 +130,9 @@ public class InscripcionService {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
-        if (!alumno.isEsRegular()) {
+        boolean esRegular = alumnoMateriaRepository.existsByAlumnoAndEstado(alumno,EstadoMateria.REGULAR);
+
+        if (!esRegular) {
             throw new ComisionInvalidaException("El alumno no es regular");
         }
 

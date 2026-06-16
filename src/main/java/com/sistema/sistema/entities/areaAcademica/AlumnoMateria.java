@@ -32,7 +32,11 @@ public class AlumnoMateria {
     @Builder.Default
     private EstadoMateria estado = EstadoMateria.PENDIENTE;
 
+    private Double notaParcial1;
+    private Double notaParcial2;
     private Double notaFinal;
 
+    private LocalDate fechaInscripcion;
+    private LocalDate fechaRegularizacion;
     private LocalDate fechaAprobacion;
 }
