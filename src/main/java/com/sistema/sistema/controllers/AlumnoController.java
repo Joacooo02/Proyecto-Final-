@@ -64,4 +64,6 @@ public class AlumnoController {
     public void registrarBoleto(@PathVariable Long id) {
          alumnoService.registrarBoleto(id);
     }
+
+
 }
