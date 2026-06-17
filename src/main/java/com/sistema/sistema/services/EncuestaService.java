@@ -36,9 +36,8 @@ public class EncuestaService {
     }
 
     @Transactional
-    public RespuestaEncuesta responderEncuesta(Long idComision, Long idAlumno,
-                                               List<RespuestaPregunta> respuestas,
-                                               String comentarioFinal) {
+    public RespuestaEncuesta responderEncuesta(Long idComision, Long idAlumno, List<RespuestaPregunta> respuestas,String comentarioFinal)
+    {
         String hash = hashAlumno(idAlumno);
 
         if (respuestaRepo.existsByComision_IdComisionAndHashAlumno(idComision, hash)) {
@@ -60,8 +59,14 @@ public class EncuestaService {
                 .comentarioFinal(comentarioFinal)
                 .build();
 
-        for (RespuestaPregunta rp : respuestas) {
-            rp.setRespuestaEncuesta(encuesta);
+        for (RespuestaPregunta rp : respuestas)
+        {
+           Long idPregunta = rp.getPreguntaEncuesta().getIdPreguntaEncuesta();
+
+           PreguntaEncuesta preguntaReal = preguntaRepo.findById(idPregunta).orElseThrow(() -> new IllegalArgumentException("La pregunta no existe"));
+
+           rp.setPreguntaEncuesta(preguntaReal);
+           rp.setRespuestaEncuesta(encuesta);
         }
         encuesta.setRespuestas(respuestas);
 
