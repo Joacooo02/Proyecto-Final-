@@ -6,8 +6,8 @@ import com.sistema.sistema.Security.Controller.RegisterRequest;
 import com.sistema.sistema.Security.Controller.TokenResponse;
 import com.sistema.sistema.Security.Repository.Token;
 import com.sistema.sistema.Security.Repository.TokenRepository;
-import com.sistema.sistema.Security.Usuario.User;
-import com.sistema.sistema.Security.Usuario.UserRepository;
+import com.sistema.sistema.Security.User.User;
+import com.sistema.sistema.Security.User.UserRepository;
 import com.sistema.sistema.Security.UsuarioNotFoundException;
 import com.sistema.sistema.enums.RolUsuario;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class AuthService {
 
         var usuario = User.builder()
                 .name(request.nombre())
-                .password(passwordEncoder.encode(request.contraseña()))
+                .password(passwordEncoder.encode(request.contrasena()))
                 .email(request.email())
                 //.role(request.role())
                 .build();
@@ -49,7 +49,7 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
-                        request.contraseña()
+                        request.contrasena()
                 )
         );
         var usuario = userRepository.findByEmail(request.email())

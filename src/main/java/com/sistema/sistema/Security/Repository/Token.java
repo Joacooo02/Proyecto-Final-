@@ -1,6 +1,6 @@
 package com.sistema.sistema.Security.Repository;
 
-import com.sistema.sistema.Security.Usuario.User;
+import com.sistema.sistema.Security.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

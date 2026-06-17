@@ -1,4 +1,4 @@
-package com.sistema.sistema.Security.Usuario;
+package com.sistema.sistema.Security.User;
 
 import lombok.Builder;
 

@@ -1,8 +1,6 @@
-package com.sistema.sistema.Security.Usuario;
+package com.sistema.sistema.Security.User;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

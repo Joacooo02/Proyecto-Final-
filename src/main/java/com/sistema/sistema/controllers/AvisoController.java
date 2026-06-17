@@ -4,6 +4,7 @@ import com.sistema.sistema.dto.AvisoDTO;
 import com.sistema.sistema.services.AvisoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public class AvisoController {
 
     private final AvisoService service;
 
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
     @PostMapping("/persona/{idPersona}")
     public ResponseEntity<AvisoDTO> crearAviso(@PathVariable Long idPersona, @RequestBody AvisoDTO avisoDTO) {
         return ResponseEntity.ok(service.crearAviso(idPersona, avisoDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ALUMNO', 'PROFESOR', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<AvisoDTO>> listarAvisos() {
 
@@ -28,11 +31,13 @@ public class AvisoController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ALUMNO', 'PROFESOR', 'ADMIN')")
     @GetMapping("/{idAviso}")
     public ResponseEntity<AvisoDTO> verAvisoPorId(@PathVariable Long idAviso) {
         return ResponseEntity.ok(service.verAvisoPorId(idAviso));
     }
 
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
     @DeleteMapping("{idAviso}/{idPersona}")
     public ResponseEntity<String> eliminarAvisoPorId(@PathVariable Long idPersona, @PathVariable Long idAviso)
     {

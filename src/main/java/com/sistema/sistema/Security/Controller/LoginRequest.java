@@ -2,5 +2,5 @@ package com.sistema.sistema.Security.Controller;
 
 public record LoginRequest (
     String email,
-    String contraseña
+    String contrasena
 ){}

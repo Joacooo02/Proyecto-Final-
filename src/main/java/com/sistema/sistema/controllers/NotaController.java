@@ -5,6 +5,7 @@ import com.sistema.sistema.dto.NotaDTO;
 import com.sistema.sistema.services.NotaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +17,13 @@ import java.util.List;
 public class NotaController {
     private final NotaService serv;
 
+    @PreAuthorize("hasAnyRole('PROFESOR')")
     @PostMapping
     public Nota registrarNota(@RequestBody NotaDTO dto){
         return serv.registrarNota(dto);
     }
 
+    @PreAuthorize("hasAnyRole('PROFESOR')")
     @PutMapping("/{id}")
     public ResponseEntity<NotaDTO> modificar(@PathVariable Long id, @RequestBody NotaDTO dto) {
         return serv.modificar(id, dto)
@@ -28,6 +31,7 @@ public class NotaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasAnyRole('PROFESOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         serv.eliminar(id);

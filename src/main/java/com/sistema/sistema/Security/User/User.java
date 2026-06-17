@@ -1,4 +1,4 @@
-package com.sistema.sistema.Security.Usuario;
+package com.sistema.sistema.Security.User;
 
 import com.sistema.sistema.Security.Repository.Token;
 import com.sistema.sistema.enums.RolUsuario;

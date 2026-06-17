@@ -1,10 +1,9 @@
 package com.sistema.sistema.Security.Config;
 
-import com.sistema.sistema.Security.Usuario.User;
-import com.sistema.sistema.Security.Usuario.UserRepository;
+import com.sistema.sistema.Security.User.User;
+import com.sistema.sistema.Security.User.UserRepository;
 import com.sistema.sistema.Security.UsuarioNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

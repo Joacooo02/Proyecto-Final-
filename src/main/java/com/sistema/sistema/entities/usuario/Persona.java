@@ -4,6 +4,7 @@ import com.sistema.sistema.enums.RolUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDate;
 
@@ -41,4 +42,8 @@ public abstract class Persona {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RolUsuario rolUsuario;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }

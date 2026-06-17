@@ -7,6 +7,6 @@ import lombok.Getter;
 public record RegisterRequest (
         String email,
         String nombre,
-        String contraseña,
+        String contrasena,
         RolUsuario role
 ){}

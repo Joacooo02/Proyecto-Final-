@@ -1,6 +1,6 @@
 package com.sistema.sistema.Security.Service;
 
-import com.sistema.sistema.Security.Usuario.User;
+import com.sistema.sistema.Security.User.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
