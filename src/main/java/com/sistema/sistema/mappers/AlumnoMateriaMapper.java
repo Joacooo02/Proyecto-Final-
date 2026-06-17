@@ -17,10 +17,6 @@ public interface AlumnoMateriaMapper {
     @Mapping(target = "materiaNombre", source = "materia.nombre")
     AlumnoMateriaDTO toDTO(AlumnoMateria alumnoMateria);
 
-    @Mapping(target = "alumno", ignore = true)
-    @Mapping(target = "materia", ignore = true)
-    AlumnoMateria toEntity(AlumnoMateriaDTO alumnoMateriaDTO);
-
     List<AlumnoMateriaDTO> toDTOList(List<AlumnoMateria> alumnoMaterias);
 
     @Mapping(target = "alumno", ignore = true)

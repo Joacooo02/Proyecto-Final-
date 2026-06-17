@@ -20,11 +20,11 @@ public class AlumnoMateria {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "idAlumno",nullable = false)
+    @JoinColumn(name = "id_alumno",nullable = false)
     private Alumno alumno;
 
     @ManyToOne
-    @JoinColumn(name = "idMateria",nullable = false)
+    @JoinColumn(name = "id_materia",nullable = false)
     private Materia materia;
 
     @Enumerated(EnumType.STRING)

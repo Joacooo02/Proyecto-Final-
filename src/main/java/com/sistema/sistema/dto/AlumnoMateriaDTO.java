@@ -19,6 +19,10 @@ public class AlumnoMateriaDTO {
     private Long idMateria;
     private String materiaNombre;
     private EstadoMateria estado;
+    private Double notaParcial1;
+    private Double notaParcial2;
     private Double notaFinal;
+    private LocalDate fechaInscripcion;
+    private LocalDate fechaRegularizacion;
     private LocalDate fechaAprobacion;
 }

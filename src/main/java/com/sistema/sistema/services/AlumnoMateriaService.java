@@ -26,6 +26,18 @@ public class AlumnoMateriaService {
     private final MateriaRepository materiaRepository;
     private final AlumnoMateriaMapper alumnoMateriaMapper;
 
+
+    private Alumno buscarAlumno(Long idAlumno) {
+        return alumnoRepository.findById(idAlumno)
+                .orElseThrow(() -> new AlumnoInvalidoException("El alumno con id " + idAlumno + " no existe"));
+    }
+
+    private Materia buscarMateria(Long idMateria) {
+        return materiaRepository.findById(idMateria)
+                .orElseThrow(() -> new MateriaInexistente("La materia con id " + idMateria + " no existe"));
+    }
+
+
     public AlumnoMateria buscarPorId(Long id) {
         return alumnoMateriaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoEncontradaException("Alumno_Materia con id: " + id + " no encontrado"));
@@ -67,10 +79,19 @@ public class AlumnoMateriaService {
     }
 
     public AlumnoMateriaDTO modificar(Long id, AlumnoMateriaDTO dto) {
+
         AlumnoMateria alumnoMateria = buscarPorId(id);
-        alumnoMateriaMapper.actualizarEntity(dto, alumnoMateria);
+
         alumnoMateria.setAlumno(buscarAlumno(dto.getIdAlumno()));
         alumnoMateria.setMateria(buscarMateria(dto.getIdMateria()));
+        alumnoMateria.setEstado(dto.getEstado());
+        alumnoMateria.setNotaParcial1(dto.getNotaParcial1());
+        alumnoMateria.setNotaParcial2(dto.getNotaParcial2());
+        alumnoMateria.setNotaFinal(dto.getNotaFinal());
+        alumnoMateria.setFechaInscripcion(dto.getFechaInscripcion());
+        alumnoMateria.setFechaRegularizacion(dto.getFechaRegularizacion());
+        alumnoMateria.setFechaAprobacion(dto.getFechaAprobacion());
+
         return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(alumnoMateria));
     }
 
@@ -79,15 +100,6 @@ public class AlumnoMateriaService {
         alumnoMateriaRepository.deleteById(id);
     }
 
-    private Alumno buscarAlumno(Long idAlumno) {
-        return alumnoRepository.findById(idAlumno)
-                .orElseThrow(() -> new AlumnoInvalidoException("El alumno con id " + idAlumno + " no existe"));
-    }
-
-    private Materia buscarMateria(Long idMateria) {
-        return materiaRepository.findById(idMateria)
-                .orElseThrow(() -> new MateriaInexistente("La materia con id " + idMateria + " no existe"));
-    }
 
     public AlumnoMateriaDTO pasarAcursando(Long idAlumno, Long idMateria)
     {
