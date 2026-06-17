@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    private String name;
+    private String username;
 
     @Column(unique = true)
     private String password;

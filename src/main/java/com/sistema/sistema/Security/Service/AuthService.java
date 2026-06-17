@@ -33,7 +33,7 @@ public class AuthService {
         }
 
         var usuario = User.builder()
-                .name(request.nombre())
+                .username(request.nombre())
                 .password(passwordEncoder.encode(request.contrasena()))
                 .email(request.email())
                 //.role(request.role())

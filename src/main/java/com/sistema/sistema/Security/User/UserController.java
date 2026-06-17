@@ -18,7 +18,7 @@ public class UserController {
     public List<UserResponse> getUsers(){
         final var users = userRepository.findAll();
         return StreamSupport.stream(users.spliterator(), false)
-                .map(user -> new UserResponse(user.getName(), user.getEmail()))
+                .map(user -> new UserResponse(user.getUsername(), user.getEmail()))
                 .toList();
     }
 }

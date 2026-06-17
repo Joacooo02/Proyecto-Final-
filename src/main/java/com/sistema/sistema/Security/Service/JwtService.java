@@ -63,7 +63,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .id(user.getId().toString())
-                .claims(Map.of("nombre", user.getName()))
+                .claims(Map.of("nombre", user.getUsername()))
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))

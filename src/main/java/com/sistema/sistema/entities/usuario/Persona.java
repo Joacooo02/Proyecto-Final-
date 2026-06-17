@@ -4,7 +4,7 @@ import com.sistema.sistema.enums.RolUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.security.core.userdetails.User;
+import com.sistema.sistema.Security.User.User;
 
 import java.time.LocalDate;
 
