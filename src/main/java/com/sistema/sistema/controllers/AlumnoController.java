@@ -6,6 +6,8 @@ import com.sistema.sistema.dto.HistorialAcademicoDTO;
 import com.sistema.sistema.dto.MateriaDTO;
 import com.sistema.sistema.services.AlumnoService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,9 +63,16 @@ public class AlumnoController {
     }
 
     @PostMapping("/boleto/{id}")
-    public void registrarBoleto(@PathVariable Long id) {
+    public String registrarBoleto(@PathVariable Long id) {
          alumnoService.registrarBoleto(id);
+         return "Boleto registrado correctamente";
     }
 
+
+    @GetMapping("/boleto/{id}")
+    public boolean tieneBoletoActivo(@PathVariable Long id)
+    {
+        return alumnoService.tieneBoletoActivo(id);
+    }
 
 }

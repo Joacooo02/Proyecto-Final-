@@ -433,6 +433,29 @@ CREATE TABLE periodo_inscripcion_comision (
 INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaInicio,fechaCierre,activa)
 VALUES (1,'CURSADA',2026,1,'2026-06-01 00:00:00','2026-07-01 00:00:00',true);
 
+ALTER TABLE Materia
+DROP COLUMN id_carrera;
+
+ALTER TABLE Materia
+DROP COLUMN carga_horaria;
+
+ALTER TABLE Materia
+DROP COLUMN anio_cursado;
+
+CREATE TABLE Alumno_Backup AS
+SELECT * FROM Alumno;
+
+ALTER TABLE Alumno DROP COLUMN analitico_parcial;
+ALTER TABLE Alumno DROP COLUMN anio_ingreso;
+ALTER TABLE Alumno DROP COLUMN es_regular;
+ALTER TABLE Alumno DROP COLUMN id_persona;
+
+ALTER TABLE Alumno_Cursa_Carrera DROP COLUMN id_alumno;
+ALTER TABLE Alumno_Cursa_Carrera DROP COLUMN id_carrera;
+
+ALTER TABLE boleto_especial_educativo DROP COLUMN id_alumno;
+ALTER TABLE boleto_especial_educativo DROP COLUMN esta_activo;
+ALTER TABLE boleto_especial_educativo DROP COLUMN fue_solicitado;
 
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
@@ -446,7 +469,3 @@ SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
 SELECT * FROM usuarios;
 SELECT * FROM PeriodoInscripcion;
-
-
-
-

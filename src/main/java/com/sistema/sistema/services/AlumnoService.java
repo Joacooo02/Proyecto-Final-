@@ -180,5 +180,14 @@ public class AlumnoService {
         Random generador = new Random();
         boletoEspecialEducativo.setEstaActivo(generador.nextBoolean());
         boletoEspecialEducativoRepository.save(boletoEspecialEducativo);
+
+    }
+
+    public boolean tieneBoletoActivo(Long id)
+    {
+        Alumno alumno = alumnoRepository.findById(id).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
+        BoletoEspecialEducativo boleto = boletoEspecialEducativoRepository.findByAlumno(alumno).orElseThrow(() -> new BoletoException("El alumno no posee boleto"));
+
+        return boleto.getEstaActivo();
     }
 }
