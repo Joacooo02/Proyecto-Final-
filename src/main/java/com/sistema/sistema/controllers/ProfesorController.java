@@ -59,14 +59,14 @@ public class ProfesorController {
 
     //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
     @GetMapping("/{id}/comisiones")
-    public ResponseEntity<List<ComisionDTO>> listarComisiones(@PathVariable Long profesorId) {
-        List<ComisionDTO> comisiones = profesorService.obtenerComisionesProfesor(profesorId);
+    public ResponseEntity<List<ComisionDTO>> listarComisiones(@PathVariable Long id) {
+        List<ComisionDTO> comisiones = profesorService.obtenerComisionesProfesor(id);
         return ResponseEntity.ok(comisiones);
     }
     //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}/materias")
-    public ResponseEntity<List<MateriaDTO>> listarMaterias(@PathVariable Long profesorId) {
-        List<MateriaDTO> materias = profesorService.obtenerMateriasProfesor(profesorId);
+    public ResponseEntity<List<MateriaDTO>> listarMaterias(@PathVariable Long id) {
+        List<MateriaDTO> materias = profesorService.obtenerMateriasProfesor(id);
         return ResponseEntity.ok(materias);
     }
 

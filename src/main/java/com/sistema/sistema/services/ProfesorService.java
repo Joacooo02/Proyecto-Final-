@@ -95,8 +95,14 @@ public class ProfesorService {
         List<Comision> comisiones = comisionRepository.findByProfesor_IdPersona(profesorId);
 
         return comisiones.stream()
-                .map(comision -> new ComisionDTO(
-                ))
+                .map(comision -> ComisionDTO.builder()
+                        .idComision(comision.getIdComision())
+                        .nroComision(comision.getNroComision())
+                        .aula(comision.getAula())
+                        .cantAlumnos(comision.getCantAlumnos())
+                        .materiaNombre(comision.getMateria() != null ? comision.getMateria().getNombre() : null)
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 
