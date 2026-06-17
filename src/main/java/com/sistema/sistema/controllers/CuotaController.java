@@ -45,7 +45,7 @@ public class CuotaController {
     }
 
     //@PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
-    @GetMapping("/deuda/{idAlumno}")
+    @GetMapping("/deuda/total/{idAlumno}")
     public Integer obtenerDeudaTotal(@PathVariable Long idAlumno) {
         return cuotaService.obtenerDeudaTotal(idAlumno);
     }

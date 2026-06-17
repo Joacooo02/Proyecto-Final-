@@ -451,4 +451,6 @@ SELECT * FROM usuarios;
 SELECT * FROM PeriodoInscripcion;
 
 
+DESCRIBE Materia;
+
 
