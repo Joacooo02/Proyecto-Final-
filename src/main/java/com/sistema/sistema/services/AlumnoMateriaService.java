@@ -59,7 +59,7 @@ public class AlumnoMateriaService {
         AlumnoMateria alumnoMateria = new AlumnoMateria();
         alumnoMateria.setAlumno(alumno);
         alumnoMateria.setMateria(materia);
-        alumnoMateria.setEstado(EstadoMateria.INSCRIPTO);
+        alumnoMateria.setEstado(EstadoMateria.PENDIENTE);
         alumnoMateria.setFechaInscripcion(LocalDate.now());
 
         return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(alumnoMateria));

@@ -36,9 +36,6 @@ public class InscripcionService {
     private ComisionRepository comisionRepository;
 
     @Autowired
-    private AlumnoInscripcionMateriaRepository materiaRepo;
-
-    @Autowired
     private AlumnoInscripcionComisionRepository comisionRepo;
 
     @Autowired
@@ -99,7 +96,7 @@ public class InscripcionService {
 
         Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new MateriaInexistente("Materia no encontrada"));
 
-        boolean existe = materiaRepo.existsByAlumnoIdPersonaAndMateriaIdMateria(idAlumno, idMateria);
+        boolean existe = alumnoMateriaRepository.existsByAlumnoAndMateria(alumno,materia);
 
         if (existe) {
             throw new MateriaInexistente("Ya se inscribio en esta materia");
@@ -113,12 +110,6 @@ public class InscripcionService {
                 .estado(EstadoMateria.PENDIENTE)
                 .fechaInscripcion(LocalDate.now())
                 .build());
-
-        alumnoMateriaRepository.findByAlumnoAndMateria(alumno,materia).ifPresentOrElse(am -> {}, () -> alumnoMateriaRepository.save(AlumnoMateria.builder()
-                .alumno(alumno)
-                .materia(materia)
-                .estado(EstadoMateria.INSCRIPTO)
-                .build()));
 
 
         return inscripcion;
