@@ -21,11 +21,11 @@ spring:
 
   # Configuracion de JPA/Hibernate
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: update # 'update' es mas seguro que 'create-drop' para desarrollo
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
