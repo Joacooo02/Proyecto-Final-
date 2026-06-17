@@ -198,9 +198,9 @@ CREATE TABLE Correlatividad(
 
 CREATE TABLE Alumno_Materia(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    idAlumno BIGINT UNSIGNED NOT NULL,
-    idMateria BIGINT UNSIGNED NOT NULL,
-    estado ENUM('PENDIENTE','CURSANDO','CURSADA','APROBADA') NOT NULL DEFAULT 'PENDIENTE',
+    id_alumno BIGINT UNSIGNED NOT NULL,
+    id_materia BIGINT UNSIGNED NOT NULL,
+    estado ENUM('PENDIENTE','CURSANDO','CURSADA','APROBADA','REGULAR') NOT NULL DEFAULT 'PENDIENTE',
 	notaParcial1 DOUBLE DEFAULT NULL,
 	notaParcial2 DOUBLE DEFAULT NULL,
     notaFinal DOUBLE DEFAULT NULL,
@@ -208,10 +208,10 @@ CREATE TABLE Alumno_Materia(
     fechaRegularizacion DATE DEFAULT NULL,
     fechaAprobacion DATE DEFAULT NULL,
 
-    UNIQUE KEY uq_alumno_materia (idAlumno, idMateria),
+    UNIQUE KEY uq_alumno_materia (id_alumno, id_materia),
 
-	FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
-    FOREIGN KEY (idMateria) REFERENCES Materia(idMateria) ON DELETE CASCADE
+	FOREIGN KEY (id_alumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE,
+    FOREIGN KEY (id_materia) REFERENCES Materia(idMateria) ON DELETE CASCADE
 );
 
 CREATE TABLE ComisionHorario(
@@ -433,29 +433,9 @@ CREATE TABLE periodo_inscripcion_comision (
 INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaInicio,fechaCierre,activa)
 VALUES (1,'CURSADA',2026,1,'2026-06-01 00:00:00','2026-07-01 00:00:00',true);
 
-ALTER TABLE Materia
-DROP COLUMN id_carrera;
-
-ALTER TABLE Materia
-DROP COLUMN carga_horaria;
-
-ALTER TABLE Materia
-DROP COLUMN anio_cursado;
-
 CREATE TABLE Alumno_Backup AS
 SELECT * FROM Alumno;
 
-ALTER TABLE Alumno DROP COLUMN analitico_parcial;
-ALTER TABLE Alumno DROP COLUMN anio_ingreso;
-ALTER TABLE Alumno DROP COLUMN es_regular;
-ALTER TABLE Alumno DROP COLUMN id_persona;
-
-ALTER TABLE Alumno_Cursa_Carrera DROP COLUMN id_alumno;
-ALTER TABLE Alumno_Cursa_Carrera DROP COLUMN id_carrera;
-
-ALTER TABLE boleto_especial_educativo DROP COLUMN id_alumno;
-ALTER TABLE boleto_especial_educativo DROP COLUMN esta_activo;
-ALTER TABLE boleto_especial_educativo DROP COLUMN fue_solicitado;
 
 SELECT * FROM Persona;
 SELECT * FROM Profesor;
@@ -469,3 +449,6 @@ SELECT * FROM Cuota;
 SELECT * FROM Alumno_Cursa_Carrera;
 SELECT * FROM usuarios;
 SELECT * FROM PeriodoInscripcion;
+
+
+
