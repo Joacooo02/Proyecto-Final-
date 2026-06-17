@@ -13,6 +13,7 @@ public class Materia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idMateria")
     private Long idMateria;
 
     @ManyToOne
