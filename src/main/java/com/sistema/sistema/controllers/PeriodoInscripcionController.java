@@ -22,20 +22,20 @@ public class PeriodoInscripcionController {
         this.periodoInscripcionService = periodoInscripcionService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/crear")
     public PeriodoInscripcionDTO crear(@RequestBody PeriodoInscripcion periodoInscripcion) {
         return periodoInscripcionService.crear(periodoInscripcion);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         periodoInscripcionService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PeriodoInscripcionDTO> modificar(@PathVariable Long id, @RequestBody PeriodoInscripcionDTO periodoInscripcionDTO) {
         return periodoInscripcionService.modificar(id, periodoInscripcionDTO)
@@ -43,13 +43,13 @@ public class PeriodoInscripcionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/mostrar")
     public List<PeriodoInscripcionDTO> mostrar() {
         return periodoInscripcionService.mostrar();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<PeriodoInscripcionDTO> buscarPorId(@PathVariable Long id) {
         return periodoInscripcionService.buscarPorId(id)

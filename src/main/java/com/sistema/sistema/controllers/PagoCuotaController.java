@@ -15,13 +15,13 @@ public class PagoCuotaController {
 
     private final PagoCuotaService service;
 
-    @PreAuthorize("hasAnyRole('ALUMNO')")
+    //@PreAuthorize("hasAnyRole('ALUMNO')")
     @PostMapping("/pagar")
     public PagoCuotaDTO pagarCuota(@RequestBody PagoCuotaDTO dto) {
         return service.pagarCuota(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO')")
+    //@PreAuthorize("hasAnyRole('ALUMNO')")
     @GetMapping("/alumno/{idAlumno}")
     public List<PagoCuotaDTO> obtenerPagos(@PathVariable Long idAlumno) {
         return service.obtenerPagosPorAlumno(idAlumno);

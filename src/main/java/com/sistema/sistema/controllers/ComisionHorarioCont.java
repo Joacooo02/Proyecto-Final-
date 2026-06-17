@@ -19,19 +19,19 @@ public class ComisionHorarioCont {
         this.serv = serv;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/agregar")
     public ComisionHorarioDTO agregar (@PathVariable ComisionHorario comHor){
         return serv.agregar(comHor);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @GetMapping("/mostrar")
     public List<ComisionHorarioDTO> mostrar(){
         return serv.mostrar();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ComisionHorarioDTO> modificar (@PathVariable Long id, @RequestBody ComisionHorarioDTO comisionHorarioDto){
         return serv.modificar(id, comisionHorarioDto)
@@ -39,14 +39,14 @@ public class ComisionHorarioCont {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ComisionHorarioDTO> buscarPorId(@PathVariable Long id){
         return serv.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         serv.eliminar(id);

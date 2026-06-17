@@ -20,26 +20,26 @@ public class AlumnoController {
 
     private final AlumnoService alumnoService;
 
-    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
     @GetMapping("/{legajo}")
     public AlumnoDTO buscarAlumnoPorLegajo(@PathVariable Long legajo){
         return alumnoService.buscarAlumnoPorLegajo(legajo);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @PostMapping
     public AlumnoDTO agregarAlumno(@RequestBody AltaAlumnoDTO altaAlumno){
         return alumnoService.agregarAlumno(altaAlumno);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{legajo}")
     public void eliminarAlumno(@PathVariable Long legajo){
         alumnoService.eliminarAlumno(legajo);
     }
 
 
-    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
     @GetMapping
     public List<AlumnoDTO> listarAlumnos(
             @RequestParam(required = false) String nombre,
@@ -51,34 +51,34 @@ public class AlumnoController {
         return alumnoService.listarAlumnos(nombre, apellido, dni, email, legajo);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @PutMapping("/{legajo}")
     public AlumnoDTO modificarAlumno(@PathVariable Long legajo,@RequestBody AlumnoDTO alumnoModificado){
         return alumnoService.modificarAlumno(legajo,alumnoModificado);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @GetMapping("/{legajo}/historial-academico")
     public List<HistorialAcademicoDTO> verHistorialAcademicoAlumno(@PathVariable Long legajo)
     {
         return alumnoService.verHistorialAcademicoAlumno(legajo);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @GetMapping("/{legajo}/materias")
     public List<MateriaDTO> obtenerMaterias(@PathVariable Long legajo)
     {
         return alumnoService.obtenerMaterias(legajo);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @PostMapping("/boleto/{id}")
     public String registrarBoleto(@PathVariable Long id) {
          alumnoService.registrarBoleto(id);
          return "Boleto registrado correctamente";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/boleto/{id}")
     public boolean tieneBoletoActivo(@PathVariable Long id)
     {

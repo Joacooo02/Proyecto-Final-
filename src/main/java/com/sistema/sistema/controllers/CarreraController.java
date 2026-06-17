@@ -15,31 +15,31 @@ public class CarreraController {
 
     private final CarreraService carreraService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public CarreraDTO buscarCarreraPorId(@PathVariable Long id) {
         return carreraService.buscarCarreraPorId(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public CarreraDTO agregarCarrera(@RequestBody CarreraDTO carrera) {
         return carreraService.agregarCarrera(carrera);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void eliminarCarrera(@PathVariable Long id) {
         carreraService.eliminarCarrera(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public List<CarreraDTO> listarCarreras() {
         return carreraService.listarCarreras();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public CarreraDTO modificarCarrera(@PathVariable Long id, @RequestBody CarreraDTO carreraModificada) {
         return carreraService.modificarCarrera(id, carreraModificada);

@@ -17,34 +17,34 @@ public class CuotaController {
 
     private final CuotaService cuotaService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public String generarCuota(@RequestBody CuotaDTO dto)
     {
         return cuotaService.generarCuotaAutomatica(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
     @GetMapping("/alumno/{id}")
     public List<CuotaDTO> listarPorAlumno(@PathVariable Long id)
     {
         return cuotaService.listarPorAlumno(id);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
     @GetMapping("/deuda/{id}")
     public Integer deuda(@PathVariable Long id)
     {
         return cuotaService.calcularDeuda(id);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
     @GetMapping("/estado")
     public List<CuotaDTO> listarPorEstado(@RequestParam EstadoCuota estado) {
         return cuotaService.listarPorEstado(estado);
     }
 
-    @PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
+    //@PreAuthorize("hasAnyRole('ALUMNO',, 'ADMIN')")
     @GetMapping("/deuda/{idAlumno}")
     public Integer obtenerDeudaTotal(@PathVariable Long idAlumno) {
         return cuotaService.obtenerDeudaTotal(idAlumno);

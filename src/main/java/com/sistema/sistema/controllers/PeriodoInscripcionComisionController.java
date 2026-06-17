@@ -14,14 +14,14 @@ public class PeriodoInscripcionComisionController {
 
     private final PeriodoInscripcionComisionService service;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/{idPeriodo}/comisiones/{idComision}")
     public PeriodoInscripcionComisionDTO habilitarComision(@PathVariable Long idPeriodo, @PathVariable Long idComision)
     {
         return service.habilitarComision(idPeriodo, idComision);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{idPeriodo}/comisiones")
     public List<PeriodoInscripcionComisionDTO> listarComisionesHabilitadas(@PathVariable Long idPeriodo)
     {
