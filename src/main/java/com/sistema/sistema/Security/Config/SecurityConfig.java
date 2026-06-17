@@ -45,34 +45,35 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /*
-    @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers("/auth/**")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
-                )
+    //FALTA PONER LOS ENDPOINTS REALES, AHORA CUANDO TERMINE TODO EL RESTO LO CAMBIO
+    /*   @Bean
+       public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
+           http
+                   .csrf(AbstractHttpConfigurer::disable)
+                   .authorizeHttpRequests(req ->
+                           req.requestMatchers("/auth/**").permitAll()
+                                   .requestMatchers("/admin/**").hasRole("ADMIN")
+                                   .requestMatchers("/profesor/**").hasAnyRole("PROFESOR", "ADMIN")
+                                   .requestMatchers("/alumno/**").hasAnyRole("ALUMNO", "PROFESOR", "ADMIN")
+                                   .anyRequest().authenticated()
+                   )
 
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout(logout ->
-                    logout.logoutUrl("/auth/logout")
-                            .addLogoutHandler((request, response, authentication) -> {
-                                final var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-                                logout(authHeader);
-                            })
-                            .logoutSuccessHandler((request, response, authentication) ->
-                                    SecurityContextHolder.clearContext())
-                );
+                   .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                   .authenticationProvider(authenticationProvider)
+                   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                   .logout(logout ->
+                       logout.logoutUrl("/auth/logout")
+                               .addLogoutHandler((request, response, authentication) -> {
+                                   final var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+                                   logout(authHeader);
+                               })
+                               .logoutSuccessHandler((request, response, authentication) ->
+                                       SecurityContextHolder.clearContext())
+                   );
 
-        return http.build();
-    }
-*/
+           return http.build();
+       }
+   */
     private void logout(final String token){
                     if(token == null || !token.startsWith("Bearer ")){
                         throw new IllegalArgumentException ("Invalid token");

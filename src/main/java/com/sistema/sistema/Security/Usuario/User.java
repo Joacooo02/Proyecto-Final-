@@ -1,6 +1,7 @@
 package com.sistema.sistema.Security.Usuario;
 
 import com.sistema.sistema.Security.Repository.Token;
+import com.sistema.sistema.enums.RolUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -26,4 +27,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
+
+    @Enumerated(EnumType.STRING)
+    private RolUsuario role;
 }

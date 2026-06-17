@@ -1,5 +1,6 @@
 package com.sistema.sistema.Security.Service;
 
+import com.sistema.sistema.Security.AccesoDenegadoException;
 import com.sistema.sistema.Security.Controller.LoginRequest;
 import com.sistema.sistema.Security.Controller.RegisterRequest;
 import com.sistema.sistema.Security.Controller.TokenResponse;
@@ -8,6 +9,7 @@ import com.sistema.sistema.Security.Repository.TokenRepository;
 import com.sistema.sistema.Security.Usuario.User;
 import com.sistema.sistema.Security.Usuario.UserRepository;
 import com.sistema.sistema.Security.UsuarioNotFoundException;
+import com.sistema.sistema.enums.RolUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,10 +27,16 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public TokenResponse register (RegisterRequest request){
+
+        if (request.role() == RolUsuario.ADMIN) {
+            throw new AccesoDenegadoException("No podés registrarte como ADMIN.");
+        }
+
         var usuario = User.builder()
                 .name(request.nombre())
                 .password(passwordEncoder.encode(request.contraseña()))
                 .email(request.email())
+                //.role(request.role())
                 .build();
         var savedUser = userRepository.save(usuario);
         var jwtToken = jwtService.generateToken(usuario);

@@ -31,6 +31,7 @@ public class AppConfig {
             return org.springframework.security.core.userdetails.User.builder()
                     .username(user.getEmail())
                     .password(user.getPassword())
+                    //.roles(user.getRole().name())
                     .build();
         };
     }
