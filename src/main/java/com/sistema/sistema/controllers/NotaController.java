@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/notas")
 @RequiredArgsConstructor
@@ -31,4 +33,17 @@ public class NotaController {
         serv.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public ResponseEntity<List<NotaDTO>> verNotas()
+    {
+        return ResponseEntity.ok(serv.verNotas());
+    }
+
+    @GetMapping("/alumno/{idAlumno}")
+    public ResponseEntity<List<NotaDTO>> verNotasPorAlumno(@PathVariable Long idAlumno)
+    {
+        return ResponseEntity.ok(serv.verNotasPorAlumno(idAlumno));
+    }
+
 }

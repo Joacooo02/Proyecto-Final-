@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -64,5 +65,26 @@ public class NotaService {
 
     public void eliminar(Long id) {
         notaRepo.deleteById(id);
+    }
+
+    public List<NotaDTO> verNotas() {
+        return notaRepo.findAll()
+                .stream()
+                .map(notaMapper::toDTO)
+                .toList();
+    }
+
+    public List<NotaDTO> verNotasPorAlumno(Long idAlumno) {
+
+        AlumnoRepo.findById(idAlumno)
+                .orElseThrow(() ->
+                        new AlumnoInvalidoException(
+                                "El alumno con id " + idAlumno + " no existe"
+                        ));
+
+        return notaRepo.findByAlumnoIdPersona(idAlumno)
+                .stream()
+                .map(notaMapper::toDTO)
+                .toList();
     }
 }
