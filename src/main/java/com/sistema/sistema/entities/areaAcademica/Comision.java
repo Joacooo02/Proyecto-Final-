@@ -15,6 +15,7 @@ public class Comision {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idComision")
     private Long idComision;
 
     @ManyToOne
@@ -26,10 +27,13 @@ public class Comision {
     private Profesor profesor;
 
     private Integer nroComision;
+
+    @Column(name = "cantAlumnos")
     private Integer cantAlumnos = 0;
 
     @Column(length = 50)
     private String aula;
 
+    @Column(name = "cupo_maximo")
     private Integer cupoMaximo = 50;
 }

@@ -16,7 +16,7 @@ public class RespuestaEncuesta {
     private Long idRespuestaEncuesta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idComision", nullable = false)
+    @JoinColumn(name = "idComision",referencedColumnName = "idComision",nullable = false)
     private Comision comision;
 
     @Column(nullable = false, length = 64)
