@@ -60,9 +60,7 @@ public class InscripcionService {
 
         for (var c : correlativas)
         {
-            boolean cumple;
-
-            cumple = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,c.getMateriaCorrelativa().getIdMateria(),EstadoMateria.APROBADA);
+            boolean cumple = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,c.getMateriaCorrelativa().getIdMateria(),EstadoMateria.APROBADA);
 
             if(!cumple)
             {
@@ -102,30 +100,28 @@ public class InscripcionService {
             throw new MateriaInexistente("Ya se inscribio en esta materia");
         }
 
+        boolean aprobada = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,idMateria,EstadoMateria.APROBADA);
+
+        if(aprobada)
+        {
+            throw new MateriaInexistente("La materia ya esta aprobada");
+        }
+
         validarCorrelativas(idAlumno,materia,TipoInscripcion.CURSADA);
 
-        AlumnoMateria inscripcion = alumnoMateriaRepository.save(AlumnoMateria.builder()
+        return alumnoMateriaRepository.save(AlumnoMateria.builder()
                 .alumno(alumno)
                 .materia(materia)
                 .estado(EstadoMateria.PENDIENTE)
                 .fechaInscripcion(LocalDate.now())
                 .build());
 
-
-        return inscripcion;
     }
-
 
 
     public AlumnoInscripcionComision inscribirComision(Long idAlumno, Long idComision, Long idPeriodo) {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
-
-        boolean esRegular = alumnoMateriaRepository.existsByAlumnoAndEstado(alumno,EstadoMateria.REGULAR);
-
-        if (!esRegular) {
-            throw new ComisionInvalidaException("El alumno no es regular");
-        }
 
         Comision comision = comisionRepository.findById(idComision).orElseThrow(() -> new ComisionInvalidaException("Comisión no encontrada"));
 
@@ -142,24 +138,21 @@ public class InscripcionService {
             throw new ComisionInvalidaException("Ya estas inscripto en la comision");
         }
 
-        var correlativas = correlatividadRepository.findByMateria_IdMateria(comision.getMateria().getIdMateria());
+        boolean esRegular = alumnoMateriaRepository.existsByAlumno_IdPersonaAndEstado(idAlumno,EstadoMateria.REGULAR);
 
-        for (var c : correlativas)
-        {
-            boolean aprobada = alumnoMateriaRepository.existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(idAlumno,c.getMateriaCorrelativa().getIdMateria(),EstadoMateria.APROBADA);
-
-            if(!aprobada)
-            {
-                throw new MateriaInexistente("No cumple correlativas");
-            }
+        if (!esRegular) {
+            throw new ComisionInvalidaException("El alumno no es regular");
         }
 
+
         validarCorrelativas(idAlumno,comision.getMateria(),TipoInscripcion.CURSADA);
+
 
         if(comision.getCantAlumnos() >= comision.getCupoMaximo())
         {
             throw new ComisionInvalidaException("Cupo lleno");
         }
+
 
         comision.setCantAlumnos(comision.getCantAlumnos()+1);
         comisionRepository.save(comision);
@@ -201,7 +194,7 @@ public class InscripcionService {
 
         for (Comision comision : comisiones)
         {
-            if(comision.getCantAlumnos() < 50)
+            if(comision.getCantAlumnos() < comision.getCupoMaximo())
             {
                 disponibles.add(comision);
             }

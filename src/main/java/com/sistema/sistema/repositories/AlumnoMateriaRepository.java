@@ -17,5 +17,6 @@ public interface AlumnoMateriaRepository extends JpaRepository<AlumnoMateria,Lon
     boolean existsByAlumno_IdPersonaAndMateria_IdMateriaAndEstado(Long idAlumno, Long idMateria, EstadoMateria estadoMateria);
 
     boolean existsByAlumnoAndEstado(Alumno alumno, EstadoMateria estadoMateria);
+    boolean existsByAlumno_IdPersonaAndEstado(Long idAlumno,EstadoMateria estadoMateria);
 
 }

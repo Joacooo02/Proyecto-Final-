@@ -108,8 +108,15 @@ public class AlumnoMateriaService {
 
     public AlumnoMateriaDTO registrarParciales(Long idAlumno, Long idMateria, double n1, double n2)
     {
-        AlumnoMateria am = alumnoMateriaRepository.findByAlumnoAndMateria(alumnoRepository.findById(idAlumno).orElseThrow(),materiaRepository.findById(idMateria).orElseThrow()).orElseThrow(() -> new EntidadNoEncontradaException("no inscripto"));
+        Alumno alumno = buscarAlumno(idAlumno);
+        Materia materia = buscarMateria(idMateria);
 
+        AlumnoMateria am = alumnoMateriaRepository.findByAlumnoAndMateria(alumno,materia).orElseThrow(() -> new EntidadNoEncontradaException("no inscripto"));
+
+        if(am.getEstado() == EstadoMateria.APROBADA)
+        {
+            return alumnoMateriaMapper.toDTO(am);
+        }
         am.setNotaParcial1(n1);
         am.setNotaParcial2(n2);
 
@@ -120,6 +127,7 @@ public class AlumnoMateriaService {
         }else
         {
             am.setEstado(EstadoMateria.CURSANDO);
+            am.setFechaRegularizacion(null);
         }
 
         return alumnoMateriaMapper.toDTO(alumnoMateriaRepository.save(am));
@@ -128,7 +136,10 @@ public class AlumnoMateriaService {
 
     public AlumnoMateriaDTO aprobarFinal(Long idAlumno, Long idMateria, double notaFinal)
     {
-        AlumnoMateria am = alumnoMateriaRepository.findByAlumnoAndMateria(alumnoRepository.findById(idAlumno).orElseThrow(),materiaRepository.findById(idMateria).orElseThrow()).orElseThrow(() -> new EntidadNoEncontradaException("No inscripto"));
+        Alumno alumno = buscarAlumno(idAlumno);
+        Materia materia = buscarMateria(idMateria);
+
+        AlumnoMateria am = alumnoMateriaRepository.findByAlumnoAndMateria(alumno,materia).orElseThrow(() -> new EntidadNoEncontradaException("No inscripto"));
 
         if (am.getEstado() != EstadoMateria.REGULAR)
         {
