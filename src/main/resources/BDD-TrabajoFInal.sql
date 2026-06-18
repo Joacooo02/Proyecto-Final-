@@ -428,3 +428,15 @@ INSERT INTO Persona (idPersona, nombre, apellido, dni, telefono, fechaNacimiento
 -- 3. Creamos su perfil en la tabla Administrador
 INSERT INTO Administrador (idPersona) VALUES
 (6);
+
+UPDATE users SET password = 'PasswordSegura_2026' WHERE id IN (8, 10, 11, 12);
+
+UPDATE users SET password = '$2a$10$X5pZg7Uv8Ew9WhP1E4SgCOsH9CbyFpWlW73u5Y6p5D9m8I3D2jXzq' WHERE id IN (8, 10, 11, 12);
+
+UPDATE users
+SET password = '$2a$10$7R8MByD4X9wZ.F56qE0uX.bZg7G71Wv8p3y1GfSmT3f6W6hV6eW2a'
+WHERE id IN (8, 10, 11, 12);
+
+UPDATE users SET password = '$2a$10$uVshZ2pZ6pS6Kx8Gk7eYI.f3l1pXN2Z4V7jN9vC7mD5vH2vE4S2v2' WHERE id IN (8, 10, 11, 12);
+
+SELECT password FROM users WHERE email = 'juan@correo.com';
