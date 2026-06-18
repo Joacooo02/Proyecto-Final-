@@ -47,8 +47,6 @@ public class AuthService {
 
 
     public TokenResponse login (LoginRequest request){
-        // 1. Autenticamos formalmente: el principal de Spring Security es el email
-        //    (así lo resuelve el UserDetailsService y así lo firma el JWT).
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -56,7 +54,7 @@ public class AuthService {
                 )
         );
 
-        // 2. Si la autenticación fue exitosa, recuperamos el usuario y emitimos los tokens.
+        
         var usuario = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UsuarioNotFoundException("No se encontró el usuario: " + request.email()));
 
