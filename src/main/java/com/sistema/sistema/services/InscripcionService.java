@@ -123,6 +123,7 @@ public class InscripcionService {
 
         Alumno alumno = alumnoRepository.findById(idAlumno).orElseThrow(() -> new AlumnoInvalidoException("Alumno no encontrado"));
 
+        System.out.println("ID COMISIÓN RECIBIDO: " + idComision);
         Comision comision = comisionRepository.findById(idComision).orElseThrow(() -> new ComisionInvalidaException("Comisión no encontrada"));
 
         boolean habilitada = periodoInscripcionComisionRepository.existsByPeriodo_IdPeriodoAndComision_IdComision(idPeriodo, idComision);
