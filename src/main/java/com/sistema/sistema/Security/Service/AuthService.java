@@ -33,8 +33,8 @@ public class AuthService {
         }
 
         var usuario = User.builder()
-                .username(request.nombre())
-                .password(passwordEncoder.encode(request.contrasena()))
+                .username(request.username())
+                .password(passwordEncoder.encode(request.password()))
                 .email(request.email())
                 .role(request.role())
                 .build();
@@ -50,7 +50,7 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
-                        request.contrasena()
+                        request.password()
                 )
         );
 

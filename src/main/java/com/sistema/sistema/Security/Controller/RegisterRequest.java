@@ -6,7 +6,7 @@ import lombok.Getter;
 /// Datos para crear un usuario
 public record RegisterRequest (
         String email,
-        String nombre,
-        String contrasena,
+        String username,
+        String password,
         RolUsuario role
 ){}

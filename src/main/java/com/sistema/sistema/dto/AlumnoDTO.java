@@ -24,5 +24,5 @@ public class AlumnoDTO {
     private Integer anioIngreso;
     private boolean analiticoParcial;
     private boolean esRegular;
-    private double promedio;
+    private Double promedio;
 }

@@ -32,6 +32,8 @@ public class AlumnoController {
     @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @GetMapping("/me")
     public AlumnoDTO datosAlumnoLogueado(org.springframework.security.core.Authentication authentication){
+        System.out.println("Usuario: " + authentication.getName());
+        System.out.println("Roles: " + authentication.getAuthorities());
         return alumnoService.buscarAlumnoPorEmail(authentication.getName());
     }
 
