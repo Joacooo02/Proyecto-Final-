@@ -402,32 +402,6 @@ UPDATE Comision
 SET cantAlumnos = 50
 WHERE idComision = 1;
 
-
-CREATE TABLE boleto_especial_educativo (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    idAlumno BIGINT UNSIGNED NOT NULL,
-    fueSolicitado BOOLEAN DEFAULT FALSE,
-    estaActivo BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
-);
-
-CREATE TABLE usuarios (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL,
-    enabled BOOLEAN NOT NULL DEFAULT TRUE
-);
-
-CREATE TABLE periodo_inscripcion_comision (
-    id BIGINT NOT NULL AUTO_INCREMENT primary KEY,
-    idPeriodo BIGINT UNSIGNED NOT NULL,
-    idComision BIGINT UNSIGNED  NOT NULL,
-
-    FOREIGN KEY (idPeriodo) REFERENCES PeriodoInscripcion(idPeriodo) ON DELETE CASCADE,
-    FOREIGN KEY (idComision) REFERENCES Comision(idComision) ON DELETE CASCADE
-);
-
 INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaInicio,fechaCierre,activa)
 VALUES (1,'CURSADA',2026,1,'2026-06-01 00:00:00','2026-07-01 00:00:00',true);
 
