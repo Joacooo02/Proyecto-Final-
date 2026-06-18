@@ -1,5 +1,7 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Security.User.User;
+import com.sistema.sistema.Security.User.UserRepository;
 import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.dto.ComisionDTO;
@@ -9,12 +11,15 @@ import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFi
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
+import com.sistema.sistema.enums.RolUsuario;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
+import com.sistema.sistema.exceptions.EntidadDuplicadaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
 import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,12 +48,37 @@ public class ProfesorService {
     @Autowired
     private final AlumnoInscripcionExamenFinalRepository alumnoInscripcionExamenFinalRepository;
 
+    @Autowired
+    private final UserRepository userRepository;
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
     public Profesor buscarProfesorPorId(Long id) {
         return profesorRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoEncontradaException("Profesor con id: " + id + " no encontrado"));
     }
 
     public Profesor agregarProfesor(Profesor profesor) {
+        if (profesor.getEmail() == null || profesor.getEmail().isBlank()) {
+            throw new EntidadDuplicadaException("Debe indicarse un email para crear el usuario de acceso");
+        }
+        if (userRepository.findByEmail(profesor.getEmail()).isPresent()) {
+            throw new EntidadDuplicadaException("Ya existe un usuario con email: " + profesor.getEmail());
+        }
+
+        profesor.setRolUsuario(RolUsuario.PROFESOR);
+
+        // Usuario de acceso: login por email, contraseña inicial = DNI (la cambia luego el profesor).
+        // El cascade ALL de Persona.user persiste el User junto con el profesor.
+        User user = User.builder()
+                .username(profesor.getEmail())
+                .email(profesor.getEmail())
+                .password(passwordEncoder.encode(profesor.getDni()))
+                .role(RolUsuario.PROFESOR)
+                .build();
+        profesor.setUser(user);
+
         return profesorRepository.save(profesor);
     }
 

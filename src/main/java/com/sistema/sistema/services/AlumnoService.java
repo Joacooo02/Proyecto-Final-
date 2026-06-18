@@ -1,5 +1,7 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Security.User.User;
+import com.sistema.sistema.Security.User.UserRepository;
 import com.sistema.sistema.exceptions.BoletoException;
 import com.sistema.sistema.dto.*;
 import com.sistema.sistema.entities.areaAcademica.Carrera;
@@ -17,6 +19,7 @@ import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -37,6 +40,8 @@ public class AlumnoService {
     private final MateriaRepository materiaRepository;
     private final CarreraRepository carreraRepository;
     private final AlumnoCursaCarreraRepository alumnoCursaCarreraRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
@@ -62,8 +67,26 @@ public class AlumnoService {
                     "Ya existe un alumno con DNI: " + alumnoDTO.getDni());
         }
 
+        if (alumnoDTO.getEmail() == null || alumnoDTO.getEmail().isBlank()) {
+            throw new AlumnoInvalidoException("Debe indicarse un email para crear el usuario de acceso");
+        }
+        if (userRepository.findByEmail(alumnoDTO.getEmail()).isPresent()) {
+            throw new AlumnoInvalidoException("Ya existe un usuario con email: " + alumnoDTO.getEmail());
+        }
+
         Alumno alumno = alumnoMapper.toEntity(alumnoDTO);
         alumno.setRolUsuario(RolUsuario.ALUMNO);
+
+        // Usuario de acceso: login por email, contraseña inicial = DNI (la cambia luego el alumno).
+        // El cascade ALL de Persona.user persiste el User junto con el alumno.
+        User user = User.builder()
+                .username(alumnoDTO.getEmail())
+                .email(alumnoDTO.getEmail())
+                .password(passwordEncoder.encode(alumnoDTO.getDni()))
+                .role(RolUsuario.ALUMNO)
+                .build();
+        alumno.setUser(user);
+
         Alumno alumnoGuardado = alumnoRepository.save(alumno);
 
         AlumnoCursaCarrera inscripcion = AlumnoCursaCarrera.builder()
