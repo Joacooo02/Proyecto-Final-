@@ -59,6 +59,13 @@ public class ProfesorService {
                 .orElseThrow(() -> new EntidadNoEncontradaException("Profesor con id: " + id + " no encontrado"));
     }
 
+    // Devuelve el profesor a partir de su email (el que viaja en el JWT).
+    // Lo usa GET /profesores/me para que el front no pida idProfesor en el login.
+    public Profesor buscarProfesorPorEmail(String email) {
+        return profesorRepository.findByEmail(email)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Profesor con email: " + email + " no encontrado"));
+    }
+
     public Profesor agregarProfesor(Profesor profesor) {
         if (profesor.getEmail() == null || profesor.getEmail().isBlank()) {
             throw new EntidadDuplicadaException("Debe indicarse un email para crear el usuario de acceso");

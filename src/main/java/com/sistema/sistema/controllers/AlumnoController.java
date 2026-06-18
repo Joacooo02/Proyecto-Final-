@@ -26,6 +26,15 @@ public class AlumnoController {
         return alumnoService.buscarAlumnoPorLegajo(legajo);
     }
 
+    // Datos del alumno logueado (email tomado del token). Permite que el login del
+    // front pida SOLO email+contraseña: tras autenticar, el front llama /me y obtiene
+    // legajo + idPersona. La ruta literal "/me" matchea antes que "/{legajo}".
+    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
+    @GetMapping("/me")
+    public AlumnoDTO datosAlumnoLogueado(org.springframework.security.core.Authentication authentication){
+        return alumnoService.buscarAlumnoPorEmail(authentication.getName());
+    }
+
     @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @PostMapping
     public AlumnoDTO agregarAlumno(@RequestBody AltaAlumnoDTO altaAlumno){

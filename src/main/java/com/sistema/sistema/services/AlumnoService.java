@@ -47,6 +47,14 @@ public class AlumnoService {
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
     }
 
+    // Devuelve los datos del alumno a partir de su email (el que viaja en el JWT).
+    // Lo usa GET /alumnos/me para que el front no tenga que pedir legajo/idPersona en el login.
+    public AlumnoDTO buscarAlumnoPorEmail(String email){
+        Alumno alumno = alumnoRepository.findByEmail(email)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Alumno con email: " + email + " no encontrado"));
+        return alumnoMapper.toDTO(alumno);
+    }
+
     @Transactional
     public AlumnoDTO agregarAlumno(AltaAlumnoDTO altaAlumnoDTO){
         AlumnoDTO alumnoDTO = altaAlumnoDTO.getAlumno();

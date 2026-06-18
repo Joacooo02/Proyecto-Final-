@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class AlumnoDTO {
 
+    private Long idPersona;
     private Long legajo;
     private String nombre;
     private String apellido;

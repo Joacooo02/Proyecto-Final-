@@ -26,6 +26,15 @@ public class ProfesorController {
         return profesorService.buscarProfesorPorId(id);
     }
 
+    // Datos del profesor logueado (email tomado del token). Permite que el login del
+    // front pida SOLO email+contraseña: tras autenticar, llama /me y obtiene su id
+    // (idPersona). La ruta literal "/me" matchea antes que "/{id}".
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @GetMapping("/me")
+    public Profesor datosProfesorLogueado(org.springframework.security.core.Authentication authentication) {
+        return profesorService.buscarProfesorPorEmail(authentication.getName());
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public Profesor agregarProfesor(@RequestBody Profesor profesor) {
