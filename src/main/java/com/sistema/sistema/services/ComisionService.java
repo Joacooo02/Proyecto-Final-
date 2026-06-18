@@ -64,7 +64,7 @@ public class ComisionService {
                     .orElseThrow(() -> new EntidadNoEncontradaException("Profesor no encontrado"));
             comisionExistente.setProfesor(profesorReal);
         } else {
-            comisionExistente.setProfesor(null); // Por si quieren quitar al profesor de la comisión
+            comisionExistente.setProfesor(null);
         }
 
         return comisionRepository.save(comisionExistente);
