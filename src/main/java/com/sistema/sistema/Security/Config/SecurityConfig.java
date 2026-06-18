@@ -28,22 +28,22 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final TokenRepository tokenRepository;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // 1. Deshabilitamos CSRF (Crucial si vas a probar POST, PUT, DELETE desde Postman)
-                .csrf(csrf -> csrf.disable())
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                // 1. Deshabilitamos CSRF (Crucial si vas a probar POST, PUT, DELETE desde Postman)
+//                .csrf(csrf -> csrf.disable())
+//
+//                // 2. Abrimos las puertas de la aplicación
+//                .authorizeHttpRequests(auth -> auth
+//                        .anyRequest().permitAll() // <- "Cualquier petición está permitida sin autenticación"
+//                );
+//
+//        return http.build();
+//    }
 
-                // 2. Abrimos las puertas de la aplicación
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // <- "Cualquier petición está permitida sin autenticación"
-                );
 
-        return http.build();
-    }
-
-    //FALTA PONER LOS ENDPOINTS REALES, AHORA CUANDO TERMINE TODO EL RESTO LO CAMBIO
-    /*   @Bean
+       @Bean
        public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
            http
                    .csrf(AbstractHttpConfigurer::disable)
@@ -70,7 +70,7 @@ public class SecurityConfig {
 
            return http.build();
        }
-   */
+
     private void logout(final String token){
                     if(token == null || !token.startsWith("Bearer ")){
                         throw new IllegalArgumentException ("Invalid token");

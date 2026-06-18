@@ -18,28 +18,28 @@ public class InscripcionController {
     @Autowired
     private InscripcionService service;
 
-    //@PreAuthorize("hasAnyRole('ALUMNO')")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
     @PostMapping("/comision/{idAlumno}/{idComision}/{idPeriodo}")
     public AlumnoInscripcionComision inscribirComision(@PathVariable Long idAlumno, @PathVariable Long idComision, @PathVariable Long idPeriodo)
     {
         return service.inscribirComision(idAlumno, idComision,idPeriodo);
     }
 
-    //@PreAuthorize("hasAnyRole('ALUMNO')")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
     @PostMapping("/examenFinal/{idAlumno}/{idExamen}")
     public AlumnoInscripcionExamenFinal inscribirExamen(@PathVariable Long idAlumno, @PathVariable Long idExamen)
     {
         return service.inscribirExamen(idAlumno, idExamen);
     }
 
-    //@PreAuthorize("hasAnyRole('ALUMNO')")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
     @GetMapping("/materia/{idMateria}/comisiones-disponibles")
     public List<Comision> obtenerComisionesDisponibles(@PathVariable Long idMateria)
     {
         return service.obtenerComisionesDisponibles(idMateria);
     }
 
-    //@PreAuthorize("hasAnyRole('ALUMNO')")
+    @PreAuthorize("hasAnyRole('ALUMNO')")
     @PostMapping("/materia/{idAlumno}/{idMateria}")
     public AlumnoMateria inscribirMateria(@PathVariable Long idAlumno, @PathVariable Long idMateria)
     {

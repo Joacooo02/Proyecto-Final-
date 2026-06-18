@@ -16,40 +16,40 @@ public class MateriaController {
 
     private final MateriaService materiaService;
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public MateriaDTO buscarMateriaPorId(@PathVariable Long id)
     {
         return materiaService.buscarMateriaPorId(id);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public MateriaDTO agregarMateria(@RequestBody MateriaDTO materiaDTO)
     {
         return materiaService.agregarMateria(materiaDTO);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void eliminarMateria(@PathVariable Long id) {
         materiaService.eliminarMateria(id);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public List<MateriaDTO> listarMaterias(@RequestParam(required = false) String nombre) {
         return materiaService.listarMaterias(nombre);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public MateriaDTO modificarMateria(@PathVariable Long id, @RequestBody MateriaDTO materiaDTO)
     {
         return materiaService.modificarMateria(id, materiaDTO);
     }
 
-    //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
     @GetMapping("/plan-academico/{idAlumno}")
     public List<MateriaDTO> verPlanAcademicoAlumno(
             @PathVariable Long idAlumno)
