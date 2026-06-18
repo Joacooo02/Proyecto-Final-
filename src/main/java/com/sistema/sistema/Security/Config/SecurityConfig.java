@@ -21,66 +21,62 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity
-
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final TokenRepository tokenRepository;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                // 1. Deshabilitamos CSRF (Crucial si vas a probar POST, PUT, DELETE desde Postman)
-//                .csrf(csrf -> csrf.disable())
-//
-//                // 2. Abrimos las puertas de la aplicación
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest().permitAll() // <- "Cualquier petición está permitida sin autenticación"
-//                );
-//
-//        return http.build();
-//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers(
+                                        "/auth/**",
+                                        // -- Swagger UI --
+                                        "/v2/api-docs",
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/swagger-ui/**",
+                                        "/webjars/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/profesor/**").hasAnyRole("PROFESOR", "ADMIN")
+                                .requestMatchers("/alumno/**").hasAnyRole("ALUMNO", "PROFESOR", "ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout ->
+                        logout.logoutUrl("/auth/logout")
+                                .addLogoutHandler((request, response, authentication) -> {
+                                    final var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+                                    logout(authHeader);
+                                })
+                                .logoutSuccessHandler((request, response, authentication) ->
+                                        SecurityContextHolder.clearContext())
+                );
 
+        return http.build();
+    }
 
-       @Bean
-       public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
-           http
-                   .csrf(AbstractHttpConfigurer::disable)
-                   .authorizeHttpRequests(req ->
-                           req.requestMatchers("/auth/**").permitAll()
-                                   .requestMatchers("/admin/**").hasRole("ADMIN")
-                                   .requestMatchers("/profesor/**").hasAnyRole("PROFESOR", "ADMIN")
-                                   .requestMatchers("/alumno/**").hasAnyRole("ALUMNO", "PROFESOR", "ADMIN")
-                                   .anyRequest().authenticated()
-                   )
-
-                   .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                   .authenticationProvider(authenticationProvider)
-                   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                   .logout(logout ->
-                       logout.logoutUrl("/auth/logout")
-                               .addLogoutHandler((request, response, authentication) -> {
-                                   final var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-                                   logout(authHeader);
-                               })
-                               .logoutSuccessHandler((request, response, authentication) ->
-                                       SecurityContextHolder.clearContext())
-                   );
-
-           return http.build();
-       }
-
-    private void logout(final String token){
-                    if(token == null || !token.startsWith("Bearer ")){
-                        throw new IllegalArgumentException ("Invalid token");
-                    }
-
-                    final String jwtToken = token.substring(7);
-                    final Token foundToken = tokenRepository.findByToken(jwtToken)
-                            .orElseThrow(() -> new IllegalArgumentException ("Invalid Token"));
-                    foundToken.setExpired(true);
-                    foundToken.setRevoked(true);
-                    tokenRepository.save(foundToken);
+    private void logout(final String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return; // No hagas nada si no hay token
         }
+
+        final String jwtToken = token.substring(7);
+        tokenRepository.findByToken(jwtToken).ifPresent(foundToken -> {
+            foundToken.setExpired(true);
+            foundToken.setRevoked(true);
+            tokenRepository.save(foundToken);
+        });
+    }
 }
