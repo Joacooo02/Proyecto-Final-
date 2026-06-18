@@ -36,7 +36,7 @@ public class AuthService {
                 .username(request.nombre())
                 .password(passwordEncoder.encode(request.contrasena()))
                 .email(request.email())
-                //.role(request.role())
+                .role(request.role())
                 .build();
         var savedUser = userRepository.save(usuario);
         var jwtToken = jwtService.generateToken(usuario);
@@ -47,73 +47,24 @@ public class AuthService {
 
 
     public TokenResponse login (LoginRequest request){
-        // 1. Buscamos al usuario en la base de datos
-        var usuario = userRepository.findByUsername(request.email())
-                .orElseThrow(() -> new UsuarioNotFoundException("No se encontró el usuario: " + request.email()));
-
-        // 2. ¡EL TRUCO!: Si la contraseña guardada en la BD está vieja o rota,
-        // la sobreescribimos con la encriptación exacta de tu sistema actual.
-        if (usuario.getPassword().equals("password123") || !passwordEncoder.matches(request.contrasena(), usuario.getPassword())) {
-
-            // Forzamos la nueva encriptación
-            usuario.setPassword(passwordEncoder.encode(request.contrasena()));
-            userRepository.save(usuario); // Guardamos la contraseña reparada en la BD
-
-            System.out.println("¡Contraseña actualizada y reparada en la Base de Datos para el usuario: " + usuario.getUsername() + "!");
-        }
-
-        // 3. Autenticamos formalmente en Spring Security
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        usuario.getUsername(),
-                        request.contrasena()
-                )
-        );
-
-        // 4. Generamos los tokens
-        var jwtToken = jwtService.generateToken(usuario);
-        var refreshToken = jwtService.generateRefreshToken(usuario);
-        saveUserToken(usuario, jwtToken);
-        return new TokenResponse (jwtToken, refreshToken);
-    }
-    /*
-    public TokenResponse login (LoginRequest request){
-        // 1. Buscamos primero al usuario por Email en la base de datos para obtener su 'username' real
-        var usuario = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new UsuarioNotFoundException("Usuario no encontrado."));
-
-        // 2. Autenticamos usando el 'username' interno que Spring Security espera (en tu admin es 'admin.sistema')
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        usuario.getUsername(),
-                        request.contrasena()
-                )
-        );
-
-        // 3. Si la autenticación fue exitosa, generamos los tokens
-        var jwtToken = jwtService.generateToken(usuario);
-        var refreshToken = jwtService.generateRefreshToken(usuario);
-        saveUserToken(usuario, jwtToken);
-        return new TokenResponse (jwtToken, refreshToken);
-    }
-     */
-
-    /*
-    public TokenResponse login (LoginRequest request){
+        // 1. Autenticamos formalmente: el principal de Spring Security es el email
+        //    (así lo resuelve el UserDetailsService y así lo firma el JWT).
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
                         request.contrasena()
                 )
         );
+
+        // 2. Si la autenticación fue exitosa, recuperamos el usuario y emitimos los tokens.
         var usuario = userRepository.findByEmail(request.email())
-                .orElseThrow();
+                .orElseThrow(() -> new UsuarioNotFoundException("No se encontró el usuario: " + request.email()));
+
         var jwtToken = jwtService.generateToken(usuario);
         var refreshToken = jwtService.generateRefreshToken(usuario);
         saveUserToken(usuario, jwtToken);
         return new TokenResponse (jwtToken, refreshToken);
     }
-     */
 
     private void saveUserToken(User user, String jwtToken){
         var token = Token.builder()

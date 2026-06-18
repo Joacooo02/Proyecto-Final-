@@ -15,7 +15,7 @@ public class AuthController {
 
     private final AuthService service;
 
-    @RequestMapping("/register") /// Usuario se quiere Registrar
+    @PostMapping("/register") /// Usuario se quiere Registrar
     public ResponseEntity<TokenResponse> register (@RequestBody final RegisterRequest request){
         final TokenResponse token = service.register(request);
         return ResponseEntity.ok(token);
@@ -27,7 +27,7 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/refesh") /// Es para RefreshToken y queremos un AccesToken nuevo
+    @PostMapping("/refresh") /// Es para RefreshToken y queremos un AccesToken nuevo
     public TokenResponse refresh (@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
         return service.refreshToken(authHeader);
     }
