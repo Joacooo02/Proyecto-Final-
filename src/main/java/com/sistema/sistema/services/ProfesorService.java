@@ -4,15 +4,14 @@ import com.sistema.sistema.dto.AlumnoDTO;
 import com.sistema.sistema.entities.areaAcademica.Comision;
 import com.sistema.sistema.dto.ComisionDTO;
 import com.sistema.sistema.dto.MateriaDTO;
+import com.sistema.sistema.entities.areaAcademica.Examen;
+import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionExamenFinal;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.EstadoProfesor;
 import com.sistema.sistema.entities.usuario.Profesor;
 import com.sistema.sistema.exceptions.EntidadNoEncontradaException;
 import com.sistema.sistema.mappers.AlumnoMapper;
-import com.sistema.sistema.repositories.AlumnoRepository;
-import com.sistema.sistema.repositories.ComisionRepository;
-import com.sistema.sistema.repositories.MateriaRepository;
-import com.sistema.sistema.repositories.ProfesorRepository;
+import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,12 @@ public class ProfesorService {
 
     @Autowired
     private final AlumnoMapper alumnoMapper;
+
+    @Autowired
+    private final ExamenRepository examenRepository;
+
+    @Autowired
+    private final AlumnoInscripcionExamenFinalRepository alumnoInscripcionExamenFinalRepository;
 
     public Profesor buscarProfesorPorId(Long id) {
         return profesorRepository.findById(id)
@@ -126,6 +131,50 @@ public class ProfesorService {
         List<Alumno> alumnosInscriptos = alumnoRepository
                 .findByInscripcionesMateria_Materia_IdMateria(materiaId);
         return alumnoMapper.toDTOList(alumnosInscriptos);
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosInscriptosComision(Long profesorId, Long comisionId) {
+        Comision comision = comisionRepository.findById(comisionId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Comisión con id: " + comisionId + " no encontrada"));
+
+        if (comision.getProfesor() == null || !comision.getProfesor().getIdPersona().equals(profesorId)) {
+            throw new EntidadNoEncontradaException("El profesor con id: " + profesorId + " no tiene a cargo la comisión con id: " + comisionId);
+        }
+
+        List<Alumno> alumnos = alumnoRepository.findDistinctByInscripcionComision_Comision_IdComision(comisionId);
+        return alumnoMapper.toDTOList(alumnos);
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosInscriptosExamenFinal(Long profesorId, Long examenId) {
+        Examen examen = examenRepository.findById(examenId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Examen con id: " + examenId + " no encontrado"));
+
+        if (!profesorDictaMateria(profesorId, examen.getMateria().getIdMateria())) {
+            throw new EntidadNoEncontradaException("El profesor con id: " + profesorId + " no dicta la materia asociada al examen con id: " + examenId);
+        }
+
+        List<Alumno> alumnos = alumnoInscripcionExamenFinalRepository.findByExamen_IdExamen(examenId)
+                .stream()
+                .map(AlumnoInscripcionExamenFinal::getAlumno)
+                .distinct()
+                .collect(Collectors.toList());
+
+        return alumnoMapper.toDTOList(alumnos);
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosInscriptosMateria(Long profesorId, Long materiaId) {
+        if (!profesorDictaMateria(profesorId, materiaId)) {
+            throw new EntidadNoEncontradaException("El profesor con id: " + profesorId + " no dicta la materia con id: " + materiaId);
+        }
+
+        List<Alumno> alumnos = alumnoRepository.findDistinctByInscripcionComision_Comision_Materia_IdMateria(materiaId);
+        return alumnoMapper.toDTOList(alumnos);
+    }
+
+    private boolean profesorDictaMateria(Long profesorId, Long materiaId) {
+        return comisionRepository.findByProfesor_IdPersona(profesorId)
+                .stream()
+                .anyMatch(comision -> comision.getMateria().getIdMateria().equals(materiaId));
     }
 }
 

@@ -76,4 +76,26 @@ public class ProfesorController {
         List<AlumnoDTO> alumnos = profesorService.obtenerAlumnosMateria(materiaId);
         return ResponseEntity.ok(alumnos);
     }
+
+    //-----------------------------NUEVOS FALTA PROBAR QUE ANDEN-----------------------------
+    //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @GetMapping("/{id}/comisiones/{comisionId}/alumnos")
+    public ResponseEntity<List<AlumnoDTO>> obtenerAlumnosInscriptosComision(@PathVariable Long id, @PathVariable Long comisionId) {
+        List<AlumnoDTO> alumnos = profesorService.obtenerAlumnosInscriptosComision(id, comisionId);
+        return ResponseEntity.ok(alumnos);
+    }
+
+    //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @GetMapping("/{id}/examenes/{examenId}/alumnos")
+    public ResponseEntity<List<AlumnoDTO>> obtenerAlumnosInscriptosExamenFinal(@PathVariable Long id, @PathVariable Long examenId) {
+        List<AlumnoDTO> alumnos = profesorService.obtenerAlumnosInscriptosExamenFinal(id, examenId);
+        return ResponseEntity.ok(alumnos);
+    }
+
+    //@PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @GetMapping("/{id}/materias/{materiaId}/alumnos")
+    public ResponseEntity<List<AlumnoDTO>> obtenerAlumnosInscriptosMateria(@PathVariable Long id, @PathVariable Long materiaId) {
+        List<AlumnoDTO> alumnos = profesorService.obtenerAlumnosInscriptosMateria(id, materiaId);
+        return ResponseEntity.ok(alumnos);
+    }
 }
