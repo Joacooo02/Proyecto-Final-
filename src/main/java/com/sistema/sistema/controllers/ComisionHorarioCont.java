@@ -21,7 +21,7 @@ public class ComisionHorarioCont {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/agregar")
-    public ComisionHorarioDTO agregar (@PathVariable ComisionHorario comHor){
+    public ComisionHorarioDTO agregar (@RequestBody ComisionHorario comHor){
         return serv.agregar(comHor);
     }
 

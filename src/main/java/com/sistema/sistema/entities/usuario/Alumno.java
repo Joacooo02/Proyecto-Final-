@@ -1,5 +1,6 @@
 package com.sistema.sistema.entities.usuario;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sistema.sistema.entities.areaAcademica.AlumnoMateria;
 import com.sistema.sistema.entities.areaAdministrativa.AlumnoInscripcionComision;
 import jakarta.persistence.*;
@@ -29,9 +30,11 @@ public class Alumno extends Persona{
 
     private double promedio;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "alumno")
     private List<AlumnoInscripcionComision> inscripcionComision = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "alumno")
     private List<AlumnoMateria> inscripcionesMateria = new ArrayList<>();
 

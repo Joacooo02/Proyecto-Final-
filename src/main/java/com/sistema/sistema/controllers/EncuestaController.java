@@ -19,7 +19,7 @@ public class EncuestaController {
 
     private final EncuestaService encuestaService;
 
-    @PreAuthorize("hasAnyRole('ALUMNO', PROFESOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ALUMNO', 'PROFESOR', 'ADMIN')")
     @GetMapping("/preguntas")
     public List<PreguntaEncuesta> listarPreguntas() {
         return encuestaService.listarPreguntas();
