@@ -33,7 +33,7 @@ public class AuthService {
         }
 
         var usuario = User.builder()
-                .username(request.nombre())
+                .username(request.email())
                 .password(passwordEncoder.encode(request.contrasena()))
                 .email(request.email())
                 //.role(request.role())
@@ -52,8 +52,7 @@ public class AuthService {
                         request.contrasena()
                 )
         );
-        var usuario = userRepository.findByEmail(request.email())
-                .orElseThrow();
+        var usuario = userRepository.findByEmail(request.email()).orElseThrow(() -> new UsuarioNotFoundException("Usuario no encontrado"));
         var jwtToken = jwtService.generateToken(usuario);
         var refreshToken = jwtService.generateRefreshToken(usuario);
         saveUserToken(usuario, jwtToken);
