@@ -10,6 +10,7 @@
     import org.springframework.security.config.annotation.web.builders.HttpSecurity;
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
     import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+    import org.springframework.security.config.http.SessionCreationPolicy;
     import org.springframework.security.core.context.SecurityContextHolder;
     import org.springframework.security.web.SecurityFilterChain;
     import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,11 +31,11 @@
         private final AuthenticationProvider authenticationProvider;
         private final TokenRepository tokenRepository;
 
-        /*
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             http
-                    .cors(cors -> cors.configurationSource(corsConfigurationSource())) // <-- AGREGAR ESTO
+                    // Aplica la configuración de CORS definida en el método de abajo
+                    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(req ->
                             req.requestMatchers(
@@ -50,12 +51,13 @@
                                             "/webjars/**",
                                             "/swagger-ui.html"
                                     ).permitAll()
+                                    // Rutas en plural y roles correctos
                                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                                    .requestMatchers("/profesor/**").hasAnyRole("PROFESOR", "ADMIN")
-                                    .requestMatchers("/alumno/**").hasAnyRole("ALUMNO", "PROFESOR", "ADMIN")
+                                    .requestMatchers("/profesores/**").hasAnyRole("PROFESOR", "ADMIN")
+                                    .requestMatchers("/alumnos/**").hasAnyRole("ALUMNO", "PROFESOR", "ADMIN")
                                     .anyRequest().authenticated()
                     )
-                    .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authenticationProvider(authenticationProvider)
                     .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                     .logout(logout ->
@@ -69,7 +71,7 @@
                     );
             return http.build();
         }
-         */
+        /*
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             http
@@ -109,7 +111,30 @@
                     );
             return http.build();
         }
+         */
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration configuration = new CorsConfiguration();
 
+            // Permitimos explícitamente a tu Live Server (tanto por IP como por localhost)
+            configuration.setAllowedOrigins(java.util.List.of("http://127.0.0.1:5500", "http://localhost:5500"));
+
+            // Permitimos los métodos HTTP comunes que usa tu frontend
+            configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+            // Permitimos todas las cabeceras (necesario para el "Authorization: Bearer ...")
+            configuration.setAllowedHeaders(java.util.List.of("*"));
+
+            // Permitir que el navegador envíe credenciales/cookies si hiciera falta
+            configuration.setAllowCredentials(true);
+
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            // Aplicamos esta configuración a absolutamente todas las rutas del backend
+            source.registerCorsConfiguration("/**", configuration);
+            return source;
+        }
+
+        /*
         // <-- AGREGAR ESTE BEAN COMPLETO
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {
@@ -132,6 +157,11 @@
             source.registerCorsConfiguration("/**", configuration);
             return source;
         }
+         */
+
+
+
+
         private void logout(final String token) {
             if (token == null || !token.startsWith("Bearer ")) {
                 return;

@@ -1,5 +1,6 @@
 package com.sistema.sistema.Security.Repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sistema.sistema.Security.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class Token {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     public User user;
 
 }

@@ -456,7 +456,7 @@ UPDATE users
 SET password = '$2a$10$IuAVQPzflxN3qfsD55Fi4OCuj0YXI8KX9Y.jEqEKgaOkkLaoBMje6'
 WHERE id IN (8,10,11,12);
 
-SELECT email, password
+SELECT email, password 
 FROM users
 WHERE email = 'carlos.profesor@correo.com';
 

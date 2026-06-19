@@ -1,5 +1,6 @@
 package com.sistema.sistema.Security.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sistema.sistema.Security.Repository.Token;
 import com.sistema.sistema.enums.RolUsuario;
 import jakarta.persistence.*;
@@ -28,6 +29,7 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Token> tokens;
 
     @Enumerated(EnumType.STRING)
