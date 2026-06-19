@@ -440,3 +440,26 @@ WHERE id IN (8, 10, 11, 12);
 UPDATE users SET password = '$2a$10$uVshZ2pZ6pS6Kx8Gk7eYI.f3l1pXN2Z4V7jN9vC7mD5vH2vE4S2v2' WHERE id IN (8, 10, 11, 12);
 
 SELECT password FROM users WHERE email = 'juan@correo.com';
+
+
+-- ---------------------------------
+
+SELECT id, email, password, role
+FROM users
+WHERE email = 'admin@correo.com';
+
+SELECT id, email, password, role
+FROM users
+WHERE email = 'carlos.profesor@correo.com';
+
+UPDATE users
+SET password = '$2a$10$IuAVQPzflxN3qfsD55Fi4OCuj0YXI8KX9Y.jEqEKgaOkkLaoBMje6'
+WHERE id IN (8,10,11,12);
+
+SELECT email, password
+FROM users
+WHERE email = 'carlos.profesor@correo.com';
+
+select * from alumno;
+select * from persona;
+select * from comision;
