@@ -2,9 +2,8 @@ DROP DATABASE IF EXISTS TrabajoFinal;
 CREATE DATABASE IF NOT EXISTS TrabajoFinal;
 USE TrabajoFinal;
 
--- ====================================================================
--- NIVEL 0: Tablas base (No dependen de ninguna otra)
--- ====================================================================
+
+-- nivel 0: Tablas base (No dependen de ninguna otra)
 
 CREATE TABLE users (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -28,9 +27,9 @@ CREATE TABLE PreguntaEncuesta (
     enunciado VARCHAR(300) NOT NULL
 );
 
--- ====================================================================
--- NIVEL 1: Tablas que dependen del Nivel 0
--- ====================================================================
+
+-- nivel 1: Tablas que dependen del Nivel 0
+
 
 CREATE TABLE Persona (
     idPersona BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -75,9 +74,8 @@ CREATE TABLE PeriodoInscripcion (
     FOREIGN KEY (idCarrera) REFERENCES carrera(idCarrera) ON DELETE CASCADE
 );
 
--- ====================================================================
--- NIVEL 2: Tablas que dependen del Nivel 1
--- ====================================================================
+
+-- nivel 2: Tablas que dependen del Nivel 1
 
 CREATE TABLE Alumno (
     idPersona BIGINT UNSIGNED PRIMARY KEY,
@@ -122,9 +120,9 @@ CREATE TABLE Aviso (
     FOREIGN KEY (id_persona) REFERENCES Persona(idPersona) ON DELETE CASCADE
 );
 
--- ====================================================================
--- NIVEL 3: Tablas que dependen del Nivel 2
--- ====================================================================
+
+-- nivel 3: Tablas que dependen del Nivel 2
+
 
 CREATE TABLE Examen (
     idExamen BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -201,9 +199,9 @@ CREATE TABLE boleto_especial_educativo (
     FOREIGN KEY (idAlumno) REFERENCES Alumno(idPersona) ON DELETE CASCADE
 );
 
--- ====================================================================
--- NIVEL 4: Tablas que dependen del Nivel 3
--- ====================================================================
+
+-- nivel 4: Tablas que dependen del Nivel 3
+
 
 CREATE TABLE Nota (
     idNota BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -271,9 +269,7 @@ CREATE TABLE periodo_inscripcion_comision (
     FOREIGN KEY (idComision) REFERENCES comision(idComision) ON DELETE CASCADE
 );
 
--- ====================================================================
--- NIVEL 5: Tablas que dependen del Nivel 4
--- ====================================================================
+
 
 CREATE TABLE RespuestaPregunta (
     idRespuestaPregunta BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -285,9 +281,7 @@ CREATE TABLE RespuestaPregunta (
 );
 
 
--- ====================================================================
--- INSERTS DE CONFIGURACIÓN Y ENTIDADES BASE
--- ====================================================================
+
 
 INSERT INTO PreguntaEncuesta (orden, enunciado) VALUES
 (1, '¿El profesor cumplió con los temas del programa?'),
@@ -302,7 +296,7 @@ INSERT INTO Carrera (nombre,duracion,tituloOtorgado,modalidadCarrera) VALUES
 INSERT INTO PlanEstudio (idCarrera,nombre,anioInicio) VALUES
 (1,'Plan 2025',2025);
 
--- PROFESOR PRUEBA (ID Persona = 1)
+
 INSERT INTO Persona (nombre,apellido,dni,telefono,fechaNacimiento,email,rolUsuario,user_id) VALUES
 ('Juan','Perez','30111222','2235551234','1985-05-10','juan.perez@gmail.com','PROFESOR', NULL);
 
@@ -319,7 +313,7 @@ INSERT INTO Comision (idMateria,idProfesor,nroComision,cantAlumnos,aula) VALUES
 (2,1,102,30,'Aula 2'),
 (3,1,103,28,'Aula 3');
 
--- ALUMNO 1: Pedro (ID Persona = 2)
+
 INSERT INTO Persona (nombre,apellido,dni,telefono,fechaNacimiento,email,rolUsuario,user_id) VALUES
 ('Pedro','Gomez','40111222','2234441111','2004-03-15','pedro@gmail.com','ALUMNO', NULL);
 
@@ -327,20 +321,13 @@ INSERT INTO Alumno (idPersona,legajo,anioIngreso,analiticoParcial,esRegular,prom
 (2,1001,2025,TRUE,TRUE,8.5);
 
 
--- ====================================================================
--- USUARIOS DE AUTENTICACIÓN (Contraseña: 'PasswordSegura_2026' en BCrypt)
--- ====================================================================
 
 INSERT INTO users (id, username, password, email, `role`) VALUES
 (8, 'juan111', '$2a$10$yhfQtq22.PU7VIXuAYihpO84LuvwY823I14cb0/aPbOpn/5FYAhl2', 'juan@correo.com', 'ALUMNO'),
 (10, 'marialopez99', '$2a$10$yhfQtq22.PU7VIXuAYihpO84LuvwY823I14cb0/aPbOpn/5FYAhl2', 'maria.lopez@correo.com', 'ALUMNO');
 
 
--- ====================================================================
--- ALUMNO 2 Y 3: Perfiles de Alumno Vinculados a sus Users
--- ====================================================================
 
--- Perfil María López (ID Persona = 3, user_id = 10)
 INSERT INTO Persona (idPersona, nombre, apellido, dni, telefono, fechaNacimiento, email, rolUsuario, user_id) VALUES
 (3, 'Maria', 'Lopez', '40222333', '2234442222', '2003-08-20', 'maria.lopez@correo.com', 'ALUMNO', 10);
 
@@ -355,9 +342,7 @@ INSERT INTO Alumno (idPersona, legajo, anioIngreso, analiticoParcial, esRegular,
 VALUES (4, 1003, 2024, TRUE, TRUE, 8.7);
 
 
--- ====================================================================
--- COMPLEMENTOS ACADÉMICOS Y TRANSACCIONALES
--- ====================================================================
+
 
 INSERT INTO Alumno_Cursa_Carrera (idAlumno,idCarrera,fecha_inscripcion) VALUES
 (2,1,'2025-03-01'),
@@ -400,7 +385,6 @@ INSERT INTO PeriodoInscripcion (idCarrera,tipo,anioLectivo,cuatrimestre,fechaIni
 
 DELETE FROM Alumno_Materia WHERE id_alumno = 4;
 
--- Insertamos con estados que seguro tu backend procesa mejor (CURSANDO / APROBADA)
 INSERT INTO Alumno_Materia (id_alumno, id_materia, estado, notaParcial1, notaParcial2, notaFinal, fechaInscripcion) VALUES
 (4, 1, 'APROBADA', 8.0, 7.0, 8.0, '2026-03-01'),
 (4, 2, 'CURSANDO', NULL, NULL, NULL, '2026-03-01');
@@ -409,23 +393,23 @@ INSERT INTO Alumno_Materia (id_alumno, id_materia, estado, notaParcial1, notaPar
 INSERT INTO users (id, username, password, email, `role`) VALUES
 (11, 'carlosprof', '$2a$10$yhfQtq22.PU7VIXuAYihpO84LuvwY823I14cb0/aPbOpn/5FYAhl2', 'carlos.profesor@correo.com', 'PROFESOR');
 
--- 2. Creamos los datos de Persona para Carlos (ID Persona = 5) vinculado al user_id = 11
+
 INSERT INTO Persona (idPersona, nombre, apellido, dni, telefono, fechaNacimiento, email, rolUsuario, user_id) VALUES
 (5, 'Carlos', 'Maestro', '30999888', '2234449999', '1980-04-25', 'carlos.profesor@correo.com', 'PROFESOR', 11);
 
--- 3. Creamos su perfil en la tabla Profesor
+
 INSERT INTO Profesor (idPersona, horasSemanales, estadoProfesor) VALUES
 (5, 40, 'ACTIVO');
 
--- 1. Creamos el usuario en la tabla users (ID = 12, Rol = ADMIN)
+
 INSERT INTO users (id, username, password, email, `role`) VALUES
 (12, 'admin_general', '$2a$10$yhfQtq22.PU7VIXuAYihpO84LuvwY823I14cb0/aPbOpn/5FYAhl2', 'admin@correo.com', 'ADMIN');
 
--- 2. Creamos los datos de Persona para el Admin (ID Persona = 6) vinculado al user_id = 12
+
 INSERT INTO Persona (idPersona, nombre, apellido, dni, telefono, fechaNacimiento, email, rolUsuario, user_id) VALUES
 (6, 'Ana', 'Administradora', '30111000', '2234440000', '1988-09-15', 'admin@correo.com', 'ADMIN', 12);
 
--- 3. Creamos su perfil en la tabla Administrador
+
 INSERT INTO Administrador (idPersona) VALUES
 (6);
 
@@ -456,7 +440,7 @@ UPDATE users
 SET password = '$2a$10$IuAVQPzflxN3qfsD55Fi4OCuj0YXI8KX9Y.jEqEKgaOkkLaoBMje6'
 WHERE id IN (8,10,11,12);
 
-SELECT email, password 
+SELECT email, password
 FROM users
 WHERE email = 'carlos.profesor@correo.com';
 
