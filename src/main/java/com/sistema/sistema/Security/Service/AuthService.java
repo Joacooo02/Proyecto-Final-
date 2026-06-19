@@ -13,6 +13,7 @@ import com.sistema.sistema.enums.RolUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,14 +46,42 @@ public class AuthService {
         return new TokenResponse(jwtToken, refreshToken);
     }
 
+    public TokenResponse login(LoginRequest request){
 
-    public TokenResponse login (LoginRequest request){
+        System.out.println("HASH NUEVO: " + passwordEncoder.encode("123456"));
+
+        var usuario = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new UsuarioNotFoundException("No se encontró el usuario: " + request.email()));
+
+        System.out.println("Email: " + request.email());
+        System.out.println("Password enviada: " + request.password());
+        System.out.println("Hash BD: " + usuario.getPassword());
+        System.out.println("MATCHES: " +
+                passwordEncoder.matches(
+                        request.password(),
+                        usuario.getPassword()
+                ));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
                         request.password()
-                )
-        );
+                ));
+
+        var jwtToken = jwtService.generateToken(usuario);
+        var refreshToken = jwtService.generateRefreshToken(usuario);
+        saveUserToken(usuario, jwtToken);
+
+        return new TokenResponse(jwtToken, refreshToken);
+    }
+    /*
+    public TokenResponse login (LoginRequest request){
+
+        System.out.println(new BCryptPasswordEncoder().encode("123456"));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.email(),
+                        request.password()));
 
         
         var usuario = userRepository.findByEmail(request.email())
@@ -63,6 +92,7 @@ public class AuthService {
         saveUserToken(usuario, jwtToken);
         return new TokenResponse (jwtToken, refreshToken);
     }
+     */
 
     private void saveUserToken(User user, String jwtToken){
         var token = Token.builder()
