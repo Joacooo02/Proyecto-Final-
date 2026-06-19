@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CarreraDTO {
 
+    private Long idCarrera;
     private String nombre;
     private Integer duracion;
     private String tituloOtorgado;

@@ -41,6 +41,7 @@ public class CarreraService {
 
     public CarreraDTO modificarCarrera(Long id, CarreraDTO carreraModificada) {
         Carrera carreraExistente = obtenerCarreraPorId(id);
+        carreraModificada.setIdCarrera(id);
         carreraMapper.actualizarEntity(carreraModificada, carreraExistente);
         return carreraMapper.toDTO(carreraRepository.save(carreraExistente));
     }
