@@ -113,23 +113,25 @@
         // <-- AGREGAR ESTE BEAN COMPLETO
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(List.of(
-                    "http://localhost:5500",
-                    "http://127.0.0.1:5500",
+            CorsConfiguration configuration = new CorsConfiguration();
+
+            configuration.setAllowedOrigins(List.of(
                     "http://localhost:3000",
-                    "http://localhost:4200"
+                    "http://localhost:5173",
+                    "http://127.0.0.1:3000",
+                    "http://127.0.0.1:5173"
             ));
-            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-            config.setAllowedHeaders(List.of("*"));
-            config.setExposedHeaders(List.of("Authorization")); // por si devolvés el token en un header
-            config.setAllowCredentials(true);
+
+            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+            configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control"));
+
+            configuration.setAllowCredentials(true);
 
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", config);
+            source.registerCorsConfiguration("/**", configuration);
             return source;
         }
-
         private void logout(final String token) {
             if (token == null || !token.startsWith("Bearer ")) {
                 return;
