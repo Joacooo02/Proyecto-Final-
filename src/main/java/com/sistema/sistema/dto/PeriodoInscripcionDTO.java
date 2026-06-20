@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PeriodoInscripcionDTO {
+    private Long id;
     private Long idCarrera;
     private TipoInscripcion tipoInscripcion;
     private Integer anioLectivo;
