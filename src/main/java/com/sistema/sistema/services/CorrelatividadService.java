@@ -1,5 +1,6 @@
 package com.sistema.sistema.services;
 
+import com.sistema.sistema.Exceptions.CorrelativaException;
 import com.sistema.sistema.dto.CorrelatividadDTO;
 import com.sistema.sistema.entities.areaAcademica.Correlatividad;
 import com.sistema.sistema.entities.areaAcademica.Materia;
@@ -52,6 +53,24 @@ public class CorrelatividadService {
     public void eliminar(Long id)
     {
         correlatividadRepository.deleteById(id);
+    }
+
+    public CorrelatividadDTO modificar(Long id, CorrelatividadDTO dto)
+    {
+        Correlatividad correlatividadExistente = correlatividadRepository.findById(id).orElseThrow(() -> new CorrelativaException("No se encontro la correlativa"));
+        Materia materia = materiaRepository.findById(dto.getIdMateria()).orElseThrow(() -> new MateriaInexistente("No se encontro la materia"));
+        Materia correlativa = materiaRepository.findById(dto.getIdMateriaCorrelativa()).orElseThrow(() -> new MateriaInexistente("Materia correlativa no encontrada"));
+
+        correlatividadExistente.setMateria(materia);
+        correlatividadExistente.setMateriaCorrelativa(correlativa);
+
+        correlatividadExistente.setEstadoParaCursar(dto.getEstadoParaCursar());
+        correlatividadExistente.setEstadoParaRendir(dto.getEstadoParaRendir());
+
+        correlatividadExistente.setEstadoParaCursar(dto.getEstadoParaCursar());
+        correlatividadExistente.setEstadoParaRendir(dto.getEstadoParaRendir());
+
+        return correlatividadMapper.toDTO(correlatividadRepository.save(correlatividadExistente));
     }
 
 }

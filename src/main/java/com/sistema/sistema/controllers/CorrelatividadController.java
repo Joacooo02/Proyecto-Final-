@@ -3,6 +3,7 @@ package com.sistema.sistema.controllers;
 import com.sistema.sistema.dto.CorrelatividadDTO;
 import com.sistema.sistema.services.CorrelatividadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -40,5 +41,12 @@ public class CorrelatividadController {
     public void eliminar(@PathVariable Long id)
     {
         correlatividadService.eliminar(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<CorrelatividadDTO> modificar(@PathVariable Long id, @RequestBody CorrelatividadDTO dto)
+    {
+        return ResponseEntity.ok(correlatividadService.modificar(id, dto));
     }
 }

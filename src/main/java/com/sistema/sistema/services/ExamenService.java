@@ -52,4 +52,24 @@ public class    ExamenService {
     {
         return examenRepository.findByFecha(fechaExamen);
     }
+
+    public void eliminarExamen(Long idExamen)
+    {
+        Examen examen = examenRepository.findById(idExamen).orElseThrow(() -> new ExamenInexistente("No se encontro el examen"));
+        examenRepository.deleteById(examen.getIdExamen());
+    }
+
+    public Examen modificarExamen(Long idExamen, Long idMateria, Examen examenModificado)
+    {
+        Examen examenExistente = examenRepository.findById(idExamen).orElseThrow(() -> new ExamenInexistente("Examen no encontrado para modificar"));
+        if(idMateria != null)
+        {
+            Materia materia = materiaRepository.findById(idMateria).orElseThrow(() -> new MateriaInexistente("Materia no encontrada"));
+            examenExistente.setMateria(materia);
+        }
+        examenExistente.setFecha(examenModificado.getFecha());
+        examenExistente.setTipoExamen(examenModificado.getTipoExamen());
+
+        return examenRepository.save(examenExistente);
+    }
 }

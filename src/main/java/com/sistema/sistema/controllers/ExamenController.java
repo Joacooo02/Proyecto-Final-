@@ -4,6 +4,7 @@ import com.sistema.sistema.entities.areaAcademica.Examen;
 import com.sistema.sistema.enums.TipoExamen;
 import com.sistema.sistema.services.ExamenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,5 +54,21 @@ public class  ExamenController {
     public List<Examen> filtrarExamenPorFecha(@PathVariable LocalDate fecha)
     {
         return examenService.filtrarExamenPorFecha(fecha);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarExamen(@PathVariable Long id)
+    {
+        examenService.eliminarExamen(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<Examen> modificarExamen(@PathVariable Long id,@RequestParam(required = false) Long idMateria,@RequestBody Examen examen)
+    {
+        Examen actualizado = examenService.modificarExamen(id, idMateria, examen);
+        return ResponseEntity.ok(actualizado);
     }
 }
