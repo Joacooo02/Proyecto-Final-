@@ -71,94 +71,24 @@
                     );
             return http.build();
         }
-        /*
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http
-                    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(req ->
-                            req.requestMatchers(
-                                            "/auth/**",
-                                            "/v2/api-docs",
-                                            "/v3/api-docs",
-                                            "/v3/api-docs/**",
-                                            "/swagger-resources",
-                                            "/swagger-resources/**",
-                                            "/configuration/ui",
-                                            "/configuration/security",
-                                            "/swagger-ui/**",
-                                            "/webjars/**",
-                                            "/swagger-ui.html"
-                                    ).permitAll()
-                                    // CORREGIDO: Usamos rutas en plural y roles correctos
-                                    .requestMatchers("/admin/**").hasRole("ADMIN")
-                                    .requestMatchers("/profesores/**").hasAnyRole("PROFESOR", "ADMIN")
-                                    .requestMatchers("/alumnos/**").hasAnyRole("ALUMNO", "PROFESOR", "ADMIN")
-                                    .anyRequest().authenticated()
-                    )
-                    .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                    .logout(logout ->
-                            logout.logoutUrl("/auth/logout")
-                                    .addLogoutHandler((request, response, authentication) -> {
-                                        final var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-                                        logout(authHeader);
-                                    })
-                                    .logoutSuccessHandler((request, response, authentication) ->
-                                            SecurityContextHolder.clearContext())
-                    );
-            return http.build();
-        }
-         */
+
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {
             CorsConfiguration configuration = new CorsConfiguration();
 
-            // Permitimos explícitamente a tu Live Server (tanto por IP como por localhost)
             configuration.setAllowedOrigins(java.util.List.of("http://127.0.0.1:5500", "http://localhost:5500"));
 
-            // Permitimos los métodos HTTP comunes que usa tu frontend
             configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-            // Permitimos todas las cabeceras (necesario para el "Authorization: Bearer ...")
             configuration.setAllowedHeaders(java.util.List.of("*"));
 
-            // Permitir que el navegador envíe credenciales/cookies si hiciera falta
             configuration.setAllowCredentials(true);
 
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            // Aplicamos esta configuración a absolutamente todas las rutas del backend
+
             source.registerCorsConfiguration("/**", configuration);
             return source;
         }
-
-        /*
-        // <-- AGREGAR ESTE BEAN COMPLETO
-        @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration configuration = new CorsConfiguration();
-
-            configuration.setAllowedOrigins(List.of(
-                    "http://localhost:3000",
-                    "http://localhost:5173",
-                    "http://127.0.0.1:3000",
-                    "http://127.0.0.1:5173"
-            ));
-
-            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-
-            configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control"));
-
-            configuration.setAllowCredentials(true);
-
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
-            return source;
-        }
-         */
-
 
 
 

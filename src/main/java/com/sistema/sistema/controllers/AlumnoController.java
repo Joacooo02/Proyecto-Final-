@@ -97,4 +97,15 @@ public class AlumnoController {
         return alumnoService.tieneBoletoActivo(id);
     }
 
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{legajo}/password")
+    public ResponseEntity<String> cambiarPassword(@PathVariable Long legajo, @RequestBody String nuevaPassword)
+    {
+        System.out.println("Intentando cambiar password para el legajo: " + legajo);
+        String passwordLimpia = nuevaPassword.replace("\"", "");
+        alumnoService.cambiarPassword(legajo, nuevaPassword);
+        return ResponseEntity.ok("Contraseña actualizada con éxito");
+    }
+
 }

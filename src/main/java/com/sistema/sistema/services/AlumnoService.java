@@ -241,4 +241,63 @@ public class AlumnoService {
 
         return boleto.getEstaActivo();
     }
+
+    /*
+    @Transactional
+    public void cambiarPassword(Long legajo, String nuevaPassword)
+    {
+        String emailLogueado = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Alumno alumno = alumnoRepository.findByLegajo(legajo).orElseThrow(() -> new EntidadNoEncontradaException("Alumno no encontrado"));
+
+        var autoridades = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean esAdmin = autoridades.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!esAdmin && !alumno.getEmail().equals(emailLogueado)) {
+            throw new AlumnoInvalidoException("No tenés permiso para modificar esta cuenta.");
+        }
+
+        User user = alumno.getUser();
+
+        if (user == null) {
+            throw new EntidadNoEncontradaException("El alumno no tiene un usuario de sistema asignado");
+        }
+
+        user.setPassword(passwordEncoder.encode(nuevaPassword));
+        userRepository.save(user);
+    }
+     */
+    @Transactional
+    public void cambiarPassword(Long legajo, String nuevaPassword)
+    {
+        // 1. OBTENER INFORMACIÓN DE SEGURIDAD
+        String emailLogueado = SecurityContextHolder.getContext().getAuthentication().getName();
+        var authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
+        System.out.println("DEBUG: Usuario logueado: " + emailLogueado);
+        System.out.println("DEBUG: Roles detectados: " + authorities);
+
+        // 2. BUSCAR ALUMNO
+        Alumno alumno = alumnoRepository.findByLegajo(legajo)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Alumno no encontrado"));
+
+        // 3. LOG DE COMPARACIÓN
+        System.out.println("DEBUG: Email del alumno (dueño del legajo): " + alumno.getEmail());
+
+        // 4. VALIDACIÓN (Forzamos permiso si es el mismo usuario)
+        if (!alumno.getEmail().equals(emailLogueado)) {
+            System.out.println("DEBUG: ¡ERROR! El email logueado no coincide con el email del alumno.");
+            throw new AlumnoInvalidoException("No tenés permiso para modificar esta cuenta.");
+        }
+
+        // 5. CAMBIO DE CONTRASEÑA
+        User user = alumno.getUser();
+        if (user == null) {
+            throw new EntidadNoEncontradaException("El alumno no tiene un usuario de sistema asignado");
+        }
+
+        user.setPassword(passwordEncoder.encode(nuevaPassword.replace("\"", "")));
+        userRepository.save(user);
+        System.out.println("DEBUG: Contraseña actualizada correctamente en DB.");
+    }
 }
