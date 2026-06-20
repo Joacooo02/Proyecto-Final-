@@ -460,6 +460,29 @@ SELECT email, password
 FROM users
 WHERE email = 'carlos.profesor@correo.com';
 
+-- -----------------------------------------------------------------------------------
+INSERT INTO Comision (idMateria, idProfesor, nroComision, cantAlumnos, aula) VALUES
+(1, 5, 201, 30, 'Aula 4'), -- Programación I (Comisión de Carlos)
+(2, 5, 202, 25, 'Aula 5'), -- Base de Datos I (Comisión de Carlos)
+(3, 5, 203, 20, 'Aula 6');
+
+INSERT INTO Alumno_Inscripcion_Comision (idAlumno, idComision, fechaInscripcion) VALUES
+(2, 4, '2026-06-15'), -- Pedro Gómez
+(3, 4, '2026-06-15'), -- Maria Lopez
+(4, 4, '2026-06-15'); -- Juan Alumno
+
+-- Inscribir a Pedro también en Base de Datos I (idComision = 5, Nro 202)
+INSERT INTO Alumno_Inscripcion_Comision (idAlumno, idComision, fechaInscripcion) VALUES
+(2, 5, '2026-06-15');
+
+INSERT INTO users (id, username, password, email, `role`) VALUES
+(13, 'juan_profesor', '$2a$10$IuAVQPzflxN3qfsD55Fi4OCuj0YXI8KX9Y.jEqEKgaOkkLaoBMje6', 'juan.perez@gmail.com', 'PROFESOR');
+UPDATE Persona
+SET user_id = 13
+WHERE idPersona = 1;
+
+
+
 select * from alumno;
 select * from persona;
 select * from comision;
