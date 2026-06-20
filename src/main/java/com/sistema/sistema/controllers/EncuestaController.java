@@ -15,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/encuestas")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class EncuestaController {
 
     private final EncuestaService encuestaService;
@@ -25,7 +26,7 @@ public class EncuestaController {
         return encuestaService.listarPreguntas();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO')")
     @GetMapping("/{idComision}/ya-respondio/{idAlumno}")
     public boolean yaRespondio(@PathVariable Long idComision, @PathVariable Long idAlumno) {
         return encuestaService.yaRespondio(idComision, idAlumno);

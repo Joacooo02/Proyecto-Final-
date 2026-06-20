@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/examenes")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class  ExamenController {
 
     private final ExamenService examenService;
@@ -38,8 +39,9 @@ public class  ExamenController {
 
     @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN', 'ALUMNO')")
     @GetMapping("/tipo/{tipoExamen}")
-    public List<Examen> filtrarExamenPorTipo(@PathVariable TipoExamen tipoExamen) {
-        return examenService.filtrarExamenPorTipo(tipoExamen);
+    public List<Examen> filtrarExamenPorTipo(@PathVariable String tipoExamen) {
+        TipoExamen tipo = TipoExamen.valueOf(tipoExamen.toUpperCase());
+        return examenService.filtrarExamenPorTipo(tipo);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
