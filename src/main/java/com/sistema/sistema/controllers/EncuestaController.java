@@ -45,7 +45,7 @@ public class EncuestaController {
                 request.getComentarioFinal());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROFESOR')")
     @GetMapping("/{idComision}/resultados")
     public Map<String, Double> obtenerResultados(@PathVariable Long idComision) {
         return encuestaService.obtenerResultados(idComision);
