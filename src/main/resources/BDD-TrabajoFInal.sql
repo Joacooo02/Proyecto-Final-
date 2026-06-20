@@ -481,8 +481,6 @@ UPDATE Persona
 SET user_id = 13
 WHERE idPersona = 1;
 
-
-
 select * from alumno;
 select * from persona;
 select * from comision;
