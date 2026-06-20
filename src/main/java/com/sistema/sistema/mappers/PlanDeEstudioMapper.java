@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PlanDeEstudioMapper {
+    @Mapping(source = "id", target = "idPlan")
     PlanDeEstudioDTO toDTO(PlanDeEstudio planDeEstudio);
 
     @Mapping(target = "idCarrera", ignore = true)

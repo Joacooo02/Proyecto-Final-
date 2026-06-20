@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlanDeEstudioDTO {
+    private Long idPlan;
     private Long idCarrera;
     private String nombre;
 }
