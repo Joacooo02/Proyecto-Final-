@@ -4,6 +4,7 @@ import com.sistema.sistema.dto.CuotaDTO;
 import com.sistema.sistema.entities.areaAdministrativa.Cuota;
 import com.sistema.sistema.entities.usuario.Alumno;
 import com.sistema.sistema.enums.EstadoCuota;
+import com.sistema.sistema.exceptions.CuotaInvalidaException;
 import com.sistema.sistema.mappers.CuotaMapper;
 import com.sistema.sistema.repositories.AlumnoRepository;
 import com.sistema.sistema.repositories.CuotaRepository;
@@ -86,5 +87,24 @@ public class CuotaService {
     }
 
 
+    public CuotaDTO modificarCuota(Long idCuota, CuotaDTO dto)
+    {
+        Cuota cuota = cuotaRepository.findById(idCuota).orElseThrow(() -> new RuntimeException("No se encontró la cuota"));
+
+        cuota.setValorCuota(dto.getValorCuota());
+        cuota.setEstadoCuota(dto.getEstadoCuota());
+        cuota.setConceptoCuota(dto.getConceptoCuota());
+        cuota.setFechaVencimiento(dto.getFechaVencimiento());
+
+        cuota = cuotaRepository.save(cuota);
+        return cuotaMapper.toDto(cuota);
+    }
+
+
+    public void eliminarCuota(Long idCuota)
+    {
+        Cuota cuota = cuotaRepository.findById(idCuota).orElseThrow(() -> new CuotaInvalidaException("No se encontro la cuota"));
+        cuotaRepository.deleteById(idCuota);
+    }
 
 }

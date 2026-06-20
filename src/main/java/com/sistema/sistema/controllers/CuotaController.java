@@ -5,6 +5,7 @@ import com.sistema.sistema.entities.areaAdministrativa.Cuota;
 import com.sistema.sistema.enums.EstadoCuota;
 import com.sistema.sistema.services.CuotaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,22 @@ public class CuotaController {
     public Integer obtenerDeudaTotal(@PathVariable Long idAlumno) {
         return cuotaService.obtenerDeudaTotal(idAlumno);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{idCuota}")
+    public ResponseEntity<CuotaDTO> modificarCuota(@PathVariable Long idCuota, @RequestBody CuotaDTO dto)
+    {
+        return ResponseEntity.ok(cuotaService.modificarCuota(idCuota, dto));
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/{idCuota}")
+    public ResponseEntity<String> eliminarCuota(@PathVariable Long idCuota)
+    {
+        cuotaService.eliminarCuota(idCuota);
+        return ResponseEntity.ok("Cuota eliminada correctamente");
+    }
+
 
 }

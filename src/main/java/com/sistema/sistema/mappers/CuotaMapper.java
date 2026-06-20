@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CuotaMapper {
 
+    @Mapping(source = "idCuota", target = "id")
     @Mapping(source = "alumno.idPersona", target = "idAlumno")
     CuotaDTO toDto(Cuota cuota);
 
