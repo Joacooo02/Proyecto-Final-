@@ -30,7 +30,7 @@ public class AlumnoController {
     // Datos del alumno logueado (email tomado del token). Permite que el login del
     // front pida SOLO email+contraseña: tras autenticar, el front llama /me y obtiene
     // legajo + idPersona. La ruta literal "/me" matchea antes que "/{legajo}".
-    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN', 'ALUMNO')")
+    @PreAuthorize("hasAnyRole('ALUMNO', 'ADMIN')")
     @GetMapping("/me")
     public AlumnoDTO datosAlumnoLogueado(org.springframework.security.core.Authentication authentication){
         System.out.println("Usuario: " + authentication.getName());
@@ -90,7 +90,7 @@ public class AlumnoController {
          return "Boleto registrado correctamente";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO')")
     @GetMapping("/boleto/{id}")
     public boolean tieneBoletoActivo(@PathVariable Long id)
     {

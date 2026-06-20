@@ -36,7 +36,7 @@ public class MateriaController {
         materiaService.eliminarMateria(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUMNO', 'PROFESOR')")
     @GetMapping
     public List<MateriaDTO> listarMaterias(@RequestParam(required = false) String nombre) {
         return materiaService.listarMaterias(nombre);
@@ -49,10 +49,9 @@ public class MateriaController {
         return materiaService.modificarMateria(id, materiaDTO);
     }
 
-    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN', 'ALUMNO')")
     @GetMapping("/plan-academico/{idAlumno}")
-    public List<MateriaDTO> verPlanAcademicoAlumno(
-            @PathVariable Long idAlumno)
+    public List<MateriaDTO> verPlanAcademicoAlumno(@PathVariable Long idAlumno)
     {
         return materiaService.verPlanAcademicoAlumno(idAlumno)
                 .stream()

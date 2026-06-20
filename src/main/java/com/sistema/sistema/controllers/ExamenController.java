@@ -36,7 +36,7 @@ public class  ExamenController {
         return examenService.verExamen(idExamen);
     }
 
-    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN', 'ALUMNO')")
     @GetMapping("/tipo/{tipoExamen}")
     public List<Examen> filtrarExamenPorTipo(@PathVariable TipoExamen tipoExamen) {
         return examenService.filtrarExamenPorTipo(tipoExamen);

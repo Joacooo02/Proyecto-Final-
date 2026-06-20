@@ -39,7 +39,7 @@ public class PlanDeEstudioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROFESOR', 'ALUMNO')")
     @GetMapping("/mostrar")
     public List<PlanDeEstudioDTO> mostrar() {
         return planDeEstudioService.mostrar();
