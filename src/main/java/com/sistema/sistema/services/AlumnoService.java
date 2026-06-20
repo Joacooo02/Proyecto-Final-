@@ -19,10 +19,12 @@ import com.sistema.sistema.repositories.*;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,25 @@ public class AlumnoService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AlumnoDTO buscarAlumnoPorLegajo(Long legajo){
+    public AlumnoDTO buscarAlumnoPorLegajo(Long legajo) {
+
+        String emailLogueado = SecurityContextHolder.getContext().getAuthentication().getName();
+        var autoridades = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean esAlumno = autoridades.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ALUMNO"));
+
+        if (esAlumno)
+        {
+            Alumno alumnoLogueado = alumnoRepository.findByEmail(emailLogueado).orElseThrow(() -> new EntidadNoEncontradaException("Alumno no encontrado con el email: " + emailLogueado));
+
+
+            if (!alumnoLogueado.getLegajo().equals(legajo)) {
+                throw new AlumnoInvalidoException("No tenés permiso para ver los datos de otro alumno.");
+            }
+
+
+        }
+
+
         return alumnoMapper.toDTO(obtenerAlumnoPorLegajo(legajo));
     }
 
