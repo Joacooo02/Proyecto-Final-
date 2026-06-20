@@ -45,4 +45,10 @@ public class AvisoController {
         return ResponseEntity.ok("Aviso eliminado correctamente");
     }
 
+    @PreAuthorize("hasAnyRole('PROFESOR', 'ADMIN')")
+    @PutMapping("/{idAviso}/persona/{idPersona}")
+    public ResponseEntity<AvisoDTO> modificarAviso(@PathVariable Long idAviso,@PathVariable Long idPersona,@RequestBody AvisoDTO dto)
+    {
+        return ResponseEntity.ok(service.modificarAviso(idAviso, idPersona, dto));
+    }
 }

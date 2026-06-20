@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 public class AvisoDTO {
 
+    private Long id;
     private String nombre;
     private String apellido;
     private String titulo;
