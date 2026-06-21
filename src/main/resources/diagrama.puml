@@ -1,144 +1,259 @@
 @startuml
 ' ======= Configuración Estética =======
 skinparam linetype ortho
-skinparam nodesep 100
-skinparam ranksep 100
+skinparam nodesep 60
+skinparam ranksep 60
 skinparam backgroundColor #FFFFF1
 skinparam roundcorner 20
-skinparam ArrowFontSize 18
+skinparam ArrowFontSize 14
+skinparam classFontSize 14
+skinparam packageTitleAlignment center
 
-
-' ======= Paquete: Gestión Académica (Izquierda) =======
-package "Área Académica" #E3F2FD {
-    class Carrera {
-        - idCarrera : int
-        - nombre : String
-        - duracion : int
-        - tituloOtorgado : String
-        - planDeEstudio : int
+' ======= Paquete: Seguridad =======
+package "Seguridad y Autenticación" #F3E5F5 {
+    class users {
+        - id : Long <<PK>>
+        - username : String
+        - password : String
+        - email : String
+        - role : String
     }
 
-    enum modalidadCarrera {
-        PRESENCIAL
-        VIRTUAL
+    class tokens {
+        - id : Long <<PK>>
+        - token : String
+        - tokenType : String
+        - revoked : Boolean
+        - expired : Boolean
     }
 
-    class Materia {
-        - idMateria : int
-        - nombre : String
-        - cargaHoraria : int
-        - cuatrimestre : int
-        - anioCursando : int
-    }
-
-    class Comision {
-        - idComision : int
-        - nroComision : int
-        - aula : String
-    }
-
-    class Examen {
-        - idExamen : int
-        - fecha : LocalDate
-    }
-
-    enum TipoExamen {
-        PARCIAL
-        FINAL
-    }
-
-    class Nota {
-        - valor : double
-        - fechaRegistro : LocalDate
-    }
+    users "1" *-- "*" tokens : posee >
 }
 
-' ======= Paquete: Gestión de Personas (Centro) =======
-package "Usuarios y Perfiles" #F5F5F9 {
-    abstract class Persona {
+' ======= Paquete: Usuarios y Perfiles =======
+package "Gestión de Personas" #F5F5F9 {
+    class Persona {
+        - idPersona : Long <<PK>>
         - nombre : String
         - apellido : String
         - dni : String
-        - direccion : String
         - telefono : String
         - fechaNacimiento : LocalDate
         - email : String
+        - rolUsuario : Enum
     }
 
     class Administrador {
-        - idAdministrador : int
+        - idPersona : Long <<PK/FK>>
     }
 
     class Alumno {
-        - idAlumno : int
-        - legajo : int
-        - anioIngreso : int
-        - analiticoParcial : boolean
-        - esRegular : boolean
-        - planEstudio : int
-        - promedio : double
+        - idPersona : Long <<PK/FK>>
+        - legajo : Long
+        - anioIngreso : Integer
+        - analiticoParcial : Boolean
+        - esRegular : Boolean
+        - promedio : Double
     }
 
     class Profesor {
-        - idProfesor : int
-        - horasSemanales : int
+        - idPersona : Long <<PK/FK>>
+        - horasSemanales : Integer
+        - estadoProfesor : Enum
     }
 
-    enum EstadoProfesor {
-        ACTIVO
-        INACTIVO
-        LICENCIA
+    class Aviso {
+        - id : Long <<PK>>
+        - titulo : String
+        - contenido : String
+        - fecha_aviso : LocalDateTime
     }
+
+    ' Herencia
+    Persona <|-- Administrador
+    Persona <|-- Alumno
+    Persona <|-- Profesor
+
+    users "1" -- "0..1" Persona : autentica >
+    Persona "1" *-- "*" Aviso : recibe >
 }
 
-' ======= Paquete: Gestión Administrativa (Derecha) =======
+' ======= Paquete: Área Académica =======
+package "Área Académica Core" #E3F2FD {
+    class carrera {
+        - idCarrera : Long <<PK>>
+        - nombre : String
+        - duracion : Integer
+        - tituloOtorgado : String
+        - modalidadCarrera : Enum
+    }
+
+    class PlanEstudio {
+        - idPlanEstudio : Long <<PK>>
+        - nombre : String
+        - anioInicio : Integer
+    }
+
+    class Materia {
+        - idMateria : Long <<PK>>
+        - nombre : String
+        - cargaHoraria : Integer
+        - cuatrimestre : Integer
+        - anioCursado : Integer
+    }
+
+    class Correlatividad {
+        - idCorrelatividad : Long <<PK>>
+        - estadoParaCursar : Enum
+        - estadoParaRendir : Enum
+    }
+
+    class comision {
+        - idComision : Long <<PK>>
+        - nroComision : Integer
+        - cantAlumnos : Integer
+        - aula : String
+        - cupo_maximo : Integer
+    }
+
+    class ComisionHorario {
+        - idComisionHorario : Long <<PK>>
+        - diaSemana : Enum
+        - horaInicio : LocalTime
+        - horaFin : LocalTime
+    }
+
+    class Examen {
+        - idExamen : Long <<PK>>
+        - fecha : LocalDate
+        - tipoExamen : Enum
+    }
+
+    class PeriodoInscripcion {
+        - idPeriodo : Long <<PK>>
+        - tipo : Enum
+        - anioLectivo : Integer
+        - cuatrimestre : Integer
+        - fechaInicio : LocalDateTime
+        - fechaCierre : LocalDateTime
+        - activa : Boolean
+    }
+
+    carrera "1" *-- "*" PlanEstudio
+    carrera "1" *-- "*" Materia
+    PlanEstudio "1" *-- "*" Materia
+    carrera "1" *-- "*" PeriodoInscripcion
+    Materia "1" -- "*" Correlatividad : requiere >
+    Materia "1" *-- "*" comision
+    Profesor "1" -- "*" comision : dicta >
+    comision "1" *-- "*" ComisionHorario
+    Materia "1" *-- "*" Examen : genera >
+}
+
+' ======= Paquete: Trámites e Inscripciones =======
+package "Transacciones Académicas" #FFF3E0 {
+    class Alumno_Cursa_Carrera << (A, #FFAAAA) Associative >> {
+        - fecha_inscripcion : LocalDate
+    }
+
+    class Alumno_Materia << (A, #FFAAAA) Associative >> {
+        - estado : Enum
+        - notaParcial1 : Double
+        - notaParcial2 : Double
+        - notaFinal : Double
+        - fechaInscripcion : LocalDate
+        - fechaRegularizacion : LocalDate
+        - fechaAprobacion : LocalDate
+    }
+
+    class Alumno_Inscripcion_Comision << (A, #FFAAAA) Associative >> {
+        - fechaInscripcion : LocalDate
+    }
+
+    class Alumno_Inscripcion_Examen_Final << (A, #FFAAAA) Associative >> {
+        - fechaInscripcion : LocalDate
+    }
+
+    class periodo_inscripcion_comision << (A, #FFAAAA) Associative >>
+
+    class Nota {
+        - idNota : Long <<PK>>
+        - nota : Integer
+        - fechaRegistro : LocalDate
+    }
+
+    Alumno "1" -- "*" Alumno_Cursa_Carrera
+    carrera "1" -- "*" Alumno_Cursa_Carrera
+
+    Alumno "1" -- "*" Alumno_Materia
+    Materia "1" -- "*" Alumno_Materia
+
+    Alumno "1" -- "*" Alumno_Inscripcion_Comision
+    comision "1" -- "*" Alumno_Inscripcion_Comision
+
+    Alumno "1" -- "*" Alumno_Inscripcion_Examen_Final
+    Examen "1" -- "*" Alumno_Inscripcion_Examen_Final
+
+    Alumno "1" -- "*" Nota
+    Examen "1" -- "*" Nota
+
+    PeriodoInscripcion "1" -- "*" periodo_inscripcion_comision
+    comision "1" -- "*" periodo_inscripcion_comision
+}
+
+' ======= Paquete: Área Administrativa =======
 package "Área Administrativa" #E8F5E9 {
     class Cuota {
-        - idCuota : int
-        - valorCuota : double
-        - fechaPago : LocalDate
+        - idCuota : Long <<PK>>
+        - mes : Integer
+        - anio : Integer
+        - valorCuota : Integer
         - fechaVencimiento : LocalDate
+        - conceptoCuota : Enum
+        - estadoCuota : Enum
     }
 
-    enum EstadoCuota {
-        PAGADA
-        PENDIENTE
-        VENCIDA
+    class PagoCuota {
+        - idPagoCuota : Long <<PK>>
+        - montoPagado : Integer
+        - fechaPago : LocalDate
+        - metodoPago : Enum
     }
 
-    enum ConceptoCuota {
-        CUOTA
-        MATRICULA
+    class boleto_especial_educativo {
+        - id : Long <<PK>>
+        - fueSolicitado : Boolean
+        - estaActivo : Boolean
     }
+
+    Alumno "1" *-- "*" Cuota : debe >
+    Cuota "1" *-- "*" PagoCuota : registra >
+    Alumno "1" -- "0..1" boleto_especial_educativo : solicita >
 }
 
-' ======= Relaciones de Herencia =======
-Persona <|-- Administrador
-Persona <|-- Alumno
-Persona <|-- Profesor
+' ======= Paquete: Encuestas =======
+package "Módulo de Encuestas" #FFEBEE {
+    class PreguntaEncuesta {
+        - idPreguntaEncuesta : Long <<PK>>
+        - orden : Integer
+        - enunciado : String
+    }
 
-' ======= Relaciones con Colores Temáticos =======
+    class RespuestaEncuesta {
+        - idRespuestaEncuesta : Long <<PK>>
+        - hashAlumno : String
+        - fechaRespuesta : LocalDateTime
+        - comentarioFinal : String
+    }
 
-' FLUJO ACADÉMICO (Azul)
-Alumno " <b><size:20>*</size></b> " -left- " <b><size:20>*</size></b> " Carrera #Blue : cursa >
-Carrera "1" *-[#Blue]- "*" Materia : contiene >
-Materia "1" *-[#Blue]- "*" Comision : se divide en >
-Profesor "1..*" -left- "*" Comision #Blue : dicta >
-Materia "*" -[#Blue]right- "*" Materia : correlativa de >
+    class RespuestaPregunta {
+        - idRespuestaPregunta : Long <<PK>>
+        - calificacion : Integer
+    }
 
-' FLUJO EVALUACIÓN (Rojo)
-Alumno "1" *-[#Crimson]- "*" Nota : posee >
-Nota "*" -down- "1" Examen #Crimson : de un >
-Materia "1" -down- "*" Examen #Crimson : genera >
-
-' FLUJO ADMINISTRATIVO (Verde)
-Alumno "1" *-[#DarkGreen]right- " <b><size:20>*</size></b> " Cuota : paga >
-
-' CONEXIONES DE ENUMS (Líneas grises para no distraer del flujo principal)
-Profesor -- EstadoProfesor #Grey
-Carrera -- modalidadCarrera #Grey
-Examen -- TipoExamen #Grey
-Cuota -- EstadoCuota #Grey
-Cuota -- ConceptoCuota #Grey
+    comision "1" *-- "*" RespuestaEncuesta : evalúa >
+    RespuestaEncuesta "1" *-- "*" RespuestaPregunta : contiene >
+    PreguntaEncuesta "1" -- "*" RespuestaPregunta : corresponde a >
+}
 
 @enduml
