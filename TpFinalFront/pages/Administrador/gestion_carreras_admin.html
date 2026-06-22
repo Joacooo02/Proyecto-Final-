@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarrerasAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/carreras_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Carreras</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar carrera</button>
+
+            <div class="buscador">
+                <input type="number" id="buscar-id" placeholder="Id de carrera">
+                <button class="btn" id="btn-buscar-id" title="Buscar por id">Buscar por id</button>
+            </div>
+        </div>
+
+        <p class="ayuda">
+            Para ver, editar o eliminar una carrera, ingresá su número de ID en el buscador de arriba.
+        </p>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>ID</th> <th>Nombre</th>
+                    <th>Duracion</th>
+                    <th>Titulo otorgado</th>
+                    <th>Modalidad</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <dialog id="dialogo-carrera">
+        <form id="form-carrera" class="formulario">
+            <h2>Agregar carrera</h2>
+
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Duracion (años)
+                <input type="number" name="duracion">
+            </label>
+            <label>
+                Titulo otorgado
+                <input type="text" name="tituloOtorgado">
+            </label>
+            <label>
+                Modalidad
+                <select name="modalidadCarrera" required>
+                    <option value="PRESENCIAL">Presencial</option>
+                    <option value="VIRTUAL">Virtual</option>
+                </select>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar carrera <span id="editar-id"></span></h2>
+
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Duracion (años)
+                <input type="number" name="duracion">
+            </label>
+            <label>
+                Titulo otorgado
+                <input type="text" name="tituloOtorgado">
+            </label>
+            <label>
+                Modalidad
+                <select name="modalidadCarrera" required>
+                    <option value="PRESENCIAL">Presencial</option>
+                    <option value="VIRTUAL">Virtual</option>
+                </select>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn btn-peligro" id="btn-eliminar">Eliminar</button>
+                <span class="espaciador"></span>
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

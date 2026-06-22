@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InscripcionesAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/inscripciones_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion de Inscripciones</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <!-- ===== Periodos de inscripcion ===== -->
+        <section class="seccion">
+            <div class="acciones">
+                <h2>Periodos de inscripcion</h2>
+                <input type="text" id="buscar-periodo" placeholder="Buscar período..." class="input-busqueda" style="padding: 6px; margin-right: 10px;">
+                <button class="btn" id="btn-agregar-periodo">Crear periodo</button>
+            </div>
+
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Carrera</th>
+                        <th>Tipo</th>
+                        <th>Año lectivo</th>
+                        <th>Cuatrimestre</th>
+                        <th>Inicio</th>
+                        <th>Cierre</th>
+                        <th>Activa</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-periodos"></tbody>
+            </table>
+        </section>
+
+        <!-- ===== Comisiones habilitadas por periodo ===== -->
+       <section class="seccion">
+            <div class="acciones">
+                <h2>Comisiones habilitadas</h2>
+                <input type="text" id="buscar-comision" placeholder="Filtrar comisiones..." class="input-busqueda" style="padding: 6px; display: none;" id="buscar-comision-box">
+            </div>
+
+            <div class="buscador">
+                <input type="number" id="input-periodo" placeholder="Id del periodo">
+                <button class="btn" id="btn-ver-comisiones">Ver comisiones</button>
+                <button class="btn btn-primario" id="btn-habilitar-comision">Habilitar comision</button>
+            </div>
+
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Periodo</th>
+                        <th>Comision</th>
+                        <th>Materia</th>
+                        <th>Nro comision</th>
+                        <th>Acciones</th> </tr>
+                </thead>
+                <tbody id="tbody-comisiones"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- ===== Dialogo: crear periodo ===== -->
+    <dialog id="dialogo-periodo">
+        <form id="form-periodo" class="formulario">
+            <h2>Crear periodo de inscripcion</h2>
+
+            <label>
+                Id carrera
+                <input type="number" name="idCarrera" required>
+            </label>
+            <label>
+                Tipo
+                <select name="tipoInscripcion" required>
+                    <option value="CURSADA">Cursada</option>
+                    <option value="FINAL">Final</option>
+                </select>
+            </label>
+            <label>
+                Año lectivo
+                <input type="number" name="anioLectivo" required>
+            </label>
+            <label>
+                Cuatrimestre
+                <input type="number" name="cuatrimestre" min="1" max="2">
+            </label>
+            <label>
+                Fecha y hora de inicio
+                <input type="datetime-local" name="fechaInicio" required>
+            </label>
+            <label>
+                Fecha y hora de cierre
+                <input type="datetime-local" name="fechaCierre" required>
+            </label>
+            <label class="check">
+                <input type="checkbox" name="activa" checked>
+                Activa
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar-periodo">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Crear</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: habilitar comision ===== -->
+    <dialog id="dialogo-comision">
+        <form id="form-comision" class="formulario">
+            <h2>Habilitar comision en un periodo</h2>
+
+            <label>
+                Id periodo
+                <input type="number" name="idPeriodo" required>
+            </label>
+            <label>
+                Id comision
+                <input type="number" name="idComision" required>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar-comision">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Habilitar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

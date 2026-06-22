@@ -1,0 +1,485 @@
+/* ===== Reset basico ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Barras superior e inferior ===== */
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #999;
+    padding: 16px 32px;
+}
+
+.marca {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4a7dbd;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Empuja los botones que le siguen hacia la derecha (deja Eliminar a la izquierda) */
+.espaciador {
+    flex: 1;
+}
+
+.navbar a {
+    padding: 8px 16px;
+    border-radius: 4px;
+    color: #222;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.navbar a:hover {
+    background-color: #e8e8e8;
+}
+
+.navbar a.activo {
+    background-color: #4a7dbd;
+    color: #fff;
+}
+
+.barra-inferior {
+    margin-top: auto;
+    background-color: #4a7dbd;
+    padding: 24px;
+}
+
+/* ===== Contenido principal ===== */
+.contenido {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 0;
+}
+
+.contenido h1 {
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+}
+
+/* Fila con el boton de agregar a la izquierda y el buscador a la derecha */
+.acciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* ===== Botones ===== */
+.btn {
+    padding: 8px 16px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #e8e8e8;
+}
+
+/* ===== Buscador ===== */
+.buscador {
+    display: flex;
+    gap: 8px;
+}
+
+.buscador input {
+    width: 240px;
+    padding: 8px 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.buscador select {
+    padding: 8px 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.buscador input:focus {
+    outline: 2px solid #4a7dbd;
+    border-color: transparent;
+}
+
+.btn-buscar {
+    padding: 8px 12px;
+}
+
+/* ===== Tabla ===== */
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #555;
+}
+
+.tabla-datos th,
+.tabla-datos td {
+    border: 1px solid #999;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.tabla-datos th {
+    background-color: #e8e8e8;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.tabla-datos tbody tr:hover {
+    background-color: #f0f6ff;
+}
+
+.tabla-datos tbody tr {
+    cursor: pointer;
+}
+
+/* ===== Perfil del alumno (formulario en dos columnas) ===== */
+#dialogo-perfil {
+    width: 520px;
+}
+
+.formulario-perfil {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+}
+
+/* El titulo y los botones ocupan el ancho completo (las dos columnas) */
+.formulario-perfil h2,
+.formulario-perfil .formulario-botones {
+    grid-column: 1 / -1;
+}
+
+/* Checkboxes: el cuadradito al lado del texto, no abajo */
+.formulario label.check {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+/* El legajo no se puede editar: lo mostramos grisado */
+.formulario input[readonly] {
+    background-color: #e8e8e8;
+    color: #666;
+}
+
+/* ===== Mensaje de error ===== */
+.mensaje {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    border: 1px solid #c0392b;
+    border-radius: 4px;
+    background-color: #fdecea;
+    color: #c0392b;
+}
+
+/* ===== Ventana emergente con el formulario ===== */
+dialog {
+    /* Centrada vertical y horizontalmente en la pantalla */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 24px;
+    width: 360px;
+}
+
+/* Fondo oscurecido detras de la ventana */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.formulario h2 {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.formulario label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9rem;
+}
+
+.formulario input {
+    padding: 8px 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.formulario input:focus {
+    outline: 2px solid #4a7dbd;
+    border-color: transparent;
+}
+
+.formulario-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-primario {
+    background-color: #4a7dbd;
+    border-color: #4a7dbd;
+    color: #fff;
+}
+
+.btn-primario:hover {
+    background-color: #3a6aa8;
+}
+
+/* Boton para acciones destructivas (eliminar) */
+.btn-peligro {
+    border-color: #c0392b;
+    color: #c0392b;
+}
+
+.btn-peligro:hover {
+    background-color: #fdecea;
+}
+
+/* ===== Enlace "Salir" de la navbar (a la derecha) ===== */
+.navbar-salir {
+    margin-left: 16px;
+}
+
+/* ===== Tabla de solo lectura (sin click ni cursor de mano) ===== */
+.tabla-datos--plana tbody tr {
+    cursor: default;
+}
+
+.tabla-datos--plana tbody tr:hover {
+    background-color: transparent;
+}
+
+/* ===== Secciones (paginas con varias tablas, ej. inscripciones) ===== */
+.seccion {
+    margin-bottom: 32px;
+}
+
+.seccion h2 {
+    font-size: 1.2rem;
+}
+
+.subtitulo {
+    color: #666;
+    margin-bottom: 24px;
+}
+
+/* ===== Menu del admin (tarjetas) ===== */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.tarjeta-menu {
+    display: block;
+    background-color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 24px;
+    text-decoration: none;
+    color: #222;
+}
+
+.tarjeta-menu:hover {
+    border-color: #4a7dbd;
+    box-shadow: 0 2px 8px rgba(74, 125, 189, 0.25);
+}
+
+.tarjeta-menu h2 {
+    font-size: 1.2rem;
+    color: #4a7dbd;
+    margin-bottom: 8px;
+}
+
+.tarjeta-menu p {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* ===== Pantalla de login ===== */
+.pantalla-login {
+    justify-content: center;
+    align-items: center;
+    background-color: #4a7dbd;
+}
+
+.login-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 32px;
+    width: 90%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.login-card .marca {
+    text-align: center;
+}
+
+.login-card h1 {
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.login-card .btn-primario {
+    margin-top: 8px;
+}
+
+/* ===== Texto de ayuda (aclaraciones chiquitas) ===== */
+.ayuda {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 4px 0;
+}
+
+/* ===== Mensaje de exito (variante verde del .mensaje) ===== */
+.mensaje-ok {
+    border-color: #2e7d32;
+    background-color: #eaf7ea;
+    color: #2e7d32;
+}
+
+/* ===== Celda vacia ("sin datos") ===== */
+.celda-vacia {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+/* ===== Ficha de perfil (etiqueta + valor) ===== */
+.ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    background-color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.ficha > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ficha-label {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.ficha-valor {
+    font-size: 1rem;
+}
+
+/* ===== Resumen de deuda ===== */
+.resumen-deuda {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    background-color: #fff;
+    border: 1px solid #555;
+    border-left: 4px solid #4a7dbd;
+    border-radius: 8px;
+    padding: 16px 24px;
+}
+
+.resumen-label {
+    font-size: 0.85rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.resumen-valor {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4a7dbd;
+}
+
+/* ===== Badges de estado de cuota ===== */
+.estado {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.estado-pagada {
+    background-color: #eaf7ea;
+    color: #2e7d32;
+}
+
+.estado-pendiente {
+    background-color: #fff6e0;
+    color: #b8860b;
+}
+
+.estado-vencida {
+    background-color: #fdecea;
+    color: #c0392b;
+}
+
+/* ===== Dialogo ancho (ej. lista de alumnos del profesor) ===== */
+.dialogo-ancho {
+    width: 640px;
+    max-width: 90%;
+}
+
+.dialogo-ancho h2 {
+    margin-bottom: 16px;
+}
+
+.dialogo-ancho .tabla-datos {
+    margin-bottom: 16px;
+}
+
+/* ===== Formulario de una sola columna mas angosto (ej. cargar notas) ===== */
+.formulario-ancho {
+    max-width: 420px;
+}

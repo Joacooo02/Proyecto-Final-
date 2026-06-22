@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HorariosAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/horarios_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Horarios de Comision</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar horario</button>
+
+            <div class="buscador">
+                <input type="number" id="buscar-id" placeholder="Id de horario">
+                <button class="btn" id="btn-buscar-id" title="Buscar por id">Buscar por id</button>
+            </div>
+        </div>
+
+        <p class="ayuda">
+            El listado no incluye el id del horario (limitacion del backend). Para
+            editar o eliminar uno, buscalo por su id.
+        </p>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>Id comision</th>
+                    <th>Dia</th>
+                    <th>Hora inicio</th>
+                    <th>Hora fin</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <!-- ===== Dialogo: agregar horario ===== -->
+    <dialog id="dialogo-horario">
+        <form id="form-horario" class="formulario">
+            <h2>Agregar horario</h2>
+
+            <label>
+                Id comision
+                <input type="number" name="idComision" required>
+            </label>
+            <label>
+                Dia
+                <select name="diaSemana" required>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miercoles">Miercoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                    <option value="Sabado">Sabado</option>
+                </select>
+            </label>
+            <label>
+                Hora inicio
+                <input type="time" name="horaInicio" required>
+            </label>
+            <label>
+                Hora fin
+                <input type="time" name="horaFin" required>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: editar / eliminar horario (cargado por id) ===== -->
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar horario <span id="editar-id"></span></h2>
+
+            <label>
+                Id comision
+                <input type="number" name="idComision" required>
+            </label>
+            <label>
+                Dia
+                <select name="diaSemana" required>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miercoles">Miercoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                    <option value="Sabado">Sabado</option>
+                </select>
+            </label>
+            <label>
+                Hora inicio
+                <input type="time" name="horaInicio" required>
+            </label>
+            <label>
+                Hora fin
+                <input type="time" name="horaFin" required>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn btn-peligro" id="btn-eliminar">Eliminar</button>
+                <span class="espaciador"></span>
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

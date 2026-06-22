@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis datos</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_alumno.js" defer></script>
+    <script src="/js/sesion_alumno.js" defer></script>
+    <script src="/js/mis_datos_alumno.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-alumno"></header>
+
+    <main class="contenido">
+        <h1>Mis datos</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <!-- ===== Perfil ===== -->
+        <section class="seccion">
+            <h2>Perfil</h2>
+            <div class="ficha" id="ficha-perfil"></div>
+            <div class="acciones-perfil">
+                <button class="btn" id="btn-boleto">Solicitar boleto estudiantil</button>
+            </div>
+        </section>
+
+        <!-- ===== Historial academico ===== -->
+        <section class="seccion">
+            <h2>Historial academico</h2>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Tipo de examen</th>
+                        <th>Nota</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-historial"></tbody>
+            </table>
+        </section>
+
+        <!-- ===== Materias inscriptas ===== -->
+        <section class="seccion">
+            <h2>Materias inscriptas</h2>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Año</th>
+                        <th>Cuatrimestre</th>
+                        <th>Carga horaria</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-materias"></tbody>
+            </table>
+        </section>
+
+        <!-- ===== Plan de estudio ===== -->
+        <section class="seccion">
+            <h2>Plan de estudio</h2>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Año</th>
+                        <th>Cuatrimestre</th>
+                        <th>Carga horaria</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-plan"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

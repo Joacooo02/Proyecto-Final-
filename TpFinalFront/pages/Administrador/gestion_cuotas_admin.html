@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CuotasAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/cuotas_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Cuotas</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-generar">Generar cuota</button>
+
+            <div class="buscador">
+                <select id="filtro-estado" title="Filtrar por estado">
+                    <option value="PENDIENTE">Pendientes</option>
+                    <option value="PAGADA">Pagadas</option>
+                    <option value="VENCIDA">Vencidas</option>
+                </select>
+                <button class="btn" id="btn-buscar">Filtrar</button>
+            </div>
+        </div>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>ID Cuota</th>
+                    <th>Id alumno</th>
+                    <th>Mes</th>
+                    <th>Año</th>
+                    <th>Valor</th>
+                    <th>Concepto</th>
+                    <th>Vencimiento</th>
+                    <th>Pago</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <dialog id="dialogo-cuota">
+        <form id="form-cuota" class="formulario">
+            <h2>Generar cuota</h2>
+
+            <label>
+                Id alumno
+                <input type="number" name="idAlumno" required>
+            </label>
+            <label>
+                Mes
+                <input type="number" name="mes" min="1" max="12" required>
+            </label>
+            <label>
+                Año
+                <input type="number" name="anio" required>
+            </label>
+            <label>
+                Valor
+                <input type="number" name="valorCuota" required>
+            </label>
+            <label>
+                Concepto
+                <select name="conceptoCuota" required>
+                    <option value="CUOTA">Cuota</option>
+                    <option value="MATRICULA">Matricula</option>
+                </select>
+            </label>
+            <label>
+                Vencimiento (opcional)
+                <input type="date" name="fechaVencimiento">
+            </label>
+            <label>
+                Estado (opcional)
+                <select name="estadoCuota">
+                    <option value="">Por defecto (Pendiente)</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="PAGADA">Pagada</option>
+                    <option value="VENCIDA">Vencida</option>
+                </select>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Generar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-gestion-cuota">
+        <div class="formulario">
+            <h2>Gestionar Cuota <span id="gestion-id-cuota"></span></h2>
+
+            <label>
+                Valor
+                <input type="number" id="edit-valorCuota">
+            </label>
+            <label>
+                Concepto
+                <select id="edit-conceptoCuota">
+                    <option value="CUOTA">Cuota</option>
+                    <option value="MATRICULA">Matricula</option>
+                </select>
+            </label>
+            <label>
+                Vencimiento
+                <input type="date" id="edit-fechaVencimiento">
+            </label>
+            <label>
+                Estado
+                <select id="edit-estadoCuota">
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="PAGADA">Pagada</option>
+                    <option value="VENCIDA">Vencida</option>
+                </select>
+            </label>
+
+            <div class="formulario-botones" style="margin-top: 15px;">
+                <button type="button" class="btn btn-primario" id="btn-modificar-cuota">Guardar Cambios</button>
+                <button type="button" class="btn btn-peligro" id="btn-eliminar-cuota">Eliminar</button>
+                <span class="espaciador"></span>
+                <button type="button" class="btn" id="btn-cerrar-gestion">Cerrar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

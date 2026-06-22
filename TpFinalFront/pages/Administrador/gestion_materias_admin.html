@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MateriasAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/materias_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Materias</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <!-- ===== Materias ===== -->
+        <section class="seccion">
+            <div class="acciones">
+                <button class="btn" id="btn-agregar">Agregar materia</button>
+
+                <div class="buscador">
+                    <input type="text" id="filtro" placeholder="Buscar por nombre">
+                    <button class="btn" id="btn-buscar" title="Buscar">Buscar</button>
+                </div>
+            </div>
+
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Id carrera</th>
+                        <th>Carga horaria</th>
+                        <th>Cuatrimestre</th>
+                        <th>Año</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- ===== Plan academico por alumno ===== -->
+        <section class="seccion">
+            <h2>Plan academico por alumno</h2>
+            <div class="buscador">
+                <input type="number" id="input-alumno" placeholder="Id de alumno">
+                <button class="btn" id="btn-ver-plan">Ver plan</button>
+            </div>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Año</th>
+                        <th>Cuatrimestre</th>
+                        <th>Carga horaria</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-plan"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- ===== Dialogo: agregar materia ===== -->
+    <dialog id="dialogo-materia">
+        <form id="form-materia" class="formulario">
+            <h2>Agregar materia</h2>
+
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Id carrera
+                <input type="number" name="idCarrera" required>
+            </label>
+            <label>
+                Carga horaria
+                <input type="number" name="cargaHoraria">
+            </label>
+            <label>
+                Cuatrimestre
+                <input type="number" name="cuatrimestre" min="1" max="2">
+            </label>
+            <label>
+                Año
+                <input type="number" name="anioCursado">
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: editar materia ===== -->
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar materia <span id="editar-id"></span></h2>
+
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Id carrera
+                <input type="number" name="idCarrera" required>
+            </label>
+            <label>
+                Carga horaria
+                <input type="number" name="cargaHoraria">
+            </label>
+            <label>
+                Cuatrimestre
+                <input type="number" name="cuatrimestre" min="1" max="2">
+            </label>
+            <label>
+                Año
+                <input type="number" name="anioCursado">
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

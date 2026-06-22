@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AvisosAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/avisos_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Avisos</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Crear aviso</button>
+
+            <div class="buscador">
+                <input type="number" id="buscar-id" placeholder="Id de aviso">
+                <button class="btn" id="btn-buscar-id" title="Ver / gestionar por id">Ver por id</button>
+            </div>
+        </div>
+
+        <p class="ayuda">
+            El listado no incluye los ids (limitacion del backend). Para ver el detalle
+            o eliminar un aviso, buscalo por su id. Solo profesores y administradores
+            pueden crear o eliminar avisos.
+        </p>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Persona</th>
+                    <th>Titulo</th>
+                    <th>Contenido</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <!-- ===== Dialogo: crear aviso ===== -->
+    <dialog id="dialogo-aviso">
+        <form id="form-aviso" class="formulario">
+            <h2>Crear aviso</h2>
+
+            <label>
+                Id persona (autor)
+                <input type="number" name="idPersona" required>
+            </label>
+            <label>
+                Titulo
+                <input type="text" name="titulo" required>
+            </label>
+            <label>
+                Contenido
+                <textarea name="contenido" rows="4" required></textarea>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: detalle / eliminar aviso (cargado por id) ===== -->
+    <dialog id="dialogo-detalle">
+        <div class="formulario">
+            <h2>Aviso <span id="detalle-id"></span></h2>
+
+            <div class="ficha">
+                <div><span class="ficha-label">Persona</span><span class="ficha-valor" id="det-persona"></span></div>
+                
+                <div>
+                    <span class="ficha-label">Titulo</span>
+                    <input type="text" id="edit-titulo" class="input-edicion" style="width: 100%; margin-top: 5px; padding: 6px;">
+                </div>
+                
+                <div><span class="ficha-label">Fecha</span><span class="ficha-valor" id="det-fecha"></span></div>
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <span class="ficha-label">Contenido</span>
+                <textarea id="edit-contenido" rows="4" class="input-edicion" style="width: 100%; margin-top: 5px; padding: 6px; resize: vertical;"></textarea>
+            </div>
+
+            <label style="margin-top: 15px; display: block;">
+                Tu id (profesor/admin) para gestionar
+                <input type="number" id="del-idPersona">
+            </label>
+
+            <div class="formulario-botones" style="margin-top: 15px;">
+                <button type="button" class="btn btn-primario" id="btn-modificar">Guardar Cambios</button>
+                <button type="button" class="btn btn-peligro" id="btn-eliminar">Eliminar</button>
+                <span class="espaciador"></span>
+                <button type="button" class="btn" id="btn-cerrar-detalle">Cerrar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

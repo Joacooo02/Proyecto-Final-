@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuotas</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_alumno.js" defer></script>
+    <script src="/js/sesion_alumno.js" defer></script>
+    <script src="/js/cuotas_alumno.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-alumno"></header>
+
+    <main class="contenido">
+        <h1>Cuotas</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <section class="seccion">
+            <div class="resumen-deuda">
+                <span class="resumen-label">Deuda total</span>
+                <span class="resumen-valor" id="deuda-total">—</span>
+            </div>
+        </section>
+
+        <section class="seccion">
+            <div class="acciones">
+                <h2>Mis cuotas</h2>
+                </div>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Mes</th>
+                        <th>Año</th>
+                        <th>Valor</th>
+                        <th>Vencimiento</th>
+                        <th>Pago</th>
+                        <th>Estado</th>
+                        <th>Acción</th> </tr>
+                </thead>
+                <tbody id="tbody-cuotas"></tbody>
+            </table>
+        </section>
+
+        <section class="seccion">
+            <h2>Pagos realizados</h2>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Id cuota</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                        <th>Metodo</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-pagos"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <dialog id="dialogo-pago">
+        <form id="form-pago" class="formulario">
+            <h2>Registrar pago</h2>
+
+            <label>
+                Id cuota
+                <input type="number" id="input-id-cuota" name="idCuota" readonly required>
+            </label>
+            <label>
+                Monto a pagar
+                <input type="number" id="input-monto" name="monto" readonly required>
+            </label>
+            <label>
+                Metodo de pago
+                <select name="metodoPago" required>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                    <option value="TARJETA">Tarjeta</option>
+                </select>
+            </label>
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar-pago">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Pagar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanesAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/planes_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Planes de Estudio</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar plan</button>
+
+            <div class="buscador">
+                <input type="number" id="buscar-id" placeholder="Id de plan">
+                <button class="btn" id="btn-buscar-id" title="Buscar por id">Buscar por id</button>
+            </div>
+        </div>
+
+        <p class="ayuda">
+            
+        </p>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>Id Plan</th>
+                    <th>Id carrera</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <!-- ===== Dialogo: agregar plan ===== -->
+    <dialog id="dialogo-plan">
+        <form id="form-plan" class="formulario">
+            <h2>Agregar plan de estudio</h2>
+
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Id carrera
+                <input type="number" name="idCarrera" required>
+            </label>
+            <label>
+                Año de inicio
+                <input type="number" name="anioInicio">
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: editar / eliminar plan (cargado por id) ===== -->
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar plan <span id="editar-id"></span></h2>
+
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Id carrera
+                <input type="number" name="idCarrera" required>
+            </label>
+            <p class="ayuda">El año de inicio no se puede modificar (el DTO del backend no lo incluye).</p>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn btn-peligro" id="btn-eliminar">Eliminar</button>
+                <span class="espaciador"></span>
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

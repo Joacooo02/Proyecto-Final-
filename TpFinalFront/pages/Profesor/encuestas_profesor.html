@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de encuestas</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_profesor.js" defer></script>
+    <script src="/js/sesion_profesor.js" defer></script>
+    <script src="/js/encuestas_profesor.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-profesor"></header>
+
+    <main class="contenido">
+        <h1>Resultados de encuestas</h1>
+
+        <div class="buscador">
+            <input type="number" id="input-comision" placeholder="Id de comision">
+            <button class="btn" id="btn-ver">Ver resultados</button>
+        </div>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>Pregunta</th>
+                    <th>Promedio (1 a 5)</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-resultados"></tbody>
+        </table>
+    </main>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

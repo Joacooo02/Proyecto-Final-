@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripciones</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_alumno.js" defer></script>
+    <script src="/js/sesion_alumno.js" defer></script>
+    <script src="/js/inscripciones_alumno.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-alumno"></header>
+
+    <main class="contenido">
+        <h1>Inscripciones</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <!-- ===== Inscripcion a materia ===== -->
+        <section class="seccion">
+            <div class="acciones">
+                <h2>Inscribirme a una materia</h2>
+                <button class="btn" id="btn-ver-materias">Ver materias</button>
+            </div>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Año</th>
+                        <th>Cuatrimestre</th>
+                        <th>Carga horaria</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-materias"></tbody>
+            </table>
+        </section>
+
+        <!-- ===== Inscripcion a comision ===== -->
+        <section class="seccion">
+            <h2>Inscribirme a una comision</h2>
+            <div class="buscador">
+                <select id="select-materia" title="Materia">
+                    <option value="">Elegi una materia...</option>
+                </select>
+                <button class="btn" id="btn-ver-comisiones">Ver comisiones disponibles</button>
+                <input type="number" id="input-periodo" placeholder="Id periodo">
+            </div>
+            <p class="ayuda">
+                Necesitas estar inscripto en la materia y ser regular. El "Id periodo"
+                es la ventana de inscripcion habilitada (te lo da la administracion).
+            </p>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Comision</th>
+                        <th>Nro</th>
+                        <th>Materia</th>
+                        <th>Profesor</th>
+                        <th>Aula</th>
+                        <th>Inscriptos</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-comisiones"></tbody>
+            </table>
+        </section>
+
+        <!-- ===== Inscripcion a examen final ===== -->
+        <section class="seccion">
+            <div class="acciones">
+                <h2>Inscribirme a un examen final</h2>
+                <button class="btn" id="btn-ver-finales">Ver finales</button>
+            </div>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>Examen</th>
+                        <th>Materia</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-finales"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

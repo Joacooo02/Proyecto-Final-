@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlumnosAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/alumnos_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Alumnos</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar alumno</button>
+
+            <div class="buscador">
+                <select id="campo-filtro" title="Campo por el que buscar">
+                    <option value="apellido">Apellido</option>
+                    <option value="nombre">Nombre</option>
+                    <option value="dni">Dni</option>
+                    <option value="email">Email</option>
+                    <option value="legajo">Legajo</option>
+                </select>
+                <input type="text" id="filtro">
+                <button class="btn" id="btn-buscar" title="Buscar">Buscar</button>
+            </div>
+        </div>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Legajo</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Dni</th>
+                    <th>Telefono</th>
+                    <th>Mail</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <dialog id="dialogo-alumno">
+        <form id="form-alumno" class="formulario">
+            <h2>Agregar alumno</h2>
+
+            <label>
+                Legajo
+                <input type="number" name="legajo" required>
+            </label>
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Apellido
+                <input type="text" name="apellido" required>
+            </label>
+            <label>
+                Dni
+                <input type="text" name="dni" required>
+            </label>
+            <label>
+                Telefono
+                <input type="text" name="telefono">
+            </label>
+            <label>
+                Mail
+                <input type="email" name="email" required>
+            </label>
+            <label>
+                Id carrera
+                <input type="number" name="idCarrera" required>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-perfil">
+        <form id="form-perfil" class="formulario formulario-perfil">
+            <h2>Perfil del alumno</h2>
+
+            <label>
+                Legajo
+                <input type="number" name="legajo" readonly>
+            </label>
+            <label>
+                Nombre
+                <input type="text" name="nombre" required>
+            </label>
+            <label>
+                Apellido
+                <input type="text" name="apellido" required>
+            </label>
+            <label>
+                Dni
+                <input type="text" name="dni" required>
+            </label>
+            <label>
+                Telefono
+                <input type="text" name="telefono">
+            </label>
+            <label>
+                Email
+                <input type="email" name="email" required>
+            </label>
+            <label>
+                Fecha nacimiento
+                <input type="date" name="fechaNacimiento">
+            </label>
+            <label>
+                Año ingreso
+                <input type="number" name="anioIngreso">
+            </label>
+            <label>
+                Promedio
+                <input type="number" name="promedio" step="0.01">
+            </label>
+            <label class="check">
+                <input type="checkbox" name="esRegular">
+                Regular
+            </label>
+            <label class="check">
+                <input type="checkbox" name="analiticoParcial">
+                Analitico parcial
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cerrar-perfil">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

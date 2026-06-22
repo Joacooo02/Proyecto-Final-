@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Alumno</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/sesion_alumno.js" defer></script>
+    <script src="/js/login_alumno.js" defer></script>
+</head>
+<body class="pantalla-login">
+    <main class="login-card">
+        <span class="marca">Atenea</span>
+        <h1>Acceso alumno</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <form id="form-login" class="formulario">
+            <label>
+                Email
+                <input type="email" name="email" required autofocus>
+            </label>
+            <label>
+                Contraseña
+                <input type="password" name="password" required>
+            </label>
+            <p class="ayuda">
+                Tu usuario es tu email y la contraseña inicial es tu DNI (la podés
+                cambiar luego).
+            </p>
+
+            <button type="submit" class="btn btn-primario">Ingresar</button>
+        </form>
+    </main>
+</body>
+</html>

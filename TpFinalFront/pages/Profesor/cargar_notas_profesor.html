@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar notas</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_profesor.js" defer></script>
+    <script src="/js/sesion_profesor.js" defer></script>
+    <script src="/js/cargar_notas_profesor.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-profesor"></header>
+
+    <main class="contenido">
+        <h1>Cargar notas</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <section class="seccion">
+            <form id="form-nota" class="formulario formulario-ancho">
+                <label>
+                    Examen
+                    <select name="idExamen" id="select-examen" required>
+                        <option value="">Elegi un examen...</option>
+                    </select>
+                </label>
+                <label>
+                    Id de alumno
+                    <input type="number" name="idAlumno" required>
+                </label>
+                <label>
+                    Nota (0 a 10)
+                    <input type="number" name="nota" min="0" max="10" required>
+                </label>
+
+                <p class="ayuda">
+                    El "Id de alumno" es el id interno (idPersona), no el legajo.
+                    Podes ver los alumnos de cada materia en "Mis comisiones".
+                </p>
+
+                <div class="formulario-botones">
+                    <button type="submit" class="btn btn-primario">Guardar nota</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="seccion">
+            <div class="acciones">
+                <h2>Notas registradas</h2>
+                <div class="buscador">
+                    <input type="number" id="filtro-alumno" placeholder="Id de alumno">
+                    <button class="btn" id="btn-filtrar-alumno">Filtrar por alumno</button>
+                    <button class="btn" id="btn-ver-todas">Ver todas</button>
+                </div>
+            </div>
+
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Examen</th>
+                        <th>Id alumno</th>
+                        <th>Nota</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-notas"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar nota <span id="editar-id"></span></h2>
+            <label>
+                Examen
+                <select name="idExamen" id="editar-examen" required></select>
+            </label>
+            <label>
+                Id de alumno
+                <input type="number" name="idAlumno" required>
+            </label>
+            <label>
+                Nota (0 a 10)
+                <input type="number" name="nota" min="0" max="10" required>
+            </label>
+            <label>
+                Fecha de registro
+                <input type="date" name="fechaRegistro">
+            </label>
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamenesAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/examenes_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Examenes</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar examen</button>
+
+            <div class="buscador">
+                <select id="modo-filtro" title="Tipo de busqueda">
+                    <option value="todos">Todos</option>
+                    <option value="tipo">Por tipo</option>
+                    <option value="materia">Por materia (nombre)</option>
+                    <option value="fecha">Por fecha</option>
+                    <option value="id">Por id</option>
+                </select>
+                <select id="valor-tipo" class="filtro-control" hidden>
+                    <option value="PARCIAL">Parcial</option>
+                    <option value="FINAL">Final</option>
+                </select>
+                <input type="text" id="valor-materia" class="filtro-control" placeholder="Nombre de materia" hidden>
+                <input type="date" id="valor-fecha" class="filtro-control" hidden>
+                <input type="number" id="valor-id" class="filtro-control" placeholder="Id de examen" hidden>
+                <button class="btn" id="btn-buscar">Buscar</button>
+            </div>
+        </div>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Materia</th>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <dialog id="dialogo-examen">
+        <form id="form-examen" class="formulario">
+            <h2>Agregar examen</h2>
+
+            <label>
+                Id materia
+                <input type="number" name="idMateria" required>
+            </label>
+            <label>
+                Fecha
+                <input type="date" name="fecha">
+            </label>
+            <label>
+                Tipo
+                <select name="tipoExamen" required>
+                    <option value="PARCIAL">Parcial</option>
+                    <option value="FINAL">Final</option>
+                </select>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

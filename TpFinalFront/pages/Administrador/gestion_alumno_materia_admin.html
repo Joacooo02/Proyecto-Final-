@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumno-Materia Admin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/alumno_materia_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Alumno - Materia</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar registro</button>
+
+            <div class="buscador">
+                <input type="number" id="filtro-alumno" placeholder="Id alumno">
+                <button class="btn" id="btn-historial">Ver historial</button>
+                <button class="btn" id="btn-ver-todos">Ver todos</button>
+            </div>
+        </div>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Alumno</th>
+                    <th>Materia</th>
+                    <th>Estado</th>
+                    <th>Nota final</th>
+                    <th>Fecha aprobacion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <!-- ===== Dialogo: agregar ===== -->
+    <dialog id="dialogo-am">
+        <form id="form-am" class="formulario">
+            <h2>Agregar registro</h2>
+
+            <label>
+                Id alumno
+                <input type="number" name="idAlumno" required>
+            </label>
+            <label>
+                Id materia
+                <input type="number" name="idMateria" required>
+            </label>
+            <label>
+                Estado
+                <select name="estado" required>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="CURSANDO">Cursando</option>
+                    <option value="REGULAR">Regular</option>
+                    <option value="APROBADA">Aprobada</option>
+                </select>
+            </label>
+            <label>
+                Nota final
+                <input type="number" name="notaFinal" step="0.01">
+            </label>
+            <label>
+                Fecha aprobacion
+                <input type="date" name="fechaAprobacion">
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: editar ===== -->
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar registro <span id="editar-id"></span></h2>
+
+            <label>
+                Id alumno
+                <input type="number" name="idAlumno" required>
+            </label>
+            <label>
+                Id materia
+                <input type="number" name="idMateria" required>
+            </label>
+            <label>
+                Estado
+                <select name="estado" required>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="CURSANDO">Cursando</option>
+                    <option value="REGULAR">Regular</option>
+                    <option value="APROBADA">Aprobada</option>
+                </select>
+            </label>
+            <label>
+                Nota final
+                <input type="number" name="notaFinal" step="0.01">
+            </label>
+            <label>
+                Fecha aprobacion
+                <input type="date" name="fechaAprobacion">
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

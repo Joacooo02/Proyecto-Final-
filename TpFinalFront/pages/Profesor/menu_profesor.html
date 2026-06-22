@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MenuProfesor</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_profesor.js" defer></script>
+    <script src="/js/sesion_profesor.js" defer></script>
+    <script src="/js/menu_profesor.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-profesor"></header>
+
+    <main class="contenido">
+        <h1>Portal del profesor</h1>
+        <p class="subtitulo" id="saludo"></p>
+
+        <div class="menu-grid">
+            <a class="tarjeta-menu" href="/pages/Profesor/mis_comisiones_profesor.html">
+                <h2>Mis comisiones</h2>
+                <p>Comisiones que dicto y alumnos de cada materia.</p>
+            </a>
+            <a class="tarjeta-menu" href="/pages/Profesor/cargar_notas_profesor.html">
+                <h2>Cargar notas</h2>
+                <p>Registrar notas de examenes de los alumnos.</p>
+            </a>
+            <a class="tarjeta-menu" href="/pages/Profesor/encuestas_profesor.html">
+                <h2>Encuestas</h2>
+                <p>Ver resultados de encuestas por comision.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

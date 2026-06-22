@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UsuariosAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/usuarios_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestión Usuarios</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <section class="seccion">
+            <div style="margin-bottom: 20px;">
+                <input 
+                    type="text" 
+                    id="buscador-usuario" 
+                    placeholder="Buscar por usuario o email..." 
+                    style="padding: 10px; width: 100%; max-width: 400px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;"
+                >
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Usuarios registrados</h2>
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-usuarios"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

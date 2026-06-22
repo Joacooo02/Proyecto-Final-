@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComisionesAdmin</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_admin.js" defer></script>
+    <script src="/js/sesion_admin.js" defer></script>
+    <script src="/js/comisiones_admin.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-admin"></header>
+
+    <main class="contenido">
+        <h1>Gestion Comisiones</h1>
+
+        <div class="acciones">
+            <button class="btn" id="btn-agregar">Agregar comision</button>
+
+            <div class="buscador">
+                <input type="number" id="filtro-nro" placeholder="Nro comision">
+                <button class="btn" id="btn-buscar-nro" title="Buscar por nro">Por nro</button>
+                <input type="number" id="filtro-profesor" placeholder="Id profesor">
+                <button class="btn" id="btn-buscar-profesor" title="Buscar por profesor">Por profesor</button>
+                <button class="btn" id="btn-ver-todas" title="Ver todas">Ver todas</button>
+            </div>
+        </div>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Materia</th>
+                    <th>Profesor</th>
+                    <th>Nro</th>
+                    <th>Aula</th>
+                    <th>Inscriptos</th>
+                    <th>Cupo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+
+    <!-- ===== Dialogo: agregar comision ===== -->
+    <dialog id="dialogo-comision">
+        <form id="form-comision" class="formulario">
+            <h2>Agregar comision</h2>
+
+            <label>
+                Id materia
+                <input type="number" name="idMateria" required>
+            </label>
+            <label>
+                Id profesor
+                <input type="number" name="idProfesor">
+            </label>
+            <label>
+                Nro comision
+                <input type="number" name="nroComision">
+            </label>
+            <label>
+                Aula
+                <input type="text" name="aula">
+            </label>
+            <label>
+                Cupo maximo
+                <input type="number" name="cupoMaximo" value="50">
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- ===== Dialogo: editar comision ===== -->
+    <dialog id="dialogo-editar">
+        <form id="form-editar" class="formulario">
+            <h2>Editar comision <span id="editar-id"></span></h2>
+
+            <label>
+                Id materia
+                <input type="number" name="idMateria" required>
+            </label>
+            <label>
+                Id profesor
+                <input type="number" name="idProfesor">
+            </label>
+            <label>
+                Nro comision
+                <input type="number" name="nroComision">
+            </label>
+            <label>
+                Aula
+                <input type="text" name="aula">
+            </label>
+            <label>
+                Cupo maximo
+                <input type="number" name="cupoMaximo">
+            </label>
+            <label>
+                Inscriptos
+                <input type="number" name="cantAlumnos" readonly>
+            </label>
+
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cerrar-editar">Cerrar</button>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

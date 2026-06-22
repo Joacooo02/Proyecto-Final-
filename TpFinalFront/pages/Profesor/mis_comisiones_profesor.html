@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis comisiones</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_profesor.js" defer></script>
+    <script src="/js/sesion_profesor.js" defer></script>
+    <script src="/js/mis_comisiones_profesor.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-profesor"></header>
+
+    <main class="contenido">
+        <h1>Mis comisiones</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>Comision</th>
+                    <th>Nro</th>
+                    <th>Materia</th>
+                    <th>Aula</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbody-comisiones"></tbody>
+        </table>
+    </main>
+
+    <!-- ===== Dialogo: alumnos de la materia ===== -->
+    <dialog id="dialogo-alumnos" class="dialogo-ancho">
+        <h2 id="titulo-alumnos">Alumnos</h2>
+        <table class="tabla-datos tabla-datos--plana">
+            <thead>
+                <tr>
+                    <th>Legajo</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Dni</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-alumnos"></tbody>
+        </table>
+        <div class="formulario-botones">
+            <button type="button" class="btn" id="btn-cerrar-alumnos">Cerrar</button>
+        </div>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuestas</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/navbar_alumno.js" defer></script>
+    <script src="/js/sesion_alumno.js" defer></script>
+    <script src="/js/encuestas_alumno.js" defer></script>
+</head>
+<body>
+    <header class="barra-superior" id="barra-alumno"></header>
+
+    <main class="contenido">
+        <h1>Mis Encuestas de Comisión</h1>
+
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <section class="seccion">
+            <h2>Comisiones en curso</h2>
+            <table class="tabla-datos tabla-datos--plana">
+                <thead>
+                    <tr>
+                        <th>ID Comisión</th>
+                        <th>Materia</th>
+                        <th>Profesor</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-comisiones"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <dialog id="dialogo-encuesta">
+        <form id="form-encuesta" class="formulario">
+            <h2 id="titulo-encuesta">Responder Encuesta</h2>
+            
+            <div id="preguntas"></div>
+            
+            <label>
+                Comentario final (opcional)
+                <textarea name="comentarioFinal" rows="3"></textarea>
+            </label>
+            
+            <div class="formulario-botones">
+                <button type="button" class="btn" id="btn-cancelar-encuesta">Cancelar</button>
+                <button type="submit" class="btn btn-primario">Enviar respuestas</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="barra-inferior"></footer>
+</body>
+</html>
